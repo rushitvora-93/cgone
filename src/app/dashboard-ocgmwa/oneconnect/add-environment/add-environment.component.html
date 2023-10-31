@@ -1,0 +1,47 @@
+<div class="add-env-container">
+  <div class="wrapper">
+    <div class="title">Add New Environment</div>
+    <div class="form" [formGroup]="addEnvironment">
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Environment Name</mat-label>
+          <input matInput placeholder="Environment Name" formControlName="appName">
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Environment IP</mat-label>
+          <input matInput placeholder="Environment IP" formControlName="host">
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Environment Port</mat-label>
+          <input matInput placeholder="Environment Port" formControlName="port">
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Client Name</mat-label>
+          <input matInput placeholder="Client Name" formControlName="clientName">
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>User Name</mat-label>
+          <input matInput placeholder="User Name" formControlName="user">
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field>
+          <mat-label>Environment Password</mat-label>
+          <input matInput placeholder="Environment Password" type="password" formControlName="password">
+        </mat-form-field>
+      </div>
+      <div class="btn-set text-center">
+        <button mat-flat-button class="btn-cancel" [routerLink]="'/dashboard'">Cancel</button>
+        <button mat-flat-button class="btn-save" [disabled]="!addEnvironment.valid" (click)="addEnv()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

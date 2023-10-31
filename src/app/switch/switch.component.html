@@ -1,0 +1,12 @@
+<p>
+  <a href="javascript:void(0)" (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed"
+    aria-controls="collapseExample1">
+    {{switch.name}}
+    <i *ngIf="isCollapsed" class="fas colapseic fa-chevron-down swdicon"></i>
+    <i *ngIf="!isCollapsed" class="fas colapseic fa-chevron-up swdicon"></i>
+  </a>
+</p>
+<div id="collapseExample1" [ngbCollapse]="isCollapsed" class="switch-tree">
+  <p><a href="javascript:void(0)" title="Agent Login" (click)="ObjectClick($event)">AgentLogin</a></p>
+  <p><a href="javascript:void(0)" title="Dn" (click)="ObjectClick($event,true)">Dn</a></p>
+</div>

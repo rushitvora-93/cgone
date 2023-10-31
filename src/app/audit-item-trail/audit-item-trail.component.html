@@ -1,0 +1,40 @@
+<div class="modal_heading"> <span>Object Typ: <strong>{{objectType}}</strong></span>
+  <span style="padding-left:20px;">ID: <strong>{{id}}</strong></span>
+  <button class="toggle-diff" (click)="toggleShowOnlyDifference()">
+      <i class="fas fa-sliders-h"></i>
+  </button>
+  <i class="far fa-times-circle closeDialog" (click)="close()"></i>
+</div>
+
+<div style="overflow:auto;height: 550px;margin: 10px 0px;" class="row">
+
+  <table class="configuration">
+    <thead>
+      <th></th>
+      <th>Old configuration</th>
+      <th>New configuration</th>
+    </thead>
+    <tbody>
+      <tr 
+        *ngFor="let configurationItem of configurationItems"
+        [class.changed]="configurationItem.isChanged"
+        [class.visible]="!shouldShowOnlyDifference || (!configurationItem.isObject && configurationItem.isChanged)"
+        [class.isTitle]="configurationItem.isObject">
+        <td class="key">
+          {{ configurationItem.configKey }}
+        </td>
+        <td class="old">
+          {{ !configurationItem.isObject ? configurationItem.oldConfig : ''}}
+        </td>
+        <td class="new">
+          {{ !configurationItem.isObject ? configurationItem.newConfig : ''}}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="padding: 10px 9px;text-align: right;width: 100%;">
+    <button (click)="rollBack(id,envName)" class="btn btn-dark" style="border-radius:1px;">Rollback</button>
+  </div>
+
+</div>

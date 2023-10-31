@@ -1,0 +1,26 @@
+<div class="one-design-container">
+  <div class="wrapper">
+    <div class="navigation">
+      OneDesign > Copy Environments > {{envName}} > <span>Config Object Type</span>
+    </div>
+    <div class="header"><button nz-button class="mwa-btn secondary lite" nzShape="round"
+        [routerLink]="'/dashboard/onedesign/env/copy/'+parentEnvId">Back</button>
+      <button nz-button class="mwa-btn primary ml-2" nzShape="round" (click)="configPerm()">Config Object
+        Permission</button>
+    </div>
+    <div class="main-body">
+      <div class="table-header">
+        <div>Object Type</div>
+        <div>Action</div>
+      </div>
+      <div class="table-body">
+        <div class="item" *ngFor="let item of objTypeList;let i = index">
+          <div>{{item.propertyName }}</div>
+          <div>
+            <button nz-button class="mwa-btn primary ml-2" nzShape="round" [disabled]="currentPos !== i"
+              (click)="copyObj(item?.mappedName)" [nzLoading]="currentPos === i && copyBusy">Copy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,113 @@
+<div class="add-env-dialog">
+  <div class="mdr">
+    <div class="modal-title">Add New Environment</div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeDialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body form" [formGroup]="createEnvForm">
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Environment Name</mat-label>
+        <input matInput placeholder="Environment Name" formControlName="envName">
+      </mat-form-field>
+    </div>
+
+    <mat-expansion-panel class="mt-2">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          Channel & Volume
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>
+        <div class="sub-btn-set" *ngIf="!toggleChannelForm">
+          <button nz-button class="mwa-btn secondary" nzShape="round" (click)="toggleChannelForm = true">Add
+            Channel</button>
+        </div>
+        <div class="add-channel-form" *ngIf="toggleChannelForm">
+          <div class="form-row">
+            <mat-form-field>
+              <mat-label>Channel Name</mat-label>
+              <input matInput placeholder="Channel Name" [formControl]="channelNameControl">
+            </mat-form-field>
+          </div>
+          <div class="form-row">
+            <mat-form-field>
+              <mat-label>Channel Volume</mat-label>
+              <input matInput placeholder="Channel Volume" [formControl]="channelVolControl">
+            </mat-form-field>
+          </div>
+          <div class="channel-form-btn">
+            <button nz-button class="mwa-btn secondary lite" nzShape="round"
+              (click)="toggleChannelForm = false">Cancel</button>
+            <button nz-button class="mwa-btn primary lite" nzShape="round" (click)="addChannel()">Save</button>
+          </div>
+        </div>
+        <div class="channel-list-table" *ngIf="channelVol.length">
+          <div class="head cell">Channel Name</div>
+          <div class="head cell">Volume</div>
+          <div class="head cell"></div>
+          <ng-container *ngFor="let item of channelVol;let i = index">
+            <div class="cell data">{{ item.channel}}</div>
+            <div class="cell data">{{item.volume}}</div>
+            <div class="cell data">
+              <img src="/assets/icons/del_icon.svg" class="icon" (click)="delChannel(i)">
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </mat-expansion-panel>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>DB Username</mat-label>
+        <input matInput placeholder="DB Username" formControlName="username">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>DB Password</mat-label>
+        <input matInput placeholder="DB Password" formControlName="password">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>DB Host</mat-label>
+        <input matInput placeholder="DB Host" formControlName="host">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>DB Port</mat-label>
+        <input matInput placeholder="DB Port" formControlName="port">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Log DB Username</mat-label>
+        <input matInput placeholder="Log DB Username" formControlName="logdbUsername">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Log DB Password</mat-label>
+        <input matInput placeholder="Log DB Password" formControlName="logdbPassword">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>DB Service</mat-label>
+        <input matInput placeholder="DB Service" formControlName="serviceName">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Database Type</mat-label>
+        <input matInput placeholder="Database Type" formControlName="database">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-footer pt-4" mat-dialog-actions>
+    <button class="btn-cancel" (click)="closeDialog()">Cancel</button>
+    <button class="btn-save" (click)="create()" [disabled]="!createEnvForm.valid">Save</button>
+  </div>
+</div>

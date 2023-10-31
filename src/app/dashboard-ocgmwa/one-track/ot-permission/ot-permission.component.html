@@ -1,0 +1,69 @@
+<div class="one-track-perm-container">
+  <div class="wrapper">
+    <div class="navigation">
+      OneTrack > <span>Permission</span>
+    </div>
+    <div class="main-body">
+      <div class="search-container" [formGroup]="searchTrack">
+        <app-card>
+          <div class="date-picker">
+            <div>
+              <mat-form-field>
+                <mat-label>From Date</mat-label>
+                <input matInput formControlName="fromDate" (click)="fromDateTrigger = true">
+              </mat-form-field>
+              <mwa-date [show]="fromDateTrigger" [date]="searchTrack.value.fromDate" (change)="setFromDate($event)">
+              </mwa-date>
+            </div>
+            <div>
+              <mat-form-field>
+                <mat-label>To Date</mat-label>
+                <input matInput formControlName="toDate" (click)="toDateTrigger = true">
+              </mat-form-field>
+              <mwa-date [show]="toDateTrigger" [date]="searchTrack.value.toDate" (change)="setToDate($event)">
+              </mwa-date>
+            </div>
+          </div>
+        </app-card>
+        <div>
+          <button nz-button nzShape="round" nzType="primary" class="mwa-btn primary sm round"
+            [disabled]="searchTrack.invalid" (click)="getResults()">Submit</button>
+        </div>
+      </div>
+      <!-- search-containe ends -->
+      <div class="results-container" *ngIf="listOfChanges.length">
+        <div class="header">
+          <div class="item">Date</div>
+          <div class="item">User</div>
+          <div class="item">Environment</div>
+          <div class="item op">Rollback</div>
+          <div class="item">Object Name</div>
+          <div class="item ot">Object Type</div>
+          <div class="item">Host</div>
+          <div class="item rb">Roll Back <i class="icon fas fa-history"></i></div>
+        </div>
+        <div class="res-row" *ngFor="let item of listOfChanges; let i = index">
+          <div class="item" [class.backColorOfRow]="item.user === 'Rollback'">
+            {{ item.date | date: 'mediumDate' }} <br />
+            {{ item.date | date: 'mediumTime' }}
+          </div>
+          <div class="item">{{ item.user }}</div>
+          <div class="item">{{ item.envName }}</div>
+          <div class="item op">{{ item.rollback }}</div>
+          <div class="item">{{ item.parentObjectName }}</div>
+          <div class="item ot">{{ item.parentObjectType }}</div>
+          <div class="item">{{ item.host }}</div>
+          <div class="item action">
+            <div (click)="openPermissions(item)" class="dots">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <i class="fas fa-history" (click)="rollBack(item.id,item.envName)"></i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

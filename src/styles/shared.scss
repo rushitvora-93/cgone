@@ -1,0 +1,208 @@
+@import "./mixins.scss";
+
+.mwa-btn.primary {
+    @include btn-primary();
+}
+.ngx-basic-audio-player{
+    min-width: 50px !important;
+    max-width: 60px !important;
+}
+.ngx-basic-audio-player-slider, .ngx-basic-audio-player-duration{
+    display: none !important;
+}
+.d-flex.ngx-basic-audio-player-duration{
+    display: none !important;
+}
+.media-player {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.red{
+    color:red;
+    text-decoration: line-through;    
+}
+.green{
+    color: green;
+}
+.downloadAudio{
+    font-size: 28px !important;
+    color: black;
+    justify-content: center;
+    margin:0px 20px
+}
+.mwa-btn.secondary {
+    padding-left: 30px;
+    padding-right: 30px;
+    background: $secondary;
+    border-color: $secondary;
+    color: #fff;
+    &.sh {
+        box-shadow: 0px 5px 12px #67d3d9;
+    }
+
+    &.lite {
+        background: #8a99c1;
+        border-color: #8a99c1;
+    }
+}
+
+.mwa-btn-set {
+    display: flex;
+    justify-content: center;
+
+    &.left {
+        justify-content: flex-start;
+    }
+    &.right {
+        justify-content: flex-end;
+    }
+}
+
+.mt-2 {
+    margin-top: 20px;
+}
+
+.mt-4 {
+    margin-top: 40px;
+}
+.cursor {
+    cursor: pointer;
+}
+input {
+    font-family: "Montserrat", sans-serif !important;
+    color: $primary !important;
+}
+.mwa-icon {
+    &:hover {
+        .icon {
+            img {
+                display: none;
+            }
+            .hover {
+                display: block !important;
+            }
+        }
+    }
+
+    .icon {
+        img {
+            display: none;
+        }
+        .def {
+            display: block;
+        }
+    }
+}
+
+.mwa-dialog {
+    position: relative !important;
+    .mat-dialog-container {
+        overflow: auto !important;
+        padding: 30px !important;
+        border-radius: 10px;
+
+        .btn-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            right: -15px;
+            top: -15px;
+            width: 56px;
+            height: 56px;
+            border-radius: 28px;
+            background: $primary;
+            border: 0;
+            color: #fff;
+            z-index: 9;
+        }
+
+        .modal-header {
+            color: $primary !important;
+            padding-top: 0 !important;
+            padding-left: 0;
+            font-size: 20px;
+            border-bottom: 2px solid $primary;
+
+            h4 {
+                @include h2();
+                font-size: 18px;
+            }
+        }
+
+        .modal-body {
+            padding: 1rem 0 0 0 !important;
+            mat-form-field {
+                width: 100%;
+            }
+        }
+
+        .mat-dialog-actions {
+            margin: 0 !important;
+            border: 0;
+
+            button {
+                @include btn-primary();
+                border: 0;
+                padding: 5px 20px;
+                border-radius: 30px;
+            }
+
+            .btn-save {
+                background: $primary;
+            }
+
+            .btn-cancel {
+                background: #8a99c1;
+            }
+
+            .btn-danger {
+                background: red;
+            }
+        }
+    }
+}
+
+.mat-checkbox {
+    .mat-checkbox-layout .mat-checkbox-background {
+        border: 2px solid $primary !important;
+        background: #fff !important;
+    }
+    &.mat-checkbox-checked {
+        .mat-checkbox-background {
+            background: $primary !important;
+        }
+    }
+}
+
+.mwa-wrapper {
+    .sidenav .mat-expansion-panel-body {
+        padding: 0 !important;
+        background: #5367bd !important;
+    }
+
+    .side-panel-sub-txt {
+        padding: 0 20px;
+        color: #a9b3de !important;
+    }
+}
+
+.mwa-slider {
+    .mat-slider-track-fill,
+    .mat-slider-thumb {
+        background-color: #8391d5 !important;
+    }
+
+    .mat-slider-track-wrapper,
+    .mat-slider-track-fill {
+        height: 5px !important;
+    }
+}
+
+.sidenav.mini .item-expand > .mat-expansion-panel-content {
+    position: absolute;
+    max-height: 300px;
+    width: 230px !important;
+    overflow: auto;
+}

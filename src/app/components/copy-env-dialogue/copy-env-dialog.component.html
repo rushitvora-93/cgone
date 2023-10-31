@@ -1,0 +1,138 @@
+<h5>Copy Environment</h5>
+<form #createEnvForm="ngForm" (ngSubmit)="saveEnv(createEnvForm)" class="host-form" autocomplete="off">
+       <div>
+              <mat-form-field>
+                     <mat-label>
+                            From Environment
+                            </mat-label>
+                     <mat-select id="val">
+                            <mat-option
+                                   *ngFor="let val of allEnvList"
+                                   [value]="val.label"
+                                   style="width: 700px;" (click)="selectedEnv(val)">{{ val.label }}</mat-option>
+                     </mat-select>
+              </mat-form-field>
+       </div>       
+       <div class="form-group">
+              <label for="newEnvName">Env Name</label>
+              <input id="newEnvName" placeholder="Env Name" class="form-control" [(ngModel)]="env.newEnvName"
+                     name="newEnvName" required #newEnvName="ngModel">
+       </div>
+       
+       <!-- <div class="sub-section servers">
+              <label for="chInfo">Channel Info</label>
+              <mat-accordion>
+                  <mat-expansion-panel>
+                      <mat-expansion-panel-header>
+                          <mat-panel-title>
+                              <h6 class="title">
+                                  <span id="chInfo">Channel & Volume</span>
+                                  <img src="/assets/vendor/fontawesome-free/svgs/solid/arrow-right.svg"
+                                      class="dropdown-arrow" style="margin-left: 300px;">
+                              </h6>
+                          </mat-panel-title>
+                      </mat-expansion-panel-header>
+
+                      <div class="connected-servers">
+                            <div class="header">
+                                <h5></h5>
+                                <button type="button" class="btn btn-primary" (click)="onAddChannel()">Add
+                                    channel</button>
+                            </div>
+                            <div class="form-group " *ngIf="show">
+                              <label for="channel">Channel</label>
+                
+                              <input id="channel" placeholder="channel" class="form-control surround" [(ngModel)]="channelmod" name="channel"
+                                     required>
+                       </div>
+                       <div class="form-group " *ngIf="show">
+                              <label for="volume">Volume</label>
+                
+                              <input id="volume" placeholder="volume" class="form-control surround" [(ngModel)]="volumemod" name="volume"
+                                     pattern="\d+" required #volume="ngModel">
+                              <div class="error text-center" *ngIf="volume.errors && volume.errors['pattern']">Number is required</div>
+                       </div>
+                       <div class="form-group" *ngIf="show">
+                              <button type="button" (click)="saveChannel()">Save</button>
+                       </div>
+                            <div class="servers" *ngIf="!showInfo">
+                                   
+                                <table>
+                                    <thead>
+                                        <th>Channel Name</th>
+                                        <th>Volume</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let data of channelVol;">
+                                            <td>
+                                                   {{data.channel}}
+                                            </td>
+                                            <td>
+                                                   {{data.volume}}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                  </mat-expansion-panel>
+              </mat-accordion>
+          </div> -->
+          
+       <div class="form-group">
+              <label for="cfgUsername">DB Username</label>
+
+              <input id="cfgUsername" placeholder="Username" class="form-control" [(ngModel)]="env.cfgUsername"
+                     name="cfgUsername" required #cfgUsername="ngModel">
+              
+       </div>
+       <div class="form-group">
+              <label for="cfgPassword">DB Password</label>
+
+              <input id="cfgPassword" placeholder="Password" class="form-control" [(ngModel)]="env.cfgPassword"
+                     name="cfgPassword" required #cfgPassword="ngModel">
+              
+       </div>
+       <div class="form-group">
+              <label for="dbHost">DB Host</label>
+
+              <input id="dbHost" placeholder="Host" class="form-control" [(ngModel)]="env.dbHost" name="dbHost" required
+                     #dbHost="ngModel">
+       </div>
+       <div class="form-group">
+              <label for="dbPort">DB Port</label>
+
+              <input id="dbPort" placeholder="Port" class="form-control" [(ngModel)]="env.dbPort" name="dbPort"
+                     #dbPort="ngModel" pattern="\d+">
+                     <div class="error text-center" *ngIf="dbPort.errors && dbPort.errors['pattern']">Number is required</div>
+       </div>
+       <div class="form-group">
+              <label for="logdbUsername">Log DB Username</label>
+
+              <input id="logdbUsername" placeholder="Log DB Username" class="form-control" [(ngModel)]="env.logdbUsername" name="logdbUsername" required
+                     #logdbUsername="ngModel">
+       </div>
+       <div class="form-group">
+              <label for="logdbPassword">Log DB Password</label>
+
+              <input id="logdbPassword" placeholder="Log DB Password" class="form-control" [(ngModel)]="env.logdbPassword" name="logdbPassword" required
+                     #logdbPassword="ngModel">
+       </div>
+       <div class="form-group">
+              <label for="serviceName">DB Service</label>
+
+              <input id="serviceName" placeholder="DB Service" class="form-control" [(ngModel)]="env.serviceName" name="serviceName" required
+                     #serviceName="ngModel">
+       </div>
+       <div class="form-group">
+              <label for="database">Database Type</label>
+              <input placeholder="database" class="form-control" [(ngModel)]="env.database" name="database" required>
+       </div>
+       
+       <div class="form-group text-right">
+              <button type="submit" mat-flat-button color="accent" [disabled]="!createEnvForm.valid">Save</button>
+              <button type="button" mat-flat-button class="mrnone" (click)="cancelIgnoreList()">Cancel</button>
+       </div>
+
+
+</form>

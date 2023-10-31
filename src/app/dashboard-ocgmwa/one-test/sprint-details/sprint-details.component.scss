@@ -1,0 +1,163 @@
+@import "../../../../styles/mixins.scss";
+
+.sprint-data_container {
+    @include container();
+
+    .sprint-data_wrapper {
+        @include wrapper();
+
+        .navigation {
+            background: #5367bd;
+            padding: 20px 30px;
+            color: #ffffff;
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .sprint_list {
+            border: 1px solid #bac6d0;
+            background: #fff;
+            padding:10px 20px;
+            //box-shadow: 0px 5px 15px #cbdff2;
+            overflow: hidden;
+            .item {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr 1fr 1fr 10px;
+                grid-gap: 20px;
+                margin-bottom: 5px;
+                align-items: center;
+                min-height: 38px;
+                padding: 10px 30px;
+                //color: #fff;
+                color: black;
+                background: white;
+                font-size: 16px;
+
+                &:nth-child(2n) {
+                    //background: #7aafd8;
+                }
+
+                &:nth-child(2n-1) {
+                    //background: #5367bd;
+                }
+
+                &.header {
+                    background: #cbdff2;
+                    height: 50px;
+                    color: $primary;
+                    font-weight: bold;
+                    cursor: default;
+                }
+                &:last-child {
+                    margin: 0;
+                }
+
+                a {
+                    font-size: 20px;
+                }
+
+                audio{
+                    width: 215px;
+                }
+
+            }
+        }
+
+        .progress-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 40px;
+            margin-top: 20px;
+            &.ivr-panel{
+                grid-template-columns: 1fr;
+            }
+            .section {
+                position: relative;
+                box-shadow: 0px 5px 15px #cbdff2;
+                border: 1px solid #bac6d0;
+                height: 446px;
+                background: #ffffff;
+                overflow-y: auto;
+                .sec-title {
+                    @include h3();
+                    position: sticky;
+                    top: 0;
+                    color: #fff;
+                    font-size: 18px;
+                    background: #518bb7;
+                    padding: 10px 50px;
+                    &.ivr-title{
+                        padding: 10px 20px;
+                    }
+                }
+
+                .section-body {
+                    padding: 20px 40px;
+
+                    &.agents {
+                        display: grid;
+                        grid: auto/repeat(auto-fill, 70px);
+                        grid-gap: 15px;
+                    }
+
+                    .list {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        border-radius: 6px;
+                        margin-bottom: 5px;
+                        background: #b2cde2;
+                        padding: 5px 10px;
+                        color: #fff;
+                    }
+                    .chart-container {
+                        margin: 10px 0;
+                    }
+                    .tile {
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 70px;
+                        height: 70px;
+                        border-radius: 4px;
+                        color: #fff;
+                        background: $danger;
+
+                        &.active {
+                            background: $secondary;
+                        }
+                        .label {
+                            display: none;
+                            position: absolute;
+                            bottom: 7px;
+                            width: 100%;
+                            text-align: center;
+                            font-size: 12px;
+                        }
+                        &:hover {
+                            .label {
+                                display: block;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .btn-set {
+            display: flex;
+            flex-direction: row-reverse;
+            margin-top: 30px;
+            button {
+                margin-left: 20px;
+                width: 160px;
+            }
+
+            button.stop {
+                @include btn-secondary();
+            }
+        }
+    }
+}

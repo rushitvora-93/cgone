@@ -1,0 +1,23 @@
+<div class="one-design-container">
+  <div class="wrapper">
+    <div class="navigation">
+      OneDesign > <span>Virtual Environments</span>
+    </div>
+    <div class="header">
+      <button nz-button class="mwa-btn secondary" nzShape="round" (click)="addEnv()">Add New Environment</button>
+    </div>
+    <div class="main-body">
+      <div class="table-header">
+        <div>ID</div>
+        <div>Environment Name</div>
+        <div>Volume</div>
+      </div>
+      <div class="table-body">
+        <div class="item" *ngFor="let item of environments" [routerLink]="'/dashboard/onedesign/env/virtual/'+item.id">
+          <div>{{item.id }}</div>
+          <div>{{ item.envName }}</div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </div>

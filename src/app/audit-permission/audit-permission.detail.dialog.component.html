@@ -1,0 +1,85 @@
+<div class="modal-header">
+  <h1 mat-dialog-title>Permission Details</h1>
+  <button type="button" class="close" aria-label="Close" [mat-dialog-close]="cancel">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div mat-dialog-content>
+  <form cellspacing="0" cellpadding="0">
+  <table class="roles-permissions">
+    <thead>
+      <th></th>
+      <th *ngFor="let role of permissionRoles">
+          <span class="label">
+            Name
+            <span *ngIf="role">
+              {{ role.oldRole && role.oldRole.permissionObjectName?role.oldRole.permissionObjectName:role.newRole.permissionObjectName }}
+            </span>
+          </span>
+          <span class="label">
+            Type
+            <span *ngIf="role">
+              {{ role.oldRole && role.oldRole.permissionObjectType?role.oldRole.permissionObjectType:role.newRole.permissionObjectType }}
+            </span>
+          </span>
+      </th>
+    </thead>
+    <tbody>
+      <tr [attr.colspan]="permissionRoles.length + 1">
+      <td class="role-keys" *ngIf="permissionRoles && permissionRoles[0]">
+          <div *ngIf="permissionRoles[0].oldRole" class="fake-role">
+            <span class="label" style="visibility: collapse;
+            padding: 24px 40px;">Old</span>
+            <ul class="permissions">
+              <li *ngFor="let permission of permissionRoles[0].oldRole.newPermissions">
+                <span>{{ permission.key }}</span>
+              </li>
+            </ul>
+          </div>
+          <div *ngIf="!permissionRoles[0].oldRole && permissionRoles[0].newRole" class="fake-role">
+              <span class="label" style="visibility: collapse;
+              padding: 24px 40px;">Old</span>
+            <ul class="permissions">
+              <li *ngFor="let permission of permissionRoles[0].newRole.newPermissions">
+                <span>{{ permission.key }}</span>
+              </li>
+            </ul>
+          </div>
+      </td>
+      <td class="role-details" *ngFor="let role of permissionRoles">
+        <div>
+          <div *ngIf="role.oldRole" class="role old">
+            <span class="label" style="padding: 24px 40px;">Old</span>
+            <ul class="permissions">
+              <li *ngFor="let permission of role.oldRole.newPermissions"
+                [class.changed]="permission.isChanged">
+                <label class="custom-control overflow-checkbox" (click)="preventDefault($event)">
+                    <input type="checkbox" class="overflow-control-input" [checked]="permission.value">
+                    <span class="overflow-control-indicator"></span>
+                    <span class="overflow-control-description"></span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div *ngIf="role.newRole" class="role new">
+            <span class="label" style="padding: 24px 40px;">New</span>
+            <ul class="permissions">
+              <li *ngFor="let permission of role.newRole.newPermissions"
+                [class.changed]="permission.isChanged">
+                <label class="custom-control overflow-checkbox" (click)="preventDefault($event)">
+                    <input type="checkbox" class="overflow-control-input" [checked]="permission.value">
+                    <span class="overflow-control-indicator"></span>
+                    <span class="overflow-control-description"></span>
+                </label>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</form>
+</div>

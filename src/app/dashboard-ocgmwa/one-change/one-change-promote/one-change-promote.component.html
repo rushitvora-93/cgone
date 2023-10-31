@@ -1,0 +1,217 @@
+<div class="one-change-promote_container" #OneChangePromote>
+  <div class="panel-sections">
+    <div class="navigation">
+      OneChange > <span>Promote</span>
+    </div>
+
+    <div [formGroup]="formGroup">
+      <div class="section_row">
+        <div class="row">
+          <div class="col-6">
+            <app-card>
+              <div class="block-wrapper">
+                <div class="item-title">
+                  <h3>Select Environment</h3>
+                </div>
+                <div class="item">
+                  <div class="radio" *ngFor="let item of environments">
+                    <app-mwa-radio [check]="formGroup.value.firstCtrl === item.id" (click)="setEnv(item.id)">
+                      <div label>{{ item.appName }}</div>
+                    </app-mwa-radio>
+                  </div>
+                </div>
+              </div>
+            </app-card>
+          </div>
+          <div class="col-4">
+            <app-card>
+              <div class="block-wrapper">
+                <div class="item-title">
+                  <h3>Promote type</h3>
+                </div>
+                <div class="item">
+                  <div class="radio" *ngFor="let item of selectPromoteTypeList">
+                    <app-mwa-radio (change)="setPromote($event,item.id)">
+                      <div label>{{ item.label }}</div>
+                    </app-mwa-radio>
+                  </div>
+                </div>
+              </div>
+            </app-card>
+          </div>
+        </div>
+      </div>
+      <!-- row ends -->
+      <div class="section_row">
+        <div class="row align-items-end">
+          <div class="col-10">
+            <app-card>
+              <div class="sub-choice">
+                <div class="item-title">
+                  <h3>Change Duration</h3>
+                </div>
+                <div class="date-picker">
+                  <div>
+                    <mat-form-field>
+                      <input matInput placeholder="Choose From date" formControlName="selectDuration"
+                        (click)="fromDateTrigger = true" />
+                    </mat-form-field>
+                    <mwa-date [show]="fromDateTrigger" [date]="formGroup.value.selectDuration"
+                      (change)="setFromDate($event)">
+                    </mwa-date>
+                  </div>
+                  <div>
+                    <mat-form-field>
+                      <input matInput placeholder="Choose To date" formControlName="selectDurationTo"
+                        (click)="toDateTrigger = true" />
+                    </mat-form-field>
+                    <mwa-date [show]="toDateTrigger" [date]="formGroup.value.selectDurationTo"
+                      (change)="setToDate($event)">
+                    </mwa-date>
+                  </div>
+                </div>
+              </div>
+            </app-card>
+          </div>
+          <div class="col-2">
+            <div>
+              <button nz-button class="mwa-btn secondary mt-4" nzType="primary" nzShape="round"
+                (click)="loadAppList(0)">Search</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- section_row ends -->
+
+    <div id="ocg-pro-applist" class="section_row" *ngIf="appListReady" [formGroup]="searchForm">
+      <h2>Select Application/objects</h2>
+      <app-card padding="0">
+        <div class="select-app">
+          <div class="app-row head">
+            <div>
+              <mwa-check (change)="checkAllApps($event)"></mwa-check>
+            </div>
+            <div>
+              <mat-form-field class="w-100">
+                <input matInput placeholder="Object Name" formControlName="searchObjectName" />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="w-100">
+                <input matInput placeholder="Object Type" formControlName="searchObjectType" />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="w-100">
+                <input matInput placeholder="User Name" formControlName="searchUserName" />
+                <mat-icon matSuffix>search</mat-icon>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="app-list-body">
+            <div class="app-row" *ngFor="let app of visiblePromoteAppList;let index">
+              <div>
+                <app-mwa-radio (change)="SelectApplication(app.appId)"
+                  [check]="selectedItemsArray.promotelist.indexOf(app.appId) > -1"></app-mwa-radio>
+              </div>
+              <div>{{app?.config?.appName}}</div>
+              <div>Application</div>
+              <div>{{app.user}}</div>
+            </div>
+            <div class="app-row" *ngFor="let app of visibleConfigureAppList">
+              <div>
+                <app-mwa-radio (change)="SelectConfigApplication(app.objectId)"
+                  [check]="selectedItemsArray.configurationList.indexOf(app.objectId) > -1"></app-mwa-radio>
+              </div>
+              <div>{{app.objectName}}</div>
+              <div>{{removeCFG(app.objectType)}}</div>
+              <div>{{app.user}}</div>
+            </div>
+          </div>
+        </div>
+      </app-card>
+      <div class="mwa-btn-set right mt-4" *ngIf="!configPromoteListReady">
+        <button nz-button nzShape="round" nzType="primary" class="mwa-btn primary sm round"
+          (click)="fetchResults()">Next</button>
+      </div>
+    </div>
+    <!-- sections ends -->
+
+    <div id="ocg-pro-config" class="section_row" *ngIf="configPromoteListReady">
+      <div class="section-main-header">
+        <h2>Config Promote List</h2>
+        <mwa-check (change)="checkAllConfigList($event)">
+          <div label>Select All</div>
+        </mwa-check>
+      </div>
+      <app-card *ngIf="!showComparison">
+        <div class="pro-config-body">
+          <div class="config-list" *ngFor="let item of configPromoteList;let pos = index">
+            <mat-accordion class="right-accordian">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{pos}}
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-config-promote-list [config]="item" [showComparison]="showComparison"></app-config-promote-list>
+              </mat-expansion-panel>
+            </mat-accordion>
+            <div class="select-app">
+              <app-mwa-radio (change)="addConfigItems(pos)" [check]="finalPromoteList.indexOf(pos) > -1">
+              </app-mwa-radio>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!configPromoteList.length">
+          Sorry, No results found!
+        </div>
+      </app-card>
+      <div *ngIf="showComparison">
+        <app-compare-promote-env [compare]="getCompareList" [selectedEnv]="formGroup.value.firstCtrl">
+        </app-compare-promote-env>
+      </div>
+      <div class="mwa-btn-set right p-4" *ngIf="configPromoteList.length && !showFinalStep">
+        <button nz-button nzShape="round" nzType="primary" class="mwa-btn secondary sm round" (click)="showCompare()"
+          *ngIf="selectedItemsArray.configurationList.length">{{ showComparison?'Hide':'Show'}}
+          Comparison</button>
+        <button nz-button nzShape="round" nzType="primary" class="mwa-btn primary sm round ml-3"
+          [disabled]="!finalPromoteList.length" (click)="setFinalStep()">Next</button>
+      </div>
+    </div>
+    <!-- config promote ends -->
+
+    <div id="one-ch-pr-final" class="section_row" *ngIf="showFinalStep">
+      <h2>Final Submit</h2>
+      <div class="block-submit">
+        <div class="block-name">Final App Configuration List</div>
+        <div class="block-body">
+          <div class="config-list" *ngFor="let item of finalPromoteList;">
+            <mat-accordion class="right-accordian">
+              <mat-expansion-panel>
+                <mat-expansion-panel-header>
+                  <mat-panel-title>
+                    {{item}}
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                <app-config-promote-list [config]="configPromoteList[item]"></app-config-promote-list>
+              </mat-expansion-panel>
+            </mat-accordion>
+          </div>
+          <div *ngIf="!finalPromoteList.length">
+            Sorry, no items selected. Select an item from the preview step and try again.
+          </div>
+        </div>
+        <div class="mwa-btn-set right p-4" *ngIf="finalPromoteList.length">
+          <button nz-button nzShape="round" nzType="primary" class="mwa-btn secondary sm round"
+            (click)="downloadPromote()">Export Configure Data</button>
+          <button nz-button nzShape="round" nzType="primary" class="mwa-btn primary sm round ml-3"
+            (click)="processPromote()" [nzLoading]="isBusy">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

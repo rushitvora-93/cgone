@@ -1,0 +1,23 @@
+<div class="dialog-content">
+
+    <div class="modal-header">
+        <h4 class="modal-title">Remove section</h4>
+        <button type="button" class="btn-close" aria-label="Close" mat-dialog-close>
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <mat-dialog-content>
+        <div class="modal-body">
+            <p>
+                Are you sure you want to delete section <strong>{{ data.optionName }}</strong>?
+            </p>
+        </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="modal-footer" align="end">
+        <button type="button" class="btn-save" [mat-dialog-close]="cancel">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="deleteOption()">Delete section</button>
+    </mat-dialog-actions>
+
+</div>

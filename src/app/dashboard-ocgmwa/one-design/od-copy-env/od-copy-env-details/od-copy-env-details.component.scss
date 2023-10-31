@@ -1,0 +1,132 @@
+@import "../../../../../styles/mixins.scss";
+
+.od-env-container {
+    @include container();
+    .wrapper {
+        @include wrapper();
+        .navigation {
+            background: #5367bd;
+            padding: 20px 30px;
+            color: #ffffff;
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .action-btns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 20px 0 0;
+            button {
+                font-size: 14px;
+                margin-left: 10px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .main-body {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            grid-gap: 40px;
+            .list-wrapper {
+                height: calc(100vh - 350px);
+                overflow-y: auto;
+                &.hot-pan {
+                    .place-it-here {
+                        border: 2px dashed #daa0a2;
+                    }
+                }
+                .item {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 6px;
+                    background: #ffffff;
+                    box-shadow: 0px 3px 6px #c1b3b329;
+                    padding: 10px 15px;
+                    border-radius: 7px;
+                    cursor: pointer;
+                    &.active {
+                        background-color: $secondary;
+                        color: #fff;
+                        .actions {
+                            border-left: 1px solid #fff;
+                        }
+                        .icon {
+                            color: #fff !important;
+                            img {
+                                display: none !important;
+                            }
+                            .hover {
+                                display: block !important;
+                            }
+                        }
+                    }
+
+                    .actions {
+                        display: flex;
+                        align-items: center;
+                        border-left: 1px solid $primary;
+                        .icon {
+                            margin-left: 15px;
+                            color: $primary;
+                            cursor: pointer;
+                            img {
+                                display: none;
+                            }
+                            .def {
+                                display: block;
+                            }
+                            .img {
+                                width: 18px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .focus-panel {
+                height: calc(100vh - 350px);
+                overflow-y: auto;
+                .item {
+                    position: relative;
+                    border-left: 5px solid $secondary;
+                    border-radius: 8px;
+                    margin-bottom: 6px;
+                    max-width: 44vw;
+                    &.red {
+                        border-color: red;
+                    }
+                    .actions {
+                        display: flex;
+                        border-left: 1px solid $primary;
+                        .icon {
+                            margin-left: 15px;
+                            cursor: pointer;
+                        }
+                    }
+
+                    .multi-dragger {
+                        position: absolute;
+                        left: 10px;
+                        top: 13px;
+                    }
+
+                    .panel-header {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        width: 100%;
+                        .name {
+                            display: flex;
+                            align-items: center;
+                            padding-left: 20px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

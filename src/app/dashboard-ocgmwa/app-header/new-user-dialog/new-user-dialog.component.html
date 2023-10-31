@@ -1,0 +1,37 @@
+<div class="new-user-container">
+  <button type="button" class="btn-close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="modal-header">
+    <h4 class="modal-title">Add New User</h4>
+  </div>
+  <div class="pt-3">
+    <form #addUser="ngForm" (ngSubmit)="addUserDetail(addUser.value)" autocomplete="off">
+      <div class="form-group">
+        <mat-form-field class="w-100">
+          <mat-label for="username">Username</mat-label>
+          <input matInput type="text" id="username" placeholder="Username" ngModel #username="ngModel" name="username"
+            required>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field class="w-100">
+          <mat-label for="email">Email</mat-label>
+          <input matInput type="email" id="email" placeholder="Email" ngModel #email="ngModel" name="email" required
+            email>
+        </mat-form-field>
+      </div>
+      <div class="form-group">
+        <mat-form-field class="w-100">
+          <mat-label for="password">Password</mat-label>
+          <input matInput type="text" id="password" placeholder="Password" ngModel #password="ngModel" name="password"
+            required>
+        </mat-form-field>
+      </div>
+      <mat-dialog-actions class="modal-footer" align="end">
+        <button type="button" class="btn btn-cancel" [mat-dialog-close]="cancel">Cancel</button>
+        <button type="submit" class="btn btn-save" [disabled]="!addUser.form.valid">Save</button>
+      </mat-dialog-actions>
+    </form>
+  </div>
+</div>

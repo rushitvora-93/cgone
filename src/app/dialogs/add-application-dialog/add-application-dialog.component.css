@@ -1,0 +1,75 @@
+.connected-servers {
+    padding-bottom: 12px;
+}
+
+.connected-servers .form-group {
+    margin: 0px !important;
+}
+
+.connected-servers .header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0px;
+}
+.connected-servers button {
+    font-size: 12px;
+}
+.connected-servers .header h5 {
+    color: #000;
+    font-size: 18px;
+    padding: 0px !important;
+    margin: 0 !important;
+    text-align: left !important;
+    width: 78%;
+}
+
+.connected-servers table {
+    width: 100%;
+    display: table;
+}
+
+.connected-servers table thead,
+.connected-servers table tbody tr {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.connected-servers table thead {
+    background-color: #cee3f4;
+}
+
+.connected-servers table tbody tr:last-child {
+    border-bottom: 0px;
+}
+
+.connected-servers td {
+    padding: 8px;
+    font-size: 14px;
+    border-right: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.connected-servers th {
+    padding: 8px;
+    font-size: 12px;
+    border-right: 1px solid rgba(0, 0, 0, 0.4);
+}
+
+.connected-servers tbody tr td:last-child,
+.connected-servers thead th:last-child {
+    border-right: 0px;
+}
+
+.connected-servers .servers {
+    overflow-x: auto;
+}
+
+.servers input {
+    border: 0;
+    outline: 0;
+    padding: 8px;
+}
+
+.modal-footer {
+    padding-right: 24px;
+}

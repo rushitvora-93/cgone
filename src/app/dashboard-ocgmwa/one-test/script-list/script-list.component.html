@@ -1,0 +1,45 @@
+<div class="one-test_container" *ngIf="!busy">
+
+  <div class="container_placeholder" *ngIf="allScriptList.length === 0">
+    <app-card>
+      <div class="placeholder_card">
+        <div class="card-text">THERE IS NOTHING IN YOUR ONE TEST,<br>LETS CREATE</div>
+        <button nz-button nzType="primary" nzShape="round" nzSize="large" nzDanger
+          routerLink="/dashboard/onetest/script/create">Create
+          Sprint</button>
+      </div>
+    </app-card>
+  </div>
+  <div class="sprint_container" *ngIf="allScriptList.length > 0">
+    <div class="action-bar">
+      <!-- <button class="btn-edit">Modify Script</button> -->
+      <button class="btn-create" routerLink="/dashboard/onetest/script/create">Create Test Script</button>
+    </div>
+    <div class="search-sprint">
+      <input type="text" placeholder="Find Test Script" [formControl]="searchInput">
+      <div class="btn">
+        <i-feather name="search"></i-feather>
+      </div>
+    </div>
+    <div class="sprint_list">
+      <div class="item header">
+        <div>Script Name</div>
+        <div>Create Date</div>
+        <div>Channel</div>
+        <div>NLU/BOT</div>
+        <div></div>
+      </div>
+      <div class="item" *ngFor="let item of filterResults">
+        <div>{{ item.scriptName}}</div>
+        <div>{{ item.createdOn }}</div>
+        <div>{{ item.channelName}}</div>
+        <div>{{ item.bot? 'BOT': 'NLU'}}</div>
+        <div class="del">
+          <span (click)="delete(item.id)">
+            <i-feather name="trash-2"></i-feather>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

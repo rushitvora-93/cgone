@@ -1,0 +1,28 @@
+@import "../../../../../styles/mixins.scss";
+
+.add-host-dialog {
+    .modal-title {
+        @include h1();
+        font-size: 18px;
+    }
+    .form-row {
+        height: 50px;
+    }
+
+    .check-set {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 30px 0;
+        .item {
+            width: 150px;
+            margin-bottom: 20px;
+        }
+    }
+    .btn-footer {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            margin-left: 20px;
+        }
+    }
+}

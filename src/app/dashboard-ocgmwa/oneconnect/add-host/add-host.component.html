@@ -1,0 +1,59 @@
+<div class="add-host-container">
+  <div class="wrapper">
+    <div class="title">Add New Host</div>
+    <div class="form" [formGroup]="form">
+      <mat-form-field><input matInput placeholder="Hostname" formControlName="hostName" required>
+        <mat-error>Please Enter Host Name</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="IP" formControlName="ip" required>
+        <mat-error>Please Enter Ip</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Username" formControlName="username">
+        <mat-error>Please Enter Username</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" formControlName="password">
+        <mat-error>Please Enter Password</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="OS Type" formControlName="osType" required>
+          <mat-option *ngFor="let os of osTypes" [value]="os">
+            {{os}}
+          </mat-option>
+        </mat-select>
+        <!-- <input matInput placeholder="OS Type" formControlName="osType" required> -->
+        <mat-error>Please Select OS Type</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Version" formControlName="version" required>
+        <mat-error>Please Enter Version</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="LCA Port" formControlName="lcaPort" required>
+        <mat-error>Please Enter LCA Port</mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-select placeholder="Solution Control Center" formControlName="solutionControlCenter" required>
+          <mat-option *ngFor="let s of sc" [value]="s.appName">
+            {{s.appName}}
+          </mat-option>
+        </mat-select>
+        <!-- <input matInput placeholder="Solution Control Center" formControlName="solutionControlCenter" required> -->
+        <mat-error>Please Enter Solution Control Center</mat-error>
+      </mat-form-field>
+      <div style="display: flex;margin-left:-15px">
+        <mat-checkbox formControlName="startUpflag">Startup</mat-checkbox>
+        <mat-checkbox formControlName="state">State</mat-checkbox>
+      </div>
+    </div>
+    <div class="btn-set text-center">
+      <button mat-flat-button class="btn-cancel" [routerLink]="'/dashboard'">Cancel</button>
+      <button mat-flat-button class="btn-save" [disabled]="!form.valid" (click)="addHost()">
+        <mat-spinner *ngIf="isBusy" [diameter]="20"></mat-spinner>
+        <span *ngIf="!isBusy">Save</span>
+      </button>
+    </div>
+  </div>
+</div>

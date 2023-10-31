@@ -1,0 +1,330 @@
+<div class="create-sprint_container">
+  <div class="panel-sprint-name" *ngIf="!validSprintName">
+    <app-card>
+      <div class="form">
+        <h2>Sprint Name</h2>
+        <div class="input" [formGroup]="createSprintForm">
+          <input nz-input formControlName="sprintName" placeholder="Enter a name" />
+        </div>
+        <button nz-button nzType="secondary" nzShape="round" [disabled]="!createSprintForm.value.sprintName"
+          (click)="validSprintName = true">Save</button>
+      </div>
+    </app-card>
+  </div>
+  <div class="panel-sections" *ngIf="validSprintName">
+    <div class="navigation">
+      OneTest > <span>Create Sprint</span>
+    </div>
+
+    <div class="testing-method_section">
+      <h2>Choose a Testing method</h2>
+      <div class="list">
+        <app-card class="cursor" *ngFor="let item of testingMethods">
+          <div class="item method-item" [class.active]="item.id === createSprintForm.value.method"
+            (click)="setMethod(item)">
+            <div class="item-icon">
+              <i-feather class="inactive" name="circle"></i-feather>
+              <i nz-icon class="active" nzType="check-circle" nzTheme="fill"></i>
+            </div>
+            <div class="item-name">
+              <h3>{{ item.name }}</h3>
+            </div>
+            <div class="item-description">{{ item.description }}</div>
+          </div>
+        </app-card>
+      </div>
+    </div>
+
+    <div class="testing-method_section" *ngIf="activeTestMethod?.enable?.scheduler">
+      <h2>Select Date & Time</h2>
+      <div class="list">
+        <div>
+          <app-card class="cursor">
+            <div class="item method-item" [class.active]="scheduleMethod === 1"
+              (click)="scheduleMethod=1;scheduleRepeat=0">
+              <div class="item-icon">
+                <i-feather class="inactive" name="circle"></i-feather>
+                <i nz-icon class="active" nzType="check-circle" nzTheme="fill"></i>
+              </div>
+              <div class="item-name">
+                <h3>Single Scheduled Time</h3>
+              </div>
+              <div class="item-other pick" *ngIf="scheduleMethod === 1">
+                <div>{{ repeatRange[0]?.scheduleDate }}</div>
+                <div (click)="showSingleTimePicker=true">edit</div>
+              </div>
+            </div>
+            <mwa-date [show]="showSingleTimePicker" [allowTime]="true" (change)="setRepeat(false,$event)">
+            </mwa-date>
+          </app-card>
+        </div>
+        <div>
+          <app-card class="cursor">
+            <div class="item method-item" [class.active]="scheduleMethod === 2" (click)="setScheduleMethod(2)">
+              <div class="item-icon">
+                <i-feather class="inactive" name="circle"></i-feather>
+                <i nz-icon class="active" nzType="check-circle" nzTheme="fill"></i>
+              </div>
+              <div class="item-name">
+                <h3>Repeat Testing</h3>
+              </div>
+              <div class="item-other checker" *ngIf="scheduleMethod === 2">
+                <mwa-check class="citem" [check]="scheduleRepeat === 1" (change)="setScheduleRepeat($event, 1)"><span
+                    label>Every
+                    Day</span></mwa-check>
+                <mwa-check class="citem" [check]="scheduleRepeat === 2" (change)="setScheduleRepeat($event, 2)"><span
+                    label>Every
+                    Week</span></mwa-check>
+                <mwa-check class="citem" [check]="scheduleRepeat === 3" (change)="setScheduleRepeat($event, 3)"><span
+                    label>Every
+                    Month</span></mwa-check>
+                <mwa-check class="citem" [check]="scheduleRepeat === 4" (change)="setScheduleRepeat($event, 4)"><span
+                    label>Custom</span></mwa-check>
+              </div>
+            </div>
+            <mwa-date [show]="showMultipleTimePicker" [title]="'Start Date'" [allowTime]="true"
+              (change)="setRepeat(true,$event)">
+            </mwa-date>
+            <mwa-date [show]="showEndTimePicker" [title]="'End Date'" [allowTime]="true"
+              (change)="setRepeatEnds($event)">
+            </mwa-date>
+          </app-card>
+        </div>
+        <div *ngIf="scheduleMethod ==2 && scheduleRepeat>0 && repeatRange.length > 0">
+          <div class="preview-date-range">
+            <div class="date-label" *ngFor="let item of repeatRange; let i=index">
+              <span>{{ item.scheduleDate}}</span>
+              <div class="del" (click)="delDate(i)"><img _ngcontent-myd-c2="" class="def"
+                  src="/assets/icons/del_icon.svg"></div>
+            </div>
+          </div>
+          <div class="add-custom" *ngIf="scheduleRepeat == 4"><button class="mwa-btn primary round sm save"
+              (click)="showCustomTimePicker = true">Add
+              Date</button>
+            <mwa-date [show]="showCustomTimePicker" [title]="'Start Date'" [disableInit]="true" [allowTime]="true"
+              (change)="setRepeatCustom($event)">
+            </mwa-date>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="testing-method_section" *ngIf="createSprintForm.value.method">
+      <h2>Select Channels</h2>
+      <div class="list">
+        <app-card *ngIf="activeTestMethod?.enable?.setEnv">
+          <div class="sub-choice">
+            <div class="item-title">
+              <h3>Select Environment</h3>
+            </div>
+            <div class="item channel-item" *ngFor="let item of environmentList"
+              [class.active]="item.id === createSprintForm.value.environment" (click)="setEnvironment(item.id)">
+              <div class="item-icon">
+                <i-feather class="inactive" name="circle"></i-feather>
+                <i nz-icon class="active" nzType="check-circle" nzTheme="fill"></i>
+              </div>
+              <div class="item-name">{{ item.appName }}</div>
+            </div>
+          </div>
+        </app-card>
+
+        <app-card *ngIf="createSprintForm.value.environment && activeTestMethod?.enable?.channels">
+          <div class="sub-choice">
+            <div class="item-title">
+              <h3>Select Channels</h3>
+            </div>
+            <div class="item channel-item" *ngFor="let item of channelList"
+              [class.active]="item.id === createSprintForm.value.channel" (click)="setChannel(item.id)">
+              <div class="item-icon">
+                <i-feather class="inactive" name="circle"></i-feather>
+                <i nz-icon class="active" nzType="check-circle" nzTheme="fill"></i>
+              </div>
+              <div class="item-name">{{ item.channelName }}</div>
+            </div>
+          </div>
+        </app-card>
+
+        <app-card *ngIf="createSprintForm.value.channel && activeTestMethod?.enable?.channelConfig">
+          <div class="sub-choice">
+            <div class="item-title">
+              <h3>{{ labelForSelectedChannel }}</h3>
+            </div>
+            <div class="inbount-list" [formGroup]="voiceBoundForm">
+              <div class="item inbound-item">
+                <div class="">Number of Calls</div>
+                <div class="input">
+                  <input nz-input formControlName="noOfCalls" placeholder="Enter a value" />
+                </div>
+              </div>
+              <div class="item inbound-item">
+                <div class="">Select Service</div>
+                <div class="input">
+                  <nz-select class="control-wrapper" formControlName="selectService">
+                    <nz-option *ngFor="let option of serviceList" [nzValue]="option.id" [nzLabel]="option.channelName">
+                    </nz-option>
+                  </nz-select>
+                </div>
+              </div>
+              <div class="item inbound-item">
+                <div class="">Duration</div>
+                <div class="input">
+                  <input nz-input formControlName="duration" placeholder="Enter a value" />
+                </div>
+              </div>
+              <div class="item inbound-item">
+                <div class="">Script</div>
+                <div class="input">
+                  <nz-select class="control-wrapper" formControlName="template">
+                    <nz-option *ngFor="let option of templateList" [nzValue]="option.id" [nzLabel]="option.scriptName">
+                    </nz-option>
+                  </nz-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-card>
+
+        <app-card *ngIf="activeTestMethod?.enable?.ivrService">
+          <div class="sub-choice">
+            <div class="item-title">
+              <h3>Select Service</h3>
+            </div>
+            <div class="inbount-list" [formGroup]="ivrForm">
+              <div class="item inbound-item">
+                <div class="">Select Language</div>
+                <div class="input">
+                  <nz-select class="control-wrapper" formControlName="language">
+                    <nz-option *ngFor="let option of langList" [nzValue]="option.id" [nzLabel]="option.name">
+                    </nz-option>
+                  </nz-select>
+                </div>
+              </div>
+              <div class="item inbound-item">
+                <div class="">Select Service</div>
+                <div class="input">
+                  <nz-select class="control-wrapper" formControlName="selectService">
+                    <nz-option *ngFor="let option of serviceList" [nzValue]="option.id" [nzLabel]="option.channelName">
+                    </nz-option>
+                  </nz-select>
+                </div>
+              </div>
+              <div class="item inbound-item">
+                <div class="">Script</div>
+                <div class="input">
+                  <nz-select class="control-wrapper" formControlName="script">
+                    <nz-option *ngFor="let option of templateList" [nzValue]="option.id" [nzLabel]="option.scriptName">
+                    </nz-option>
+                  </nz-select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-card>
+      </div>
+
+    </div>
+    <!-- method-section ends -->
+    <div class="testing-method_section" [formGroup]="selectChannelsForm"
+      *ngIf="createSprintForm.value.channel && activeTestMethod?.enable?.agents">
+      <h2>Select Channels</h2>
+      <app-card>
+        <div class="item-title">
+          <h3>Provide a range of Agent or Select from the available agents</h3>
+        </div>
+        <div class="set-channel_wrapper">
+          <div class="channel-item_column">
+            <div class="channel-item_row">
+              <label>Agent User ID Prefix</label>
+              <input nz-input formControlName="userIdPrefix" placeholder="" />
+            </div>
+            <div class="channel-item_row">
+              <label>Login Session Duration in Sec</label>
+              <input nz-input formControlName="loginSessionDuration" placeholder="" />
+            </div>
+          </div>
+          <div class="channel-item_column">
+            <div class="channel-item_row">
+              <label>Number of Agents</label>
+              <input nz-input formControlName="noOfAgents" placeholder="" />
+            </div>
+            <div class="channel-item_row">
+              <app-mwa-radio [check]="selectChannelsForm.value.agentLogout" (click)="agentLogout()">
+                <div label>
+                  Agent Logout
+                </div>
+              </app-mwa-radio>
+            </div>
+          </div>
+          <div class="channel-item_column">
+            <div class="channel-item_row">
+              <label>Place Prefix</label>
+              <input nz-input formControlName="placePrefix" placeholder="" />
+            </div>
+          </div>
+          <div class="channel-item_column">
+            <div class="channel-item_row">
+              <label>Number of Places</label>
+              <input nz-input formControlName="noOfPlaces" placeholder="" />
+            </div>
+          </div>
+        </div>
+      </app-card>
+    </div>
+    <div class="testing-method_section" [formGroup]="interactionForm"
+      *ngIf="selectChannelsForm.valid && activeTestMethod?.enable?.interaction">
+      <h2>Interaction Handling</h2>
+      <app-card>
+        <div class="item-title">
+          <h3>Provide Interaction Handling details</h3>
+        </div>
+        <div class="set-interation_wrapper">
+          <div class="channel-item_column">
+            <div class="channel-item_row"><label>Accept Time(Sec)</label>
+              <input nz-input formControlName="minAcceptTime" placeholder="Min Time" />
+            </div>
+            <div class="channel-item_row">
+              <input nz-input formControlName="maxAccepTime" placeholder="Max Time" />
+            </div>
+          </div>
+          <div class="channel-item_column">
+            <div class="channel-item_row">
+              <label>Handling Time(Sec)</label>
+              <input nz-input formControlName="minHandlingTime" placeholder="Min Time" />
+            </div>
+            <div class="channel-item_row">
+              <input nz-input formControlName="maxHandlingTime" placeholder="Max Time" />
+            </div>
+          </div>
+          <div class="channel-item_column">
+            <div class="channel-item_row">
+              <label>Reject Time</label>
+              <input nz-input formControlName="minRejectTime" placeholder="Min Time" />
+            </div>
+            <div class="channel-item_row">
+              <input nz-input formControlName="maxRejectTime" placeholder="Max Time" />
+            </div>
+          </div>
+          <div class="channel-item_column">
+            <div class="channel-item_row">
+              <label>Reject %</label>
+              <input nz-input formControlName="rejectPercentage" placeholder="" />
+            </div>
+          </div>
+          <div class="channel-item_column">
+            <div class="channel-item_row">
+              <label>Queue</label>
+              <input nz-input formControlName="queue" placeholder="" />
+            </div>
+          </div>
+        </div>
+      </app-card>
+    </div>
+    <div class="progress-btn-set">
+      <nz-button-group nzSize="large">
+        <button nz-button nzType="primary" nzShape="round" [disabled]="createSprintForm.invalid"
+          (click)="createSprint()" *ngIf="!isCreateBusy">Save Sprint</button>
+        <button nz-button nzShape="round" nzType="primary" nzLoading *ngIf="isCreateBusy"><i nz-icon
+            nzType="poweroff"></i>Loading</button>
+      </nz-button-group>
+    </div>
+  </div>

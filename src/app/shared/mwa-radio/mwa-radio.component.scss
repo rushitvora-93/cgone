@@ -1,0 +1,30 @@
+@import "../../../styles/mixins.scss";
+
+.mwa-radio {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    .item-icon {
+        height: 23px;
+        .active {
+            height: 22px;
+            width: 24px;
+            margin-top: -10px;
+            color: $primary;
+            font-size: 23px;
+        }
+
+        .inactive {
+            height: 22px;
+            width: 24px;
+            margin-top: -7px;
+            color: #5e5e5e;
+            font-size: 22px;
+        }
+    }
+
+    .item-name {
+        @include label();
+        margin-left: 10px;
+    }
+}

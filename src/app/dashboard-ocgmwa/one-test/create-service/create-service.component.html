@@ -1,0 +1,51 @@
+<div class="script-template_container">
+  <div class="wrapper">
+    <div class="navigation">
+      OneTest > Template> <span>Create Test Service</span>
+    </div>
+    <div class="template-body" [formGroup]="testService">
+      <div class="section basic">
+        <app-card>
+          <div class="card-w">
+            <h3>Service Name</h3>
+            <input nz-input formControlName="serviceName" placeholder="" />
+            <div *ngIf="testService.value.serviceName && !beginTemplate">
+              <button nz-button class="mwa-btn secondary mt-4" nzType="primary" nzShape="round"
+                (click)="beginTemplate = true">Next</button>
+            </div>
+          </div>
+        </app-card>
+        <app-card *ngIf="beginTemplate">
+          <div class="card-w">
+            <h3>Select Channels</h3>
+            <div class="channels">
+              <div class="item" *ngFor="let item of channelsList">
+                <app-mwa-radio [check]="item.id === testService.value.channelId" (click)="setChannel(item.id)">
+                  <div label>{{ item.channelName}}</div>
+                </app-mwa-radio>
+              </div>
+            </div>
+          </div>
+        </app-card>
+        <app-card *ngIf="beginTemplate">
+          <div class="card-w">
+            <h3>Phone Number</h3>
+            <div class="phones">
+                <input nz-input type="number" formControlName="toPhoneNo" placeholder="" />
+            </div>
+          </div>
+        </app-card>
+        <div class="btn-save" *ngIf="beginTemplate"></div>
+        <div class="btn-save" *ngIf="beginTemplate"></div>
+        <div class="btn-save" *ngIf="beginTemplate">
+          <nz-button-group nzSize="large">
+            <button nz-button nzType="primary" nzShape="round" [disabled]="testService.invalid"
+              (click)="saveTemplate()" *ngIf="!isCreateBusy">Save Service</button>
+            <button nz-button class="mwa-btn secondary sh" nzShape="round" nzType="primary" nzLoading
+              *ngIf="isCreateBusy"><i nz-icon nzType="poweroff"></i>Loading</button>
+          </nz-button-group>
+        </div>       
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+@import "../../../../styles/mixins.scss";
+
+.promote-report-container {
+    @include container();
+    .promote-report-wrapper {
+        @include wrapper();
+
+        .navigation {
+            background: #5367bd;
+            padding: 20px 30px;
+            color: #ffffff;
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .section_row {
+            background: #fafafacc;
+            padding: 20px 30px;
+            margin: 20px 0;
+            .item-title {
+                margin-bottom: 15px;
+            }
+            h3 {
+                @include h3();
+            }
+
+            .form-con {
+                display: flex;
+                & > div {
+                    margin-right: 30px;
+                }
+            }
+        }
+
+        .card-label {
+            @include h2();
+            margin-bottom: 15px;
+        }
+
+        .sub-label {
+            border-top: 1px solid $primary;
+            padding-top: 10px;
+            color: $primary;
+        }
+
+        .para {
+            color: #aca2a2;
+            font-size: 14px;
+        }
+
+        .ch-box {
+            grid-template-columns: 3fr 3fr 4fr;
+            grid-template-rows: auto auto;
+            grid-gap: 30px;
+            display: none;
+            &.show {
+                display: grid;
+            }
+        }
+
+        .draw-chart {
+            display: grid;
+            grid-template-rows: auto 1fr;
+        }
+        .ch-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-height: 250px;
+            &.pd {
+                padding: 0 30px;
+            }
+        }
+        .section-small {
+            min-height: 300px;
+        }
+
+        .section-wide {
+            min-height: 300px;
+        }
+
+        .section-large {
+            min-height: 300px;
+        }
+
+        .set-pos {
+            grid-area: 2 / 1 / 2 / 3;
+        }
+    }
+}

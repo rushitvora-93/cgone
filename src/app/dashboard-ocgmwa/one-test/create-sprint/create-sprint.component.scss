@@ -1,0 +1,243 @@
+@import "../../../../styles/mixins.scss";
+
+.create-sprint_container {
+    @include container();
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    h2 {
+        @include h2();
+        margin-bottom: 15px;
+    }
+
+    h3 {
+        @include h3();
+    }
+
+    label {
+        @include label();
+    }
+
+    .panel-sprint-name {
+        position: absolute;
+        top: 30%;
+        .input {
+            margin-bottom: 20px;
+        }
+        .form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        button {
+            @include btn-secondary();
+        }
+    }
+
+    .panel-sections {
+        @include wrapper();
+        display: grid;
+        grid-gap: 20px;
+        padding-bottom: 40px;
+
+        .navigation {
+            background: #5367bd;
+            padding: 20px 30px;
+            color: #ffffff;
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .testing-method_section {
+            background: #fafafacc;
+            padding: 20px 30px;
+
+            .control-wrapper {
+                width: 100%;
+            }
+        }
+
+        .testing-method_section .list {
+            display: grid;
+            grid: auto/repeat(auto-fill, 315px);
+            grid-gap: 20px;
+
+            .item {
+                &.active {
+                    .item-icon .active {
+                        display: block;
+                        color: $primary;
+                    }
+
+                    .item-icon .inactive {
+                        display: none;
+                    }
+                }
+
+                &:hover .item-icon .inactive {
+                    color: $primary !important;
+                }
+
+                .item-icon {
+                    grid-area: 1 / 1 / -1 / 1;
+                    font-size: 22px;
+                    .active {
+                        display: none;
+                        margin-top: 3px;
+                    }
+
+                    .inactive {
+                        color: #5e5e5e;
+                    }
+                }
+
+                .item-name {
+                    grid-area: 1 / 2;
+                }
+            }
+
+            .method-item {
+                display: grid;
+                grid-template: 30px auto / 24px auto;
+                grid-gap: 0 20px;
+                cursor: pointer;
+
+                .item-name {
+                    grid-area: 1 / 2;
+                }
+                .item-description {
+                    grid-area: 2 / 2;
+                }
+                .item-other {
+                    grid-area: 2/1/2/-1;
+                }
+
+                .checker {
+                    display: flex;
+                    flex-wrap: wrap;
+                    .citem {
+                        width: 50%;
+                        margin-top: 15px;
+                    }
+                }
+
+                .pick {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    background: #eff3f6;
+                    border: 1px solid #090f2b29;
+                    border-width: 1px 0 1px 0;
+                    margin: 20px -20px 0 -20px;
+                    padding: 5px 20px;
+                    color: $primary;
+                }
+            }
+
+            .preview-date-range {
+                max-height: 185px;
+                border: 1px solid #bac6d0;
+                border-radius: 3px;
+                overflow-y: auto;
+
+                .date-label {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 5px 10px;
+                    background-color: #eff3f6;
+                    border-bottom: 1px solid #bac6d0;
+                    font-size: 13px;
+                    color: $primary;
+
+                    &:nth-child(even) {
+                        background-color: #fff !important;
+                    }
+
+                    &:last-child {
+                        border: 0 !important;
+                    }
+                }
+
+                .del {
+                    cursor: pointer;
+                }
+            }
+
+            .add-custom {
+                display: flex;
+                justify-content: flex-end;
+                padding: 15px 0;
+            }
+
+            .channel-item {
+                display: grid;
+                grid-template: 30px / 24px auto;
+                grid-gap: 20px;
+                align-items: center;
+                cursor: pointer;
+                .item-icon {
+                    .active {
+                        margin-top: 0px;
+                    }
+                }
+            }
+
+            .item-title {
+                margin-bottom: 15px;
+            }
+
+            .sub-choice {
+                min-height: 300px;
+            }
+            .inbount-list {
+                display: grid;
+                grid-gap: 10px;
+                .inbound-item {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    grid-gap: 10px;
+                }
+            }
+        }
+    }
+
+    .set-channel_wrapper {
+        display: grid;
+        grid: auto/repeat(auto-fill, 210px);
+        grid-gap: 20px;
+        margin-top: 15px;
+        .channel-item_column {
+            .channel-item_row {
+                margin-bottom: 20px;
+            }
+        }
+    }
+
+    .set-interation_wrapper {
+        position: relative;
+        display: grid;
+        grid: auto/repeat(auto-fill, 150px);
+        grid-gap: 20px;
+        .channel-item_column {
+            .channel-item_row {
+                margin-bottom: 20px;
+            }
+        }
+    }
+
+    .progress-btn-set {
+        // position: absolute;
+        // bottom: 0;
+        // right: 0;
+        display: flex;
+        flex-direction: row-reverse;
+        button {
+            @include btn-secondary();
+        }
+    }
+}

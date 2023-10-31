@@ -1,0 +1,196 @@
+.auditdetails{
+    padding: 0px;
+}
+.auditdetails h4{
+    font-size: 1rem !important;
+    text-align: center;
+    margin-bottom: 0px;
+    padding: 14px 0px;
+    background: #ef820d3b;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+}
+.auditdetails h6{
+    text-align: center;
+    padding: 10px 0px;
+    background-color: #f8f9fa;
+    margin-bottom: 0px;
+    font-weight: 400;
+    border-bottom: 1px solid #ddd;
+}
+.optkey{
+    color: #212529;
+    font-weight: 500;
+    display: inline-block;
+    padding: 10px 15px;
+    border-right: 1px solid #ddd;
+    width: 50%;
+    font-size: 13px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.optvalue{
+    color: #6c757d;
+    width: 50%;
+    font-size: 13px;
+    padding: 10px 6px;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: absolute;
+}
+
+.h4{
+    font-size: 1.25rem !important;
+}
+
+.closeDialog{
+    float: right;
+    font-size: 25px;
+    margin-right: -39px !important;
+    margin-top: -51px;
+    cursor: pointer;
+    padding: 10px;
+    color: #686d77;
+}
+.modal_heading{
+    background: #686d77;
+    padding: 10px 25px;
+    color: #fff;
+    border-radius: 25px 25px 0 0;
+    font-size: 20px;
+}
+
+.btn-show-only-difference {
+    margin-left: 24px;
+}
+
+.configuration {
+    padding: 0px;
+    width: 100%;
+}
+
+.configuration tr {
+    display: none;
+}
+
+.configuration tr.visible {
+    display: table-row;    
+}
+
+.configuration th {
+    text-align: center;
+    padding: 8px;
+}
+
+.configuration .key {
+    word-break: break-all;
+    width: 25%;
+    font-size: 14px;
+    padding: 12px 16px!important;
+}
+
+.configuration .name {
+    padding: 12px 0px!important;
+    font-size: 18px;
+}
+
+.configuration .name b {
+    display: block;
+    font-size: 14px;
+}
+ 
+.configuration .old, .configuration .new {
+    word-break: break-all;
+    padding: 12px 16px;
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+    color: rgba(0, 0, 0, 0.8);
+    width: 40%;
+}
+
+.configuration .key {
+    padding: 4px;
+    font-size: 14px;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 1);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.configuration .changed .old {
+    color: red!important;
+}
+
+.configuration .changed .new {
+    color: green!important;
+}
+
+.configuration tbody tr:nth-child(odd) .key,
+.configuration tbody tr:nth-child(odd) .old,
+.configuration tbody tr:nth-child(odd) .new {
+    background-color: #e3e3e3;
+}
+
+.configuration tbody tr:nth-child(even) .key {
+    background-color: #c6c2c2;
+}
+
+.configuration tbody tr:nth-child(even) .old,
+.configuration tbody tr:nth-child(even) .new {
+    background-color: #f2f2f2;
+}
+
+.configuration .isTitle {
+	background-color: #c6c2c2!important;
+}
+
+.configuration .isTitle .key {
+	border-right: 0px;
+}
+
+.configuration .isTitle .old,
+.configuration .isTitle .new { 
+	border-right: 0px!important;
+}
+
+.configuration .isTitle td {
+	background-color: transparent!important;
+}
+
+.configuration {
+    border-collapse: collapse;
+}
+
+.configuration,
+.configuration th,
+.configuration td {
+    border: 1px solid #000;
+}
+
+.configuration th:first-child {
+    border: 0px!important;
+}
+
+.configuration .isTitle td {
+    border: 0px solid #000!important;
+    border-top: 2px solid #000!important;
+    border-bottom: 2px solid #000!important;
+}
+
+.configuration tr .key {
+    border-right: 0px solid #000!important;
+}
+
+.toggle-diff {
+    float: right;
+    background-color: transparent;
+    border: 0px!important;
+    outline: none!important;
+}
+
+.toggle-diff i {
+	color: #fff!important;
+}

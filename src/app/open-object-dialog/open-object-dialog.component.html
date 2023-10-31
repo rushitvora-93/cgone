@@ -1,0 +1,33 @@
+<div class="container">
+    <button class="btn btn-primary" style="margin-bottom:5px;">Create New</button>
+    <table class="table table-striped table-bordered">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>State</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let val of data">
+          <td>  {{val.name}}</td>
+          <td>{{val.state}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+
+<!-- <ul class="list-group"  *ngFor="let val of data">
+  <li class="list-group-item">
+    {{val.status}}
+  </li>
+  <li class="list-group-item">
+      {{val.name}}
+    </li>
+    <li class="list-group-item">
+        {{val.tenantDBID}}
+      </li>
+      <li class="list-group-item">
+          {{val.state}}
+        </li>
+</ul> -->

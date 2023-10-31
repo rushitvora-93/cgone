@@ -1,0 +1,63 @@
+@import "../../../../../styles/mixins.scss";
+
+.object-type-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .toggle-changes {
+        background-color: $primary;
+        color: #fff;
+        padding: 7px 12px;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+}
+
+.compare-table {
+    max-height: 80vh;
+    overflow: auto;
+    .head {
+        position: sticky;
+        top: 0;
+        z-index: 9;
+    }
+    .tb-row,
+    .head {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr 1.5fr;
+        grid-gap: 5px;
+        margin-bottom: 3px;
+        .name {
+            background-color: #9bbdd6;
+            padding: 10px;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+
+    .body {
+        .tb-row {
+            .old {
+                color: red;
+            }
+
+            .new {
+                color: green;
+            }
+        }
+        .tb-row > div {
+            padding: 10px 20px;
+            text-align: center;
+            color: $primary;
+            word-break: break-all;
+        }
+        .tb-row:nth-child(odd) > div {
+            background: #eff3f6;
+        }
+
+        .tb-row:nth-child(even) > div {
+            background: #dee9f1;
+        }
+    }
+}

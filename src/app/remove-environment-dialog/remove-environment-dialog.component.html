@@ -1,0 +1,11 @@
+<div class="caninfoicon">
+    <i class="far fa-question-circle"></i>
+</div>
+<h5>Are you sure you want to remove Environment <strong>{{data}}</strong></h5>
+<hr>
+<div class="canbtncon">
+    <button mat-flat-button  class="canbtn mat-accent "  [mat-dialog-close]="cancel" type="button">Cancel</button>
+    <button mat-flat-button class="canbtn primary" (click)="removeEnvironment()">Remove Environment</button>
+</div>
+
+

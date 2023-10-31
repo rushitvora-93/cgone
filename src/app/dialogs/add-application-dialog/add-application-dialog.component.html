@@ -1,0 +1,160 @@
+<div class="dialog-content" *ngIf="appConfig">
+
+  <div class="modal-header">
+    <h4 class="modal-title">Add {{ appConfig?.applicationName }} to {{ data?.targetEnvironmentName}}</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="dismiss()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+  <mat-dialog-content>
+    <div class="modal-body" [formGroup]="formGroup">
+      <mat-form-field>
+        <mat-label>Application Name</mat-label>
+        <input matInput type="text" id="application-name" placeholder="Application Name" name="application-name"
+          formControlName="appName">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Application Template</mat-label>
+        <mat-select formControlName="applicationTemplate">
+          <mat-option *ngFor="let item of allTemplates" [value]="item.name">
+            {{ item.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Version</mat-label>
+        <mat-select formControlName="version">
+          <mat-option *ngFor="let version of appVersions" [value]="version">
+            {{ version }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="form-group with-checkbox">
+        <mwa-check [check]="formGroup.value.startupFlag" (change)="setStartup($event)">
+          <div label>Startup</div>
+        </mwa-check>
+      </div>
+      <div class="row align-items-center">
+        <div class="form-group with-checkbox col-4">
+          <mwa-check [check]="formGroup.value.appDependency" (change)="setAppDependency($event)">
+            <div label>App Dependency</div>
+          </mwa-check>
+        </div>
+        <mat-form-field class="col-4" *ngIf="formGroup.value.appDependency">
+          <mat-label>Dependency Type</mat-label>
+          <mat-select formControlName="dependencyType">
+            <mat-option *ngFor="let version of allPlugins" [value]="version">
+              {{ version }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field class="col-4" *ngIf="formGroup.value.dependencyType">
+          <mat-label>Dependency Version</mat-label>
+          <mat-select formControlName="appDependencyVersion">
+            <mat-option *ngFor="let version of allPluginVersions" [value]="version">
+              {{ version }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field>
+        <mat-label>Symbolic Link</mat-label>
+        <input matInput type="text" placeholder="Symbolic Link" formControlName="symbolicLink">
+      </mat-form-field>
+
+      <div class="form-group with-checkbox">
+        <mwa-check [check]="formGroup.value.state ==='CFGEnabled'?true: false" (change)="setCheck('state', $event)">
+          <div label>State</div>
+        </mwa-check>
+        <!-- <mat-label for="state">State</mat-label>
+          <div class="custom-control overflow-checkbox">
+            <input type="checkbox" id="state" formControlName="state" name="state" class="overflow-control-input">
+            <span class="overflow-control-indicator"></span>
+            <span class="overflow-control-description"></span>
+          </div> -->
+      </div>
+
+      <div class="connected-servers">
+        <div class="header">
+          <h5>Connected Servers</h5>
+          <button type="button" class="mwa-btn primary round sm" (click)="onAddConnection()">Add connection</button>
+        </div>
+
+        <div class="servers" formArrayName="connectedServers">
+          <table *ngIf="formGroup?.value.connectedServers?.length">
+            <thead>
+              <th>Application Name</th>
+              <th>Local Timeout</th>
+              <th>Remote Timeout</th>
+              <th>Mode</th>
+              <th>Connection Protocol</th>
+              <th></th>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let server of formGroup?.controls.connectedServers.controls;let i= index">
+                <tr formGroupName={{i}}>
+                  <td>
+                    <div class="form-group">
+                      <input type="text" placeholder="Application name" formControlName="appServerName">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <input type="text" placeholder="Local timeout" formControlName="timeoutLocal">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <input type="text" placeholder="Remote timeout" formControlName="timeoutRemote">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <input type="text" placeholder="Mode" formControlName="mode">
+                    </div>
+                  </td>
+                  <td>
+                    <div class="form-group">
+                      <input type="text" placeholder="Connection protocol" formControlName="connProtocol">
+                    </div>
+                  </td>
+                  <td>
+                    <div (click)="delConnServer(pos)"><img src="/assets/icons/del_icon.svg"></div>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+          <div *ngIf="!formGroup?.value.connectedServers?.length" class="pb-2">No connected servers added.</div>
+        </div>
+      </div>
+
+      <mat-form-field>
+        <mat-label>Server Info</mat-label>
+        <input matInput type="text" placeholder="Server Info" formControlName="serverInfo">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Port</mat-label>
+        <input matInput type="text" placeholder="Port" formControlName="port">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Working Directory</mat-label>
+        <input matInput type="text" id="working-directory" placeholder="Working Directory" name="working-directory"
+          formControlName="workingDirectory">
+      </mat-form-field>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="modal-footer" align="end">
+    <button type="button" class="btn btn-cancel" [mat-dialog-close]="cancel">Cancel</button>
+    <button type="submit" class="btn btn-save" (click)="addApplication()" [disabled]="!formGroup.valid">Save</button>
+  </mat-dialog-actions>
+
+</div>

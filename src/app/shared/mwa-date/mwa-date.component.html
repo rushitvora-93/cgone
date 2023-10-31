@@ -1,0 +1,64 @@
+<div class="mwa-date-picker">
+  <div class="overlay-wrapper" *ngIf="showPicker" (click)="close(false)"></div>
+  <div class="wrapper" *ngIf="showPicker">
+    <div class="box-name" *ngIf="title">{{ title }}</div>
+    <div class="selector" *ngIf="allowTime">
+      <div class="item" [class.active]="mode===0" (click)="mode=0">
+        <i-feather name="calendar" class="ico"></i-feather>Date
+      </div>
+      <div class="item" [class.active]="mode===1" (click)="mode=1">
+        <i-feather name="clock" class="ico">
+        </i-feather>Time
+      </div>
+    </div>
+    <div class="date-picker" *ngIf="mode === 0">
+      <div class="set-month">
+        <div class="nav" (click)="prevMonth()">
+          <i-feather name="chevron-left" class="ico"></i-feather>
+        </div>
+        <div>{{ monthList[month-1] }}</div>
+        <div class="nav" (click)="nextMonth()">
+          <i-feather name="chevron-right" class="ico"></i-feather>
+        </div>
+      </div>
+      <div class="calendar">
+        <div class="head">Su</div>
+        <div class="head">Mo</div>
+        <div class="head">Tu</div>
+        <div class="head">We</div>
+        <div class="head">Th</div>
+        <div class="head">Fr</div>
+        <div class="head">Sa</div>
+        <div class="c-cell" *ngFor="let item of days" [class.data]="item>0"
+          [class.active]="item+'-'+month+'-'+year === selection">
+          <div *ngIf="item>0" (click)="pickDate(item)">{{item}}</div>
+        </div>
+      </div>
+    </div>
+    <!-- date ends -->
+    <div class="time-picker" *ngIf="mode === 1" [formGroup]="setTimeForm">
+      <div class="time-preview">
+        {{ (setTimeForm.value.timeHr+setTimeForm.value.timeZone).length === 1? 0+''+setTimeForm.value.timeHr: setTimeForm.value.timeHr+setTimeForm.value.timeZone }}:{{ setTimeForm.value.timeMin.length===1? 0+''+setTimeForm.value.timeMin: setTimeForm.value.timeMin }}
+      </div>
+      <div class="set-hr">
+        <div class="label">Hours:</div>
+        <mat-slider class="mwa-slider w-100" [max]="11" [min]="0" [step]="1" formControlName="timeHr"></mat-slider>
+      </div>
+      <div class="set-min">
+        <div class="label">Minutes:</div>
+        <mat-slider class="mwa-slider w-100" [max]="59" [min]="0" [step]="1" formControlName="timeMin"></mat-slider>
+      </div>
+      <div class="set-zone">
+        <div class="label-set">
+          <div class="label">AM</div>
+          <div class="label">PM</div>
+        </div>
+        <mat-slider class="mwa-slider" [max]="12" [min]="0" [step]="12" formControlName="timeZone">
+        </mat-slider>
+      </div>
+      <div class="save">
+        <button mat-flat-button (click)="close()">Save</button>
+      </div>
+    </div>
+  </div>
+</div>

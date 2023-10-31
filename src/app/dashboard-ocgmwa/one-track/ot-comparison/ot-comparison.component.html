@@ -1,0 +1,89 @@
+<div class="ot-compare-container">
+  <div class="wrapper">
+    <div class="navigation">
+      OneTrack > <span>Comparison</span>
+    </div>
+    <div class="main-body">
+      <div class="search-container" [formGroup]="searchForm">
+        <app-card>
+          <div class="form-set">
+            <mat-form-field>
+              <mat-label>From Environment</mat-label>
+              <mat-select formControlName="firstEnv" placeholder="From Environment">
+                <mat-option *ngFor="let val of allEnvList" [value]="val.value">{{ val.label }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>To Environment</mat-label>
+              <mat-select formControlName="secondEnv" placeholder="To Environment">
+                <mat-option *ngFor="let val of compareWithList" [value]="val.value">{{ val.label }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Object Type</mat-label>
+              <mat-select formControlName="objectType" placeholder="Object Type" (change)="loadIgnoreList()">
+                <mat-option *ngFor="let val of objectTypeList" [value]="val.value">{{ val.label }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field [matMenuTriggerFor]="objectTypeMenu">
+              <mat-label>Ignore List</mat-label>
+              <input matInput placeholder="Ignore List" [value]="selectedIgnoreListCount"
+                [disabled]="!searchForm.value.objectType">
+            </mat-form-field>
+
+            <div>
+              <mwa-check (change)="toggleSelectAll()">
+                <div label>Select All</div>
+              </mwa-check>
+            </div>
+          </div>
+        </app-card>
+      </div>
+      <div class="search-btn">
+        <button nz-button nzShape="round" nzType="primary" class="mwa-btn primary sm round"
+          [disabled]="searchForm.invalid" (click)="getResults()">Submit</button>
+      </div>
+      <!-- search-container ends -->
+      <div class="color-legend" *ngIf="allCompResult.length">
+        <div class="item">
+          <div class="circle success"></div>
+          <span>No difference</span>
+        </div>
+        <div class="item">
+          <div class="circle danger"></div> <span>Doesn't Exists</span>
+        </div>
+        <div class="item">
+          <div class="circle norm"></div>
+          <span>Difference in configuration</span>
+        </div>
+      </div>
+      <div class="compare-results" *ngIf="allCompResult.length">
+        <div class="env-selector-list">
+          <div class="item" [class.danger]="item?.dataMap?.differencePresent && !item?.dataMap?.presentInBothEnv"
+            [class.success]="!item?.dataMap?.differencePresent && item?.dataMap?.presentInBothEnv"
+            [class.active]="item.objectName === selectedObj?.objectName" *ngFor="let item of allCompResult"
+            (click)="loadObject(item.objectName, item.objectType)">
+            {{ item.objectName }}</div>
+        </div>
+        <div class="obj-details" *ngIf="selectedObj">
+          <app-compare-env-ot [compare]="selectedObj"></app-compare-env-ot>
+        </div>
+      </div>
+      <div *ngIf="!allCompResult.length && isLoaded">
+        Sorry, No results found!
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-menu #objectTypeMenu="matMenu">
+  <div mat-menu-item [disabled]="true" class="one-track-object-list">
+    <div class="item" *ngFor="let item of ignoreList">
+      <mwa-check [check]="selectedIgnore.includes(item)" (change)="setIgnoreItem(item,$event)">
+        <div label>{{ item }}</div>
+      </mwa-check>
+    </div>
+  </div>
+</mat-menu>

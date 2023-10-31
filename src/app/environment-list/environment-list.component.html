@@ -1,0 +1,23 @@
+<div>
+    <button mat-raised-button color="primary" class="pull-right mb-3" (click)="createNewEnvDialog()">Add New
+        Envrionment</button>
+</div>
+<div class="mt-2">
+    <table *ngIf="environments && environments.length" mat-table [dataSource]="environments"  class="mat-elevation-z8">
+        <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef> Id </th>
+            <td mat-cell *matCellDef="let element"><label class="cursor-pointer w-100" (click)="selectRow(element)"> {{element.id}}</label> </td>
+        </ng-container>
+        <ng-container matColumnDef="envName">
+            <th mat-header-cell *matHeaderCellDef> Environment Name </th>
+            <td mat-cell *matCellDef="let element"><label class="cursor-pointer w-100" (click)="selectRow(element)"> {{element.envName}} </label></td>
+        </ng-container>
+        <ng-container matColumnDef="volume">
+            <th mat-header-cell *matHeaderCellDef> Volume </th>
+            <td mat-cell *matCellDef="let element"> <label class="cursor-pointer w-100" (click)="selectRow(element)">{{element.volume}}</label> </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+</div>

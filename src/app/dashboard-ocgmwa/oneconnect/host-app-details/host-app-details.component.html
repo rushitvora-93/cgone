@@ -1,0 +1,617 @@
+<div class="host-app-details" *ngIf="appConfig">
+    <form #editApplicationForm="ngForm" class="add-application-form" autocomplete="off">
+        <mat-tab-group>
+            <mat-tab label="General">
+                <div class="px-2">
+                    <div class="form-group">
+                        <div class="label-wrapper">
+                            Application Name
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" id="application-name" placeholder="Application Name"
+                                name="application-name" [ngModel]="appConfig?.appName" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-wrapper">
+                            Application ID
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" id="application-id" placeholder="Application ID"
+                                name="application-id" [ngModel]="appConfig?.appId" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-wrapper">
+                            Application Template
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" id="application-template"
+                                placeholder="Application template" name="application-template"
+                                [ngModel]="appConfig?.applicationTemplate" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="dontShowFlag">
+                        <div class="label-wrapper">Type
+                        </div>
+                        <div class="input-wrapper px-3">
+                            <mat-form-field class="placeholder-only" *ngIf="chkFlag > 0">
+                                <mat-label>Type</mat-label>
+                                <mat-select [(ngModel)]="appConfig.type" id="type" name="type" required
+                                    (selectionChange)="getVersions()">
+                                    <mat-option *ngFor="let type of allTypes" [value]="type">
+                                        {{type}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="!dontShowFlag">
+                        <div class="label-wrapper">Type</div>
+                        <div class="input-wrapper">
+                            <div class="input-wrapper">
+                                <input class="form-control" type="text" id="type" placeholder="Type" name="type"
+                                    [ngModel]="appConfig?.type" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="!dontShowFlag">
+                        <div class="label-wrapper">Version</div>
+                        <div class="input-wrapper">
+                            <input class="form-control px-3" type="text" id="version" placeholder="Version"
+                                name="version" [ngModel]="appConfig?.version" [ngModel]="isVirtual" required>
+                            <div class="px-3">
+                                <mat-form-field class="placeholder-only w-100" *ngIf="!isVirtual">
+                                    <mat-label>Version</mat-label>
+                                    <mat-select [ngModel]="appConfig?.version" id="version" name="version" required>
+                                        <mat-option *ngFor="let version of appConfig.versions" [value]="version">
+                                            {{version}}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group" *ngIf="dontShowFlag">
+                        <div class=" label-wrapper">Version
+                        </div>
+                        <div class="input-wrapper  px-3">
+                            <mat-form-field class="placeholder-only" *ngIf="chkFlag > 0">
+                                <mat-label>Version</mat-label>
+                                <mat-select [(ngModel)]="appConfig.version" id="version" name="version" required
+                                    (click)="getAllAppType()">
+                                    <mat-option *ngFor="let version of versions" [value]="version">
+                                        {{version}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-wrapper">State</div>
+                        <div class="input-wrapper  px-3">
+                            <input type="checkbox" name="appState" [(ngModel)]="appState" style="display:none">
+                            <mwa-check [check]="appState" (change)="setAppState($event)">
+                            </mwa-check>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="label-wrapper">App Dependency</div>
+                        <div class="input-wrapper  px-3">
+                            <input type="checkbox" name="appDependency" [(ngModel)]="appConfig.appDependency"
+                                style="display:none">
+                            <mwa-check [check]="appConfig?.appDependency" (change)="setAppDependency($event)">
+                            </mwa-check>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="appConfig?.appDependency">
+                        <div class="label-wrapper">Dependency Type</div>
+                        <div class="input-wrapper  px-3">
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="appConfig.dependencyType" name="dependencyType"
+                                    (selectionChange)="getPlugins($event)">
+                                    <mat-option *ngFor="let version of allPlugins" [value]="version">
+                                        {{ version }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="appConfig?.dependencyType && appConfig?.appDependency">
+                        <div class="label-wrapper">Dependency Version</div>
+                        <div class="input-wrapper  px-3">
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="appConfig.appDependencyVersion" name="appDependencyVersion">
+                                    <mat-option *ngFor="let version of allPluginVersions" [value]="version">
+                                        {{ version }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="sub-section">
+                        <mat-accordion>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <h4 class="title">
+                                            <span>Connected servers</span>
+                                            <img src="/assets/vendor/fontawesome-free/svgs/solid/arrow-right.svg"
+                                                class="dropdown-arrow">
+                                        </h4>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+
+                                <div class="connected-servers">
+                                    <div class="header">
+                                        <button class="mwa-btn primary round" (click)="onAddConnection()">Add
+                                            connection</button>
+                                    </div>
+
+                                    <div class="servers" *ngIf="!isVirtual && appConfig?.connectedServers?.length">
+                                        <table>
+                                            <thead>
+                                                <th>Application Name</th>
+                                                <th>Local Timeout</th>
+                                                <th>Remote Timeout</th>
+                                                <th>Mode</th>
+                                                <th>Connection Protocol</th>
+                                                <th></th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let server of appConfig.connectedServers;let i=index">
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Application name"
+                                                                [(ngModel)]="server.appServerName"
+                                                                [name]="server.appServerId + '-application-name'"
+                                                                required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Local timeout"
+                                                                [(ngModel)]="server.timeoutLocal"
+                                                                [name]="server.appServerId + '-local-timeout'" required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Remote timeout"
+                                                                [(ngModel)]="server.timeoutRemote"
+                                                                [name]="server.appServerId + '-remote-timeout'"
+                                                                required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Mode"
+                                                                [(ngModel)]="server.mode"
+                                                                [name]="server.appServerId + '-mode'" required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Connection protocol"
+                                                                [(ngModel)]="server.connProtocol"
+                                                                [name]="server.appServerId + '-connection-protocol'"
+                                                                required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="cursor" (click)="delConnServer(i)"><img
+                                                                src="/assets/icons/del_icon.svg"></div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="servers" *ngIf="isVirtual">
+                                        <table>
+                                            <thead>
+                                                <th>Application Name</th>
+                                                <th>Local Timeout</th>
+                                                <th>Remote Timeout</th>
+                                                <th>Mode</th>
+                                                <th>Connection Protocol</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let server of appConfig.connectedServers;let i=index;">
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Application name"
+                                                                [(ngModel)]="server.appServerName"
+                                                                [name]="'appServerName' + i" required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Local timeout"
+                                                                [(ngModel)]="server.timeoutLocal"
+                                                                [name]="'timeoutLocal' + i" required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Remote timeout"
+                                                                [(ngModel)]="server.timeoutRemote"
+                                                                [name]="'timeoutRemote' + i" required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Mode"
+                                                                [(ngModel)]="server.mode" [name]="'mode' + i" required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Connection protocol"
+                                                                class="w-75" [(ngModel)]="server.connProtocol"
+                                                                [name]="'connProtocol' + i" required>
+                                                            <i class="fas fa-trash-alt float-right mt-1"
+                                                                (click)="removeConnectedServer(server,i)"></i>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+
+                    <div class="sub-section server-info mrb">
+                        <mat-accordion>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <h4 class="title">
+                                            <span>Server info</span>
+                                            <img src="/assets/vendor/fontawesome-free/svgs/solid/arrow-right.svg"
+                                                class="dropdown-arrow">
+                                        </h4>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+
+
+                                <div class="form-group">
+                                    <div class="label-wrapper">
+                                        <label for="server-info-name">Name</label>
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input class="form-control" type="text" id="server-info-name" placeholder="Name"
+                                            name="server-info-name" [ngModel]="appConfig?.serverInfo?.name" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="label-wrapper">
+                                        <label for="server-info-host">Host</label>
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input class="form-control" type="text" id="server-info-host" placeholder="Host"
+                                            name="server-info-host" [ngModel]="appConfig?.serverInfo?.host" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="label-wrapper">
+                                        <label for="server-info-host-db-id">Host DB ID</label>
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input class="form-control" type="text" id="server-info-host-db-id"
+                                            placeholder="Host DB ID" name="server-info-host-db-id"
+                                            [ngModel]="appConfig?.serverInfo?.hostDBID" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="label-wrapper">
+                                        <label for="server-info-backup-server-db-id">Backup server DB ID</label>
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input class="form-control" type="text" id="server-info-backup-server-db-id"
+                                            placeholder="Backup server DB ID" name="server-info-backup-server-db-id"
+                                            [ngModel]="appConfig?.serverInfo?.backupServerDBID" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="label-wrapper">
+                                        <label for="server-info-port">Port</label>
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input class="form-control" type="text" id="server-info-port" placeholder="Port"
+                                            name="server-info-port" [ngModel]="appConfig?.serverInfo?.port" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="label-wrapper">
+                                        <label for="server-info-timeout">Timeout</label>
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input class="form-control" type="text" id="server-info-timeout"
+                                            placeholder="Timeout" name="server-info-timeout"
+                                            [ngModel]="appConfig?.serverInfo?.timeout" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="label-wrapper">
+                                        <label for="server-info-attempts">Attempts</label>
+                                    </div>
+                                    <div class="input-wrapper">
+                                        <input class="form-control" type="text" id="server-info-attempts"
+                                            placeholder="Attempts" name="server-info-attempts"
+                                            [ngModel]="appConfig?.serverInfo?.attempts" required>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-wrapper">Working directory
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" id="working-directory"
+                                placeholder="Working directory" name="working-directory"
+                                [ngModel]="appConfig?.workingDirectory" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-wrapper">App prototype DB ID
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" id="app-prototype-db-id"
+                                placeholder="App prototype DB ID" name="app-prototype-db-id"
+                                [ngModel]="appConfig?.appPrototypeDBID" required>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="label-wrapper">Command line
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" id="command-line" placeholder="Command line"
+                                name="command-line" [ngModel]="appConfig?.commandLine" required>
+                        </div>
+                    </div>
+
+                    <div class="sub-section mrb">
+                        <mat-accordion>
+                            <mat-expansion-panel>
+                                <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        <h4 class="title">
+                                            <span>Tenant info</span>
+                                            <img src="/assets/vendor/fontawesome-free/svgs/solid/arrow-right.svg"
+                                                class="dropdown-arrow">
+                                        </h4>
+                                    </mat-panel-title>
+                                </mat-expansion-panel-header>
+
+                                <div class="connected-servers">
+                                    <div class="servers">
+                                        <table>
+                                            <thead>
+                                                <th>Tenant Name</th>
+                                                <th>State</th>
+                                                <th>Tenant DB ID</th>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let tenant of appConfig?.tenantInfo">
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Tenant name"
+                                                                [ngModel]="tenant.tenantName"
+                                                                [name]="'tenant-name-' + tenant.tenantName" required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Local timeout"
+                                                                [(ngModel)]="tenant.state"
+                                                                [name]="'tenant-state-' + tenant.tenantName" required>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <input type="text" placeholder="Remote timeout"
+                                                                [(ngModel)]="tenant.tenantDBID"
+                                                                [name]="'tenant-db-id-' + tenant.tenantName" required>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </mat-expansion-panel>
+                        </mat-accordion>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-wrapper">Startup timeout
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" id="startup-timeout" placeholder="Startup timeout"
+                                name="startup-timeout" [ngModel]="appConfig?.startupTimeout" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-wrapper">Shutdown timeout
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" id="shutdown-timeout" placeholder="Shutdown timeout"
+                                name="shutdown-timeout" [ngModel]="appConfig?.shutdownTimeout" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-wrapper">Redundancy type
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" id="redundancy-type" placeholder="Redundancy type"
+                                name="redundancy-type" [ngModel]="appConfig?.redundancyType" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label-wrapper">Port
+                        </div>
+                        <div class="input-wrapper">
+                            <input class="form-control" type="text" id="port" placeholder="Port" name="port"
+                                [ngModel]="appConfig?.port" required>
+                        </div>
+                    </div>
+
+                    <!-- <div class="form-group">
+                    <div class="label-wrapper">
+                        <label for="startup-flag">Startup flag</label>
+                    </div>
+                    <div class="input-wrapper">
+                        <label class="custom-control overflow-checkbox">
+                            <input type="checkbox" id="startup-flag" name="startup-flag" class="overflow-control-input"
+                                [checked]="appConfig?.startupFlag">
+                            <span class="overflow-control-indicator"></span>
+                            <span class="overflow-control-description"></span>
+                        </label>
+                    </div>
+                </div> -->
+
+                    <div class="form-group" *ngIf="dontShowFlag == false">
+                        <div class="label-wrapper">Upgrade version:
+                        </div>
+                        <div class="input-wrapper">
+                            <mat-checkbox (change)="setUpgradeValue($event)" style="margin-left: -10px"
+                                [checked]="isUpgrade || appConfig?.upgradeVersion"></mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            <mat-tab class="options" label="Options" *ngIf="dontShowFlag == false">
+                <div class="search-options">
+                    <input class="form-control" type="text" placeholder="Search by key or value"
+                        (keyup)="onSearchChanged($event)">
+                    <i class="fas fa-plus-circle icon" (click)="onAddSection()"></i>
+                </div>
+                <div *ngFor="let option of appOptions" class="sub-section" [class.visible]="hasOptionChanged(option)">
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <h4 class="title">
+                                        <span>{{ option.name }}</span>
+                                        <div class="buttons">
+                                            <button type="button" class="add" (click)="onAddOption(option)">
+                                                <i class="fas fa-plus-circle"></i>
+                                            </button>
+                                            <button type="button" class="del" (click)="onDeleteOption(option)">
+                                                <img src="/assets/icons/del-white_icon.svg">
+                                            </button>
+                                            <button type="button"><img
+                                                    src="/assets/vendor/fontawesome-free/svgs/solid/arrow-right.svg"
+                                                    class="dropdown-arrow">
+                                            </button>
+                                        </div>
+                                    </h4>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="key-values">
+                                <div *ngFor="let optionItem of option.optionsList" class="key-value"
+                                    [class.visible]="!filterKeyword || optionItem.doesMatchKeyword">
+                                    <div class="key form-group">
+                                        <input class="form-control" type="text" [placeholder]="optionItem.key"
+                                            [name]="'option-' + option.name + '-' + optionItem.key + '-key'"
+                                            [(ngModel)]="optionItem.key" required>
+                                    </div>
+                                    <div class="value form-group">
+                                        <input class="form-control" type="text" [placeholder]="optionItem.value"
+                                            [name]="'option-' + option.name + '-' + optionItem.key + '-value'"
+                                            [(ngModel)]="optionItem.value" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </mat-tab>
+            <mat-tab class="options" label="Options" *ngIf="dontShowFlag == true">
+                <div class="search-options">
+                    <input class="form-control" type="text" placeholder="Search by key or value"
+                        (keyup)="onSearchChanged($event)">
+                    <i class="fas fa-plus-circle icon" (click)="onAddSection()"></i>
+                </div>
+                <div *ngFor="let option of appOptions" class="sub-section" [class.visible]="hasOptionChanged(option)">
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    <h4 class="title">
+                                        <span>{{ option.name }}</span>
+                                        <div class="buttons">
+                                            <button type="button" class="add-button" (click)="onAddOption(option)">
+                                                <i class="fas fa-plus-circle"></i>
+                                            </button>
+                                            <button type="button" class="delete-button"
+                                                (click)="onDeleteOption(option)">
+                                                <img src="/assets/icons/del_icon.svg" class="def">
+                                            </button>
+                                            <button type="button">
+                                                <img src="/assets/vendor/fontawesome-free/svgs/solid/arrow-right.svg"
+                                                    class="dropdown-arrow">
+                                            </button>
+                                        </div>
+                                    </h4>
+                                </mat-panel-title>
+                            </mat-expansion-panel-header>
+
+                            <div class="key-values">
+                                <div *ngFor="let optionItem of option.optionsList" class="key-value"
+                                    [class.visible]="!filterKeyword || optionItem.doesMatchKeyword">
+                                    <div class="key form-group">
+                                        <input class="form-control" type="text" [placeholder]="optionItem.key"
+                                            [name]="'option-' + option.name + '-' + optionItem.key + '-key'"
+                                            [(ngModel)]="optionItem.key" required>
+                                    </div>
+                                    <div class="value form-group">
+                                        <input class="form-control" type="text" [placeholder]="optionItem.value"
+                                            [name]="'option-' + option.name + '-' + optionItem.key + '-value'"
+                                            [(ngModel)]="optionItem.value" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </mat-tab>
+
+        </mat-tab-group>
+        <div class="form-group footer">
+            <button class="mwa-btn primary round sm" (click)="onCancel()">Discard changes</button>
+            <button class="mwa-btn primary round sm save" [disabled]="!appConfig.version"
+                (click)="onSubmit(editApplicationForm.value)">{{isUpgrade?'Upgrade':'Save'}}</button>
+        </div>
+    </form>
+</div>

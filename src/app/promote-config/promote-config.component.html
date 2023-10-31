@@ -1,0 +1,88 @@
+<ul>
+  <li *ngFor="let key of objectKeys(config);let i = index"> 
+    <div class="row">
+        <div class="col-xs-11 col-md-11">
+            <span class="name" *ngIf="isString(config[key]) || isNumber(config[key]) || isBoolean(config[key])">
+                <b>{{getKeyLabel(key)}}: </b> <input type="text" class="form-control" [disabled]="getKeyLabel(key) == 'appId' || getKeyLabel(key) == 'appServerId' || getKeyLabel(key) == 'dbid' || getKeyLabel(key) == 'tenantDBID'" [(ngModel)]="config[key]" name="{{config[key]}}" value="{{config[key]}}">
+               </span>
+                  <span *ngIf="isObject(config[key])">
+                   <mat-accordion class="right-accordian">
+                      <mat-expansion-panel>
+                         <mat-expansion-panel-header>  
+                            <mat-panel-title>
+                              {{getKeyLabel(key)}}
+                            </mat-panel-title>
+                         </mat-expansion-panel-header>
+                         <app-config-item [config]="config[key]">
+                         </app-config-item>
+                      </mat-expansion-panel>
+                   </mat-accordion>
+                </span>
+                <span *ngIf="isArray(config[key])">
+                   <mat-accordion class="right-accordian">
+                      <mat-expansion-panel>
+                         <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              {{getKeyLabel(key)}}
+                            </mat-panel-title>
+                         </mat-expansion-panel-header>
+                         <span *ngIf="getKeyLabel(key) != 'connectedServers';else connectedServerViewAndHostView">
+                            <app-config-item *ngFor="let rec of config[key];" [config]="rec"></app-config-item>
+                          </span>
+                        <ng-template #connectedServerViewAndHostView>
+                          <span *ngIf="getKeyLabel(key) == 'connectedServers'">
+                              <span style="float: right;margin-left: 5px;border:1px dotted white;padding:2px;" (click)="AddNewRow(config[key])">
+                                  <i class="fa fa-plus"  style="cursor: pointer;"></i>
+                                 </span>
+                            <table class="consertble">
+                              <thead>
+                                <tr style="background-color: #d4d3d3;">
+                                   <th *ngFor ="let headings of connectedServer">
+                                    {{headings}}
+                                   </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let heading of config[key]">
+                                  <td *ngFor="let sub of objectKeys(heading)">
+                                    <span>
+                                      <input type="text" class="form-control" [(ngModel)]="heading[sub]" name="{{heading[sub]}}" value="{{heading[sub]}}">
+                                    </span>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </span>
+                          <span *ngIf="getKeyLabel(key) != 'connectedServers'">
+                            <select class="form-control form-control-min" (change)="getHostId($event,config[key])">
+                              <option *ngFor="let rec of config[key]" [value]="rec.hostId">
+                                {{rec.hostName}}
+                              </option>
+                            </select>
+                          </span>
+                        </ng-template>
+                        
+                      </mat-expansion-panel>
+                   </mat-accordion>
+                </span>
+        </div>
+        <div *ngIf="checkIfPromote(i)" class="col-xs-1 col-md-1">
+            <mat-checkbox (change)="getConfigList(config,i,$event)" 
+            name="{{'checkConfig'}}">
+           </mat-checkbox>
+            
+        </div>
+    </div>
+    </li>
+  </ul>
+
+  <div class="row" *ngIf="CancelEventName || SubmitEventName">
+    <div class="col-xs-12 col-md-12  btm-button">
+        <button *ngIf="CancelEventName" type="button" class="btn btn-secondary btn-md" style="margin:0px 5px;padding:5px" (click)="BackStep()" >{{CancelEventName}}</button>
+        <button *ngIf="SubmitEventName" type="button" class="btn btn-primary btn-md" style="margin:0px 5px;padding:5px" (click)="saveValue()">{{SubmitEventName}}</button>
+    </div>
+  </div>
+
+
+ 
+ 

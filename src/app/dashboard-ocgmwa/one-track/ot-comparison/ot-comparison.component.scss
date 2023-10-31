@@ -1,0 +1,110 @@
+@import "../../../../styles/mixins.scss";
+
+.ot-compare-container {
+    @include container();
+    .wrapper {
+        @include wrapper();
+
+        .navigation {
+            background: #5367bd;
+            padding: 20px 30px;
+            color: #ffffff;
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .search-container {
+            background: #fafafa;
+            padding: 20px 25px;
+            margin: 20px 0;
+        }
+
+        .form-set {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr auto;
+            grid-gap: 50px;
+            align-items: center;
+        }
+
+        .search-btn {
+            display: flex;
+            justify-content: flex-end;
+            padding-bottom: 30px;
+        }
+
+        .color-legend {
+            display: flex;
+            padding-bottom: 30px;
+            .item {
+                display: flex;
+                align-items: center;
+                margin-right: 20px;
+                .circle {
+                    width: 15px;
+                    height: 15px;
+                    border-radius: 8px;
+                    &.norm {
+                        background-color: $secondary;
+                    }
+                    &.danger {
+                        background-color: red;
+                    }
+                    &.success {
+                        background-color: green;
+                    }
+                }
+                span {
+                    padding: 0 10px;
+                    color: $primary;
+                }
+            }
+        }
+
+        .compare-results {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            grid-gap: 30px;
+
+            .env-selector-list {
+                .item {
+                    margin-bottom: 12px;
+                    border-top-right-radius: 14px;
+                    border-bottom-right-radius: 14px;
+                    color: $primary;
+                    background: #fff;
+                    border-left: 4px solid $secondary;
+                    font-size: 13px;
+                    padding: 10px;
+                    cursor: pointer;
+
+                    &.active {
+                        background-color: $secondary;
+                        color: #fff;
+                    }
+                    &.success {
+                        border-left: 4px solid green;
+                    }
+
+                    &.danger {
+                        border-left: 4px solid red;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.one-track-object-list {
+    height: 300px;
+    padding: 0;
+    overflow: auto;
+
+    .item {
+        padding: 0 20px;
+        cursor: pointer;
+        &:hover {
+            background-color: #f3f3f3;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+<form #addConnectionForm="ngForm" (ngSubmit)="onSave(addConnectionForm.value)" class="add-application-form"
+  autocomplete="off">
+  <div class="dialog-content">
+    <div class="modal-header">
+      <h4 class="modal-title">Add connected servers to {{ data.appName }}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+
+    <mat-dialog-content>
+      <div class="modal-body">
+        <div *ngFor="let server of availableServers" class="form-group with-checkbox">
+          <span>{{ server.appName }}</span>
+          <label class="custom-control overflow-checkbox">
+            <input type="checkbox" id="is-checked" [name]="server.appId" [(ngModel)]="server.isChecked"
+              class="overflow-control-input" [checked]="server.isChecked">
+            <span class="overflow-control-indicator"></span>
+            <span class="overflow-control-description"></span>
+          </label>
+        </div>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions class="modal-footer" align="end">
+      <button type="button" class="btn-cancel" [mat-dialog-close]="cancel">Cancel</button>
+      <button type="submit" class="btn-save" [disabled]="!addConnectionForm.form.valid">Save</button>
+    </mat-dialog-actions>
+  </div>
+</form>

@@ -1,0 +1,153 @@
+@import "../../../../styles/mixins.scss";
+.app-clone-container {
+    @include container();
+    .wrapper {
+        .bg-wrapper {
+            box-shadow: 0px 5px 15px #e4ebf2;
+            border-radius: 17px;
+            background: #fff;
+            padding: 0 10px;
+            overflow: hidden;
+            width: 670px;
+            .title {
+                @include h1();
+                font-size: 20px;
+                border-bottom: 1px solid $primary;
+                padding-bottom: 5px;
+                margin: 20px 20px 10px;
+            }
+            .sub-title {
+                @include h2();
+            }
+
+            .search {
+                background-color: #cddfed;
+                padding: 10px 20px;
+                .search-bar {
+                    height: 45px;
+                    width: 100%;
+                }
+            }
+
+            .search-res {
+                background-color: #eff3f6;
+                max-height: 500px;
+                overflow: auto;
+                > .item {
+                    border-bottom: 1px solid #b0bac3;
+                    width: 280px;
+                    overflow: hidden;
+                    padding: 5px 0;
+                }
+            }
+
+            .map-hosts {
+                .app-name {
+                    margin-top: 30px;
+                    text-align: center;
+                    font-weight: bold;
+                }
+
+                .map-row {
+                    padding: 20px;
+                    color: $primary;
+                    text-align: center;
+                    &:nth-child(odd) {
+                        background-color: #cddfed;
+                    }
+                    &:nth-child(even) {
+                        background-color: #eff3f6;
+                    }
+                }
+            }
+        }
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 100%;
+            min-height: 300px;
+        }
+
+        .select-sites {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 40px;
+        }
+
+        .btn-set {
+            display: flex;
+            flex-direction: row-reverse;
+            padding-top: 40px;
+
+            button {
+                @include btn-primary();
+                border: 0;
+                margin: 0 10px;
+                outline: 0;
+            }
+            .btn-primary {
+                background: $primary;
+            }
+
+            .btn-secondary {
+                background: #8a99c1;
+            }
+        }
+    }
+}
+
+.app-clone-success-container {
+    @include container();
+    align-items: center;
+    .clone-success {
+        position: relative;
+        width: 470px;
+        height: 280px;
+        background: #00bdc8;
+        box-shadow: 0px 5px 15px #d6e1ea;
+        border-radius: 17px;
+        overflow: hidden;
+
+        .label {
+            position: absolute;
+            bottom: 40px;
+            width: 100%;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: $primary;
+        }
+
+        .arc {
+            position: absolute;
+            top: 100px;
+            left: -50%;
+            width: 200%;
+            height: 600px;
+            background: #fff;
+            border-radius: 100%;
+
+            .check {
+                position: absolute;
+                top: -41px;
+                left: 50%;
+                margin-left: -41px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 2px solid $primary;
+                width: 82px;
+                height: 82px;
+                border-radius: 41px;
+                background: #fff;
+                color: $primary;
+
+                .icon {
+                    height: 40px;
+                    width: 50px;
+                }
+            }
+        }
+    }
+}

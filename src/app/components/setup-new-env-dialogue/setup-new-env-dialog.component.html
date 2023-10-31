@@ -1,0 +1,40 @@
+<h5>Add New Environment</h5>
+<form #createEnvForm="ngForm" (ngSubmit)="saveEnv(createEnvForm)" class="host-form" autocomplete="off">
+       <div class="form-group">
+              <label for="channel">User</label>
+
+              <input id="user" placeholder="User" class="form-control" [(ngModel)]="env.user" name="user" required>
+       </div>
+       <div class="form-group">
+              <label for="password">Password</label>
+
+              <input type="password" id="password" placeholder="Password" class="form-control"
+                     [(ngModel)]="env.password" name="password" required>
+
+       </div>
+
+       <div class="form-group">
+              <label for="host">Host</label>
+              <input placeholder="Host" class="form-control" [(ngModel)]="env.host" name="host" required>
+       </div>
+       <div class="form-group" for="port">
+              <label for="envName">Port</label>
+              <input placeholder="Port" class="form-control" [(ngModel)]="env.port" name="port" pattern="\d+"
+                     #port="ngModel" required>
+              <div class="error text-center" *ngIf="port.errors && port.errors['pattern']">Invalid Port</div>
+       </div>
+       <div class="form-group">
+              <label for="clientName">Client Name</label>
+              <input placeholder="Client Name" class="form-control" [(ngModel)]="env.clientName" name="clientName" required>
+       </div>
+       <div class="form-group">
+              <label for="appName">App Name</label>
+              <input placeholder="App Name" class="form-control" [(ngModel)]="env.appName" name="appName" required>
+       </div>
+       <div class="form-group text-right">
+              <button type="submit" mat-flat-button color="accent" [disabled]="!createEnvForm.valid">Save</button>
+              <button type="button" mat-flat-button class="mrnone" (click)="cancelIgnoreList()">Cancel</button>
+       </div>
+
+
+</form>

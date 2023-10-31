@@ -1,0 +1,18 @@
+@import "../../../../../../styles/mixins.scss";
+
+.add-conn-serv-dialog {
+    .modal-title {
+        @include h1();
+        font-size: 18px;
+    }
+    .f-row {
+        height: 50px;
+    }
+    .btn-footer {
+        display: flex;
+        justify-content: flex-end;
+        button {
+            margin-left: 20px;
+        }
+    }
+}

@@ -1,0 +1,11 @@
+<div class="mwa-radio" (click)="update()">
+  <div class="item-icon">
+    <div class="inactive" *ngIf="!check">
+      <i-feather name="circle"></i-feather>
+    </div>
+    <div class="active" *ngIf="check"><i nz-icon class="active" nzType="check-circle" nzTheme="fill"></i></div>
+  </div>
+  <div class="item-name">
+    <ng-content select="[label]"></ng-content>
+  </div>
+</div>

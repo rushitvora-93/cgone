@@ -1,0 +1,9 @@
+.common-card {
+    background-color: #fff;
+    box-shadow: 0px 3px 3px #e1e1e1;
+    border-radius: 28px;
+    height: 100%;
+    &.fit {
+        height: 100%;
+    }
+}

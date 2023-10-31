@@ -1,0 +1,64 @@
+<div class="top-nav" [class.sidecollapse]="leftmenu">
+	<div class="navbar-header">
+		<img
+			src="../../assets/img/logo.png"
+			class="biglogo"
+			alt="Automator Logo"
+		/>
+		<img
+			src="../../assets/img/logo.png"
+			class="smalllogo"
+			alt="Automator Logo"
+		/>
+	</div>
+	
+	<div class="top-nav-menu">
+		<ul class="top-right-nav">
+			<li class="nav-item dropdown no-arrow toppro-box" ngbDropdown>
+				<a
+					class="nav-link dropdown-toggle"
+					href="#"
+					id="userDropdown"
+					role="button"
+					data-toggle="dropdown"
+					aria-haspopup="true"
+					aria-expanded="false"
+				>
+					<img
+						class="img-profile rounded-circle"
+						src="assets/img/12.jpg"
+						alt=""
+					/>
+					<div class="top-pro">
+						<h6 class="ml-2 d-none d-lg-block small top-name">User Name</h6>
+						<h6 class="ml-2 d-none d-lg-block  m-block small btm-pro">
+							{{authDetail.Username ? authDetail.Username : 'Admin'}}	
+						</h6>
+					</div>
+				</a>
+				<div
+					class="user-popup"
+					ngbDropdownMenu
+					aria-labelledby="dropdownBasic1"
+				>
+					<p (click)="logOutApplication()">
+						<i class="fas fa-sign-out-alt"></i>
+						Log Out
+					</p>
+				</div>
+			</li>
+		</ul>
+		
+		<ul class="navbar-nav ml-auto">
+		
+
+			<div class="topbar-divider d-none d-sm-block"></div>
+
+			
+		</ul>
+	</div>
+	
+</div>
+
+
+	

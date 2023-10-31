@@ -1,0 +1,49 @@
+<div id="outer">
+   <div id="inner">
+      <div class="loading_div"></div>
+   </div>
+</div>
+<div class="app-box">
+   <div class="app-box-heading"
+      #hostHeader (click)="makeMeMain($event)"> 
+      <h3>{{host.hostName}}</h3>
+      <div class="dropdown">
+         <button
+            class="dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton" 
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            (click)="makeMeMain($event)"> 
+            <img class="img-fluid" src="./assets/images/setting-icon.png" alt=""/>  
+         </button>    
+         <div
+            class="dropdown-menu"
+            aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="#">Ip: {{host.ip}}</a>
+            <a class="dropdown-item" href="#">OS Type: {{host.osType}}</a>
+         </div>
+      </div>
+   </div>
+   <div
+      class="app-box-content"
+      (drop)="drop($event, host);"
+      (dragstart)="dragStart($event, host);"
+      (dragend)="dragEnd($event, host);"
+      (dragenter)="dragEnter($event, host);"
+      (dragover)="dragOver($event, host);"
+      (dragleave)="dragleave($event, host);">
+      <ul class="list-unstyled">
+         <li
+            class="color-default"
+            *ngFor="let hostApp of hostApps"
+            (dblclick)="showAppConfig(hostApp.appId)"
+            draggable="true"
+            (dragstart)="drag($event, hostApp, host)"
+            style="cursor: move">
+            {{hostApp.appName}}
+         </li>
+      </ul>
+   </div>
+</div>

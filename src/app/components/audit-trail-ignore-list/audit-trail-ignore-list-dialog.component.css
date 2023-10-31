@@ -1,0 +1,30 @@
+h5{
+    text-align: center;
+}
+
+button.mat-accent{
+    background-color: #343a40;
+}
+
+
+form{
+    height: 90%;
+}
+
+mat-list{
+    height: 95%;
+    overflow: auto;
+}
+
+form button{
+    float: right;
+    margin-right: 10px;
+}
+
+.mat-checkbox-layout .mat-checkbox-background {
+    width: 17px;
+    height: 17px;
+    border-radius: 50px;
+    border: 3px solid #676767;
+    background: transparent !important;
+}

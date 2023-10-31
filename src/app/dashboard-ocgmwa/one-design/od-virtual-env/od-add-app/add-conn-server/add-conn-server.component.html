@@ -1,0 +1,46 @@
+<div class="add-conn-serv-dialog">
+  <div class="mdr">
+    <div class="modal-title">Add Connected Servers</div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeDialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body form" [formGroup]="addServerForm">
+    <div class="f-row">
+      <mat-form-field>
+        <mat-label>Timeout Local</mat-label>
+        <input matInput placeholder="Timeout Local" formControlName="timeoutLocal">
+      </mat-form-field>
+    </div>
+
+    <div class="f-row">
+      <mat-form-field>
+        <mat-label>Timeout Remote</mat-label>
+        <input matInput placeholder="Timeout Remote" formControlName="timeoutRemote">
+      </mat-form-field>
+    </div>
+    <div class="f-row">
+      <mat-form-field>
+        <mat-label>Mode</mat-label>
+        <input matInput placeholder="Mode" formControlName="mode">
+      </mat-form-field>
+    </div>
+    <div class="f-row">
+      <mat-form-field>
+        <mat-label>Connection Protocol</mat-label>
+        <input matInput placeholder="Connection Protocol" formControlName="connProtocol">
+      </mat-form-field>
+    </div>
+    <div class="f-row">
+      <mat-form-field>
+        <mat-label>Application Server Name</mat-label>
+        <input matInput placeholder="Application Server Name" formControlName="appServerName">
+      </mat-form-field>
+    </div>
+
+  </div>
+  <div class="btn-footer pt-4" mat-dialog-actions>
+    <button class="btn-cancel" (click)="closeDialog()">Cancel</button>
+    <button class="btn-save" (click)="save()" [disabled]="!addServerForm.valid">Save</button>
+  </div>
+</div>

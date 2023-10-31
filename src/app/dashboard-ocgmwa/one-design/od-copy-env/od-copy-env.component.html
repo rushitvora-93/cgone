@@ -1,0 +1,21 @@
+<div class="one-design-container">
+  <div class="wrapper">
+    <div class="navigation">
+      OneDesign > <span>Copy Environments</span>
+    </div>
+    <div class="header">
+      <button nz-button class="mwa-btn secondary" nzShape="round" (click)="copyEnv()">Copy Environment</button>
+    </div>
+    <div class="main-body">
+      <div class="table-header">
+        <div>ID</div>
+        <div>Environment Name</div>
+      </div>
+      <div class="table-body">
+        <div class="item" *ngFor="let item of environments" [routerLink]="'/dashboard/onedesign/env/copy/'+item.id">
+          <div>{{item.id }}</div>
+          <div>{{ item.newEnvName }}</div>
+        </div>
+      </div>
+    </div>
+  </div>

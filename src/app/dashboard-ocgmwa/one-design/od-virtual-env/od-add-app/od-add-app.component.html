@@ -1,0 +1,104 @@
+<div class="add-host-dialog">
+  <div class="mdr">
+    <div class="modal-title">Add New Applicationt</div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeDialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body form" [formGroup]="addAppForm">
+    <div class="f-row">
+      <mat-form-field>
+        <mat-label>App Name</mat-label>
+        <input matInput placeholder="App Name" formControlName="appName">
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <div class="f-row">
+          <mat-form-field>
+            <mat-label>Type</mat-label>
+            <mat-select formControlName="type" placeholder="No Application" (selectionChange)="loadVersion()">
+              <mat-option *ngFor="let item of types" [value]="item">{{ item }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="f-row">
+          <mat-form-field>
+            <mat-label>Version</mat-label>
+            <mat-select formControlName="version" [disabled]="!addAppForm.value.type">
+              <mat-option *ngFor="let item of versions" [value]="item">{{ item }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <div class="py-2 mt-2">
+      <mwa-check (change)="setState($event)">
+        <div label>State</div>
+      </mwa-check>
+    </div>
+    <div class="row align-items-center">
+      <div class="form-group with-checkbox col-4">
+        <mwa-check [check]="addAppForm.value.appDependency" (change)="setAppDependency($event)">
+          <div label>App Dependency</div>
+        </mwa-check>
+      </div>
+      <mat-form-field class="col-4" *ngIf="addAppForm.value.appDependency">
+        <mat-label>Dependency Type</mat-label>
+        <mat-select formControlName="dependencyType">
+          <mat-option *ngFor="let version of allPlugins" [value]="version">
+            {{ version }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="col-4" *ngIf="addAppForm.value.dependencyType && addAppForm.value.appDependency">
+        <mat-label>Dependency Version</mat-label>
+        <mat-select formControlName="appDependencyVersion">
+          <mat-option *ngFor="let version of allPluginVersions" [value]="version">
+            {{ version }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="f-row">
+      <mat-form-field>
+        <mat-label>App Working Directory</mat-label>
+        <input matInput placeholder="App Working Directory" formControlName="workingDirectory">
+      </mat-form-field>
+    </div>
+    <div class="conn-serv-list">
+      <button nz-button nzShape="round" class="mwa-btn sm secondary" (click)="addConnServDialog()">Add connected
+        servers</button>
+      <div class="conn-serv-table" *ngIf="connectedServers.length">
+        <div class="head cell">Application Name</div>
+        <div class="head cell">Local Timeout</div>
+        <div class="head cell">Remote Timeout</div>
+        <div class="head cell">Mode</div>
+        <div class="head cell">Connection Protocol</div>
+        <div class="head cell"></div>
+        <ng-container *ngFor="let item of connectedServers;let i = index">
+          <div class="cell data">{{ item.appServerName}}</div>
+          <div class="cell data">{{item.timeoutLocal}}</div>
+          <div class="cell data">{{item.timeoutRemote}}</div>
+          <div class="cell data">{{item.mode}}</div>
+          <div class="cell data">{{item.connProtocol}}</div>
+          <div class="cell data">
+            <img src="/assets/icons/del_icon.svg" class="icon" (click)="delConn(i)">
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="f-row">
+      <mat-form-field>
+        <mat-label>App Port</mat-label>
+        <input matInput placeholder="App Port" formControlName="port">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-footer pt-4" mat-dialog-actions>
+    <button class="btn-cancel" (click)="closeDialog()">Cancel</button>
+    <button class="btn-save" (click)="saveNewApp()" [disabled]="!addAppForm.valid">Save</button>
+  </div>
+</div>

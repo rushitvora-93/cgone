@@ -1,0 +1,21 @@
+li{
+    list-style-type: none;
+    padding:3px;
+}
+
+.btm-button{
+    border-radius: 2px;
+    margin-top:20px;
+    padding:10px;
+    text-align: right;
+}
+.btm-button .btn{
+    border-radius: 1px;
+    margin-left:15px;
+}
+
+.btn-md{
+    min-width: 88px;
+    line-height: 36px;
+    padding: 0 16px;
+}

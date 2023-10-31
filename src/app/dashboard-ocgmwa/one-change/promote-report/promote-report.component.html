@@ -1,0 +1,92 @@
+<div class="promote-report-container">
+  <div class="promote-report-wrapper">
+    <div class="navigation">
+      OneChange > <span>Promote Report</span>
+    </div>
+
+    <div class="section_row">
+      <div class="row align-items-end">
+        <div class="col-10">
+          <app-card>
+            <div class="sub-choice">
+              <div class="item-title">
+                <h3>Change Duration</h3>
+              </div>
+              <div class="form-con" [formGroup]="searchForm">
+                <div>
+                  <mat-form-field>
+                    <mat-label>From Date</mat-label>
+                    <input matInput formControlName="fromDate" (click)="fromDateTrigger = true">
+                  </mat-form-field>
+                  <mwa-date [show]="fromDateTrigger" [allowTime]="true" [date]="searchForm.value.fromDate"
+                    (change)="setDate('fromDate',$event)">
+                  </mwa-date>
+                </div>
+                <div>
+                  <mat-form-field>
+                    <mat-label>From Date</mat-label>
+                    <input matInput formControlName="toDate" (click)="toDateTrigger = true">
+                  </mat-form-field>
+                  <mwa-date [show]="toDateTrigger" [allowTime]="true" [date]="searchForm.value.toDate"
+                    (change)="setDate('toDate',$event)">
+                  </mwa-date>
+                </div>
+              </div>
+            </div>
+          </app-card>
+        </div>
+        <div class="col-2">
+          <div>
+            <button nz-button class="mwa-btn secondary mt-4" nzType="primary" nzShape="round"
+              (click)="generateReport()">Generate</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- section_row ends -->
+
+    <div class="ch-box" [class.show]="hasData">
+      <app-card>
+        <div class="draw-chart section-small">
+          <div class="card-label">Object Type</div>
+          <div class="ch-wrap">
+            <canvas id="chart-types"></canvas>
+          </div>
+        </div>
+      </app-card>
+      <app-card>
+        <div class="draw-chart section-small">
+          <div class="card-label">Operations</div>
+          <div class="ch-wrap">
+            <canvas id="chart-operations"></canvas>
+          </div>
+        </div>
+      </app-card>
+      <app-card>
+        <div class="draw-chart section-wide">
+          <div class="card-label">Promoted</div>
+          <div class="ch-wrap">
+            <canvas id="chart-promoted"></canvas>
+          </div>
+        </div>
+      </app-card>
+      <app-card class="set-pos">
+        <div class="draw-chart section-large">
+          <div class="card-label">Change by time</div>
+          <div>
+            <canvas id="chart-changes"></canvas>
+          </div>
+        </div>
+      </app-card>
+      <app-card [fit]="true">
+        <div class="draw-chart section-wide">
+          <div class="card-label">Users</div>
+          <div class="ch-wrap">
+            <canvas id="chart-users"></canvas>
+          </div>
+        </div>
+      </app-card>
+    </div>
+    <div class="py-5 text-center" *ngIf="!hasData">Sorry, No data found. Try choosing a different duration</div>
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="22.407" height="22.667" viewBox="0 0 22.407 22.667">
+  <g id="Group_138" data-name="Group 138" transform="translate(-1.167 0.309)">
+    <g id="Group_137" data-name="Group 137" transform="translate(1.475 0)">
+      <path id="Path_288" data-name="Path 288" d="M6.71,9.209a1.958,1.958,0,0,1,1.645.557l1.088,1.088L10.471,9.83,8.985,8.348a.593.593,0,0,1,.838-.838L11.309,9l1.029-1.024L11.246,6.88a1.962,1.962,0,0,1-.557-1.645A4.626,4.626,0,0,0,5.419.051a.276.276,0,0,0-.154.467l1.4,1.4a1.7,1.7,0,0,1,0,2.406L5.8,5.185a1.7,1.7,0,0,1-2.406,0l-1.4-1.4a.276.276,0,0,0-.467.154A4.626,4.626,0,0,0,6.71,9.209Z" transform="translate(-1.475 0)" fill="none" stroke="#1a3098" stroke-miterlimit="10" stroke-width="0.6"/>
+      <path id="Path_289" data-name="Path 289" d="M248.189,243.918l-1.029,1.024,6.108,6.108a.593.593,0,1,1-.838.838l-6.108-6.108-1.029,1.024,6.294,6.294a2.044,2.044,0,0,0,2.891-2.891Z" transform="translate(-234.245 -232.865)" fill="none" stroke="#1a3098" stroke-miterlimit="10" stroke-width="0.6"/>
+      <path id="Path_290" data-name="Path 290" d="M19.086,11.1H21.8l2.714-5.424L23.16,4.318l-5.429,2.71V9.742L10.354,17.1,9.026,15.773,3.679,21.12a2.852,2.852,0,1,0,4.033,4.033l5.347-5.347L11.7,18.451Z" transform="translate(-2.781 -4.122)" fill="none" stroke="#1a3098" stroke-miterlimit="10" stroke-width="0.6"/>
+    </g>
+  </g>
+</svg>

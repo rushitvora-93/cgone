@@ -1,0 +1,64 @@
+<div class="ot-perm-manager-wrapper">
+  <button type="button" class="btn-close" aria-label="Close" (click)="dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <div class="md-header">
+    Permission Details
+  </div>
+
+  <div class="scroll-view" [ngStyle]="{'width': permissionRoles.length*200+200+'px' }">
+    <div class="grid-header">
+      <div class="block"></div>
+      <div class="block" *ngFor="let role of permissionRoles">
+        <span class="label">
+          Name
+          <span *ngIf="role">
+            {{ role.oldRole && role.oldRole.permissionObjectName?role.oldRole.permissionObjectName:role.newRole.permissionObjectName }}
+          </span>
+        </span>
+        <span class="label">
+          Type
+          <span *ngIf="role">
+            {{ role.oldRole && role.oldRole.permissionObjectType?role.oldRole.permissionObjectType:role.newRole.permissionObjectType }}
+          </span>
+        </span>
+      </div>
+    </div>
+    <div class="grid-body">
+      <div class="block" *ngIf="permissionRoles && permissionRoles[0]">
+        <div *ngIf="permissionRoles[0].oldRole" class="fake-role">
+          <div class="row-bg"></div>
+          <div class="row-bg" *ngFor="let permission of permissionRoles[0].oldRole.newPermissions">
+            {{ permission.key }}
+          </div>
+        </div>
+        <div *ngIf="!permissionRoles[0].oldRole && permissionRoles[0].newRole" class="fake-role">
+          <div class="row-bg"></div>
+          <div class="row-bg" *ngFor="let permission of permissionRoles[0].newRole.newPermissions">
+            <span>{{ permission.key }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="block split" *ngFor="let role of permissionRoles">
+        <div>
+          <div *ngIf="role.oldRole" class="role old">
+            <div class="row-bg">Old</div>
+            <div class="row-bg" *ngFor="let permission of role.oldRole.newPermissions"
+              [class.changed]="permission.isChanged">
+              <mwa-check [check]="permission.value" [disable]="true" [color]="'secondary'"></mwa-check>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div *ngIf="role.newRole" class="role new">
+            <div class="row-bg">New</div>
+            <div class="row-bg" *ngFor="let permission of role.newRole.newPermissions"
+              [class.changed]="permission.isChanged">
+              <mwa-check [check]="permission.value" [disable]="true" [color]="'secondary'"></mwa-check>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

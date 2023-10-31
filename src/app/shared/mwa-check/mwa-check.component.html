@@ -1,0 +1,10 @@
+<div class="mwa-check" [class.disable]="disable" (click)="update()">
+  <div [class.active]="check" [ngClass]="'item-icon '+color+ ' '+shape">
+    <div class="active state">
+      <i-feather name="check" class="ico"></i-feather>
+    </div>
+  </div>
+  <div class="item-name">
+    <ng-content select="[label]"></ng-content>
+  </div>
+</div>

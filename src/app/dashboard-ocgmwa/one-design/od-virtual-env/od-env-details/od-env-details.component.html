@@ -1,0 +1,69 @@
+<div class="od-env-container">
+  <div class="wrapper">
+    <div class="navigation">
+      OneDesign > Virtual Environments > <span>{{ envName }}</span>
+    </div>
+    <div class="action-btns">
+      <button nz-button nzType="primary" nzShape="round" (click)="redeployApps()">Install Applications</button>
+      <button nz-button nzType="primary" nzShape="round" (click)="deployConfigServer()">Install Config Server</button>
+      <button nz-button nzType="primary" nzShape="round" (click)="deployEnv()">Install Environment</button>
+      <button nz-button nzType="primary" nzShape="round" (click)="openNewHostDialog()">Add New Host</button>
+    </div>
+    <div class="main-body">
+      <div id="od-vr-app-list" class="list-wrapper">
+        <div class="item place-it-here" *ngFor="let env of envList" (click)="showEnv(env)"
+          [class.active]="activeEnv === env.id" [id]="'host-'+env.id">
+          <div>{{ env.hostName }}</div>
+          <div class="actions">
+            <div class="icon" (click)="addApp(env.id)">
+              <i-feather name="plus" class="img"></i-feather>
+            </div>
+            <div class="icon" (click)="editHost(env)">
+              <i-feather name="edit" class="img"></i-feather>
+            </div>
+            <div class="icon" (click)="delHost(env)">
+              <img src="/assets/icons/del_icon.svg" class="def">
+              <img src="/assets/icons/del-white_icon.svg" class="hover">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="focus-panel">
+        <div class="item" *ngFor="let item of selectedEnvHost?.appDetails" [ngClass]="{'red':item.created === false}">
+          <mwa-check class="multi-dragger" (change)="selectDrag(item?.id, $event)" [shape]="'round'">
+          </mwa-check>
+          <mat-accordion>
+            <mat-expansion-panel [class.isNewApp]="item.isNewApp" (opened)="item.selected = true"
+              (closed)="item.selected = false">
+              <mat-expansion-panel-header>
+                <div class="panel-header">
+                  <div class="name">
+                    <span draggable="true" (dragstart)="onDragOverHost(item?.id)"
+                      (dragend)="dragEnd($event)">{{ item.appName }}</span>
+                  </div>
+
+                  <div class="actions">
+                    <div class="icon" (click)="editHostDialog()">
+                      <img src="/assets/icons/edit_success.svg" class="def" *ngIf="item && item?.installed">
+                      <img src="/assets/icons/edit_danger.svg" class="def" *ngIf="item && !item.installed">
+                      <!-- <img src="/assets/icons/edit_dark.svg" class="def" *ngIf="!item"> -->
+                    </div>
+                    <div class="icon" (click)="delVirApp(item?.id)">
+                      <img src="/assets/icons/del_icon.svg" class="def">
+                    </div>
+                  </div>
+                </div>
+              </mat-expansion-panel-header>
+
+              <app-host-app-details *ngIf="!item.isNewApp" [appId]="item.appConfig.appId" [appConfig]="item.appConfig"
+                [appName]="item.appName" [shouldShow]="item.selected" [isVirtual]="true" [id]="item.id"
+                [hostId]="item.hostId" [chkFlag]="1" [dontShowFlag]="true" (updated)="loadEnv()">
+              </app-host-app-details>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+        <div *ngIf="!selectedEnvHost?.appDetails.length">{{ listLoading? 'Loading....': 'No data found' }}.</div>
+      </div>
+    </div>
+  </div>
+</div>

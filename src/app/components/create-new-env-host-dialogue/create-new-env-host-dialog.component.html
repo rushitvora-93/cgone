@@ -1,0 +1,66 @@
+<h5>Add New Host</h5>
+<form class="host-form" autocomplete="off" #createHostForm="ngForm" (ngSubmit)="saveHost(createHostForm)"  autocomplete="off">
+        <div class="form-group">
+                <label for="name">Host Name</label>
+               
+                        <input placeholder="Host name" class="form-control" [(ngModel)]="host.hostName" name="name" required>
+        </div>
+        
+
+        <div class="form-group">
+                <label for="ip">IP</label>
+                        <input placeholder="Ip" class="form-control" [(ngModel)]="host.hostConfig.ip" name="ip" required>
+        </div>
+        <div class="form-group" for="osType">
+                <label for="osType">OS Type {{host.hostConfig.osType}}</label>
+                <mat-select [(ngModel)]="host.hostConfig.osType" name="osType" required>
+                                <mat-option *ngFor="let os of osList" [value]="os">
+                                  {{os}}
+                                </mat-option>
+                              </mat-select>
+                        
+        </div>
+        <div class="form-group" for="lcaRunning">
+                <label for="lcaRunning">LCA Running</label>
+                <mat-checkbox class="inline-block" [(ngModel)]="host.hostConfig.lcaRunning" name="lcaRunning">
+                </mat-checkbox>
+
+        </div>
+        <div class="form-group" for="aaRunning">
+                <label for="aaRunning">AA Running</label>
+                <mat-checkbox class="inline-block" [(ngModel)]="host.hostConfig.automatorAgentRunning" name="aaRunning">
+                </mat-checkbox>
+        </div>
+        <div class="form-group" for="status">
+                <label for="status">Status</label>
+                <mat-checkbox class="inline-block" placeholder="Host status" [(ngModel)]="host.hostConfig.status" name="status" >
+                </mat-checkbox>
+                        
+        </div>
+        <div class="form-group" for="state">
+                <label for="state">State</label>
+                <mat-checkbox class="inline-block" placeholder="Host status" [(ngModel)]="host.hostConfig.state" name="state" >
+                </mat-checkbox>
+                        
+        </div>
+        <div class="form-group" for="startupFlag">
+                <label for="startupFlag">Startup Flag</label>
+                <mat-checkbox class="inline-block" [(ngModel)]="host.hostConfig.startupFlag" name="startupFlag">
+                        </mat-checkbox>
+        </div>
+        <div class="form-group" for="scsDbid">
+                <label for="scsDbid">SCS DBID</label>
+                        <input placeholder="SCS DBID" class="form-control" type="number" [(ngModel)]="host.hostConfig.scsDBID" name="scsDbid" >
+        </div>
+        <div class="form-group" for="version">
+                <label for="version">Version</label>
+                        <input placeholder="Host version" class="form-control" [(ngModel)]="host.hostConfig.version" name="version" required>
+        </div>
+        <div class="form-group text-right">
+                        <button type="submit" mat-flat-button color="accent"
+                        [disabled]="!createHostForm.valid">Save</button>
+                <button type="button" mat-flat-button color="mrnone" (click)="cancelIgnoreList()">
+                        Cancel</button>
+                </div>
+        
+</form>

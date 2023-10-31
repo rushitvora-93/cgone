@@ -1,0 +1,68 @@
+@import "../../../../../styles/mixins.scss";
+
+.object-type-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 20px;
+    .sec-title {
+        @include h2();
+        font-size: 18px;
+    }
+    .toggle-changes {
+        background-color: $primary;
+        color: #fff;
+        padding: 7px 12px;
+        border-radius: 20px;
+        cursor: pointer;
+    }
+}
+
+.compare-table {
+    .head {
+        position: sticky;
+        top: 76px;
+    }
+    .tb-row,
+    .head {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr 1.5fr;
+        border-left: 1px solid $primary;
+        .name {
+            border-right: 1px solid $primary;
+            background-color: #9bbdd6;
+            padding: 10px;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+        }
+    }
+
+    .body {
+        border-bottom: 1px solid $primary;
+        .tb-row {
+            .old {
+                color: #c83600;
+            }
+
+            .new {
+                color: $secondary;
+            }
+        }
+        .tb-row > div {
+            border-right: 1px solid $primary;
+            padding: 10px 20px;
+            text-align: center;
+            color: $primary;
+            font-size: 13px;
+            word-break: break-all;
+        }
+        .tb-row:nth-child(odd) > div {
+            background: #eff3f6;
+        }
+
+        .tb-row:nth-child(even) > div {
+            background: #fff;
+        }
+    }
+}

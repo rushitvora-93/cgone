@@ -1,0 +1,59 @@
+<div class="home-summary-container">
+  <div class="home-summary-wrapper">
+    <div class="ch-box">
+      <!-- <div class="col-md-3 mb-4"> -->
+      <app-card>
+        <div class="draw-chart section-small">
+          <div class="card-label">Welcome to OneCG</div>
+          <div class="para">
+            {{ config?.homeDescription}}
+          </div>
+        </div>
+      </app-card>
+      <!-- </div>
+      <div class="col-md-3 mb-4"> -->
+      <app-card>
+        <div class="draw-chart section-small">
+          <div class="card-label">Object Type</div>
+          <div class="ch-wrap">
+            <canvas id="service-status"></canvas>
+          </div>
+        </div>
+      </app-card>
+      <!-- </div>
+      <div class="col-md-6 mb-4"> -->
+      <app-card>
+        <div class="draw-chart section-wide">
+          <div>
+            <div class="card-label">Who is making the change</div>
+            <div class="sub-label">Users</div>
+          </div>
+          <div class="ch-wrap">
+            <canvas id="user-status"></canvas>
+          </div>
+        </div>
+      </app-card>
+      <!-- </div>
+      <div class="col-md-6 mb-4"> -->
+      <app-card class="set-pos">
+        <div class="draw-chart section-large">
+          <div class="card-label">Promote Changes</div>
+          <div>
+            <canvas id="promote"></canvas>
+          </div>
+        </div>
+      </app-card>
+      <!-- </div>
+      <div class="col-md-6 mb-4"> -->
+      <app-card [fit]="true">
+        <div class="draw-chart section-wide">
+          <div class="card-label">Number of Automated Tests performed</div>
+          <div class="ch-wrap">
+            <canvas id="tests-status"></canvas>
+          </div>
+        </div>
+      </app-card>
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

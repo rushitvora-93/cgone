@@ -1,0 +1,20 @@
+
+  .loading_div {
+    background-image: url("../../assets/loading-min.gif");
+    background-repeat: no-repeat;
+    height: 100px;
+    width:  100px;
+    background-size: 100px 100px;
+  }
+  #outer {
+    padding-top: 20vh;
+    width: 100%;
+    text-align: center;
+  }
+
+  #inner {
+    display: inline-block;
+  }
+  .app-active{
+    border:1px solid #ef820d !important;
+}

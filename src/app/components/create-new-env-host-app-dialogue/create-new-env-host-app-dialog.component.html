@@ -1,0 +1,144 @@
+<h5>Add New Application</h5>
+<form class="host-form" autocomplete="off" #createAppForm="ngForm" (ngSubmit)="saveApp(createAppForm)">
+        <div class="form-group">
+                <label for="name">App Name</label>
+                        <input placeholder="App name" class="form-control" [(ngModel)]="app.appName" name="name" required>
+        </div>
+        <div class="form-group">
+                <!-- <label for="ip">Type</label> -->
+                        <!-- <input placeholder="App type" class="form-control" [(ngModel)]="app.appConfig.type" name="ip" required> -->
+                        <mat-form-field class="placeholder-only">
+                                <mat-label>Type</mat-label>
+                            <mat-select [(ngModel)]="app.appConfig.type"  name="ip" required (click)="getAppType()">
+                                <mat-option *ngFor="let type of types" [value]="type">
+                                    {{type}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+        </div>
+
+        <!-- <div class="form-group" for="version">
+                <label for="version">Version</label>
+                        <input placeholder="App version" class="form-control" [(ngModel)]="app.appConfig.version" name="version" required>
+        </div> -->
+        <div class="form-group" for="version">
+                <mat-form-field class="placeholder-only">
+                        <mat-label>Version</mat-label>
+                    <mat-select [(ngModel)]="app.appConfig.version"  name="version" required (click)="getAllAppType()">
+                        <mat-option *ngFor="let ver of versions" [value]="ver">
+                            {{ver}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+        </div>
+        <div class="form-group" for="state">
+                <label for="state">State</label>
+                <mat-checkbox class="inline-block" [(ngModel)]="app.appConfig.state" name="state">
+                </mat-checkbox>
+
+        </div>
+        <div class="form-group" for="workingDirectory">
+                <label for="workingDirectory">Working Directory</label>
+                        <input placeholder="App working directory" class="form-control" type="text" [(ngModel)]="app.appConfig.workingDirectory" name="workingDirectory"
+                                required>
+
+        </div>
+        <!-- <div class="form-group" for="connectedServers">
+                <label for="connectedServers">Connected Servers</label>
+                        <input placeholder="App connected servers" class="form-control" type="number"  [(ngModel)]="app.appConfig.connectedServers"
+                                name="connectedServers">
+        </div> -->
+        <div class="servers form-group">
+                        <label for="connectedServers">Connected Servers <a href="javascript:;" (click)="addConnectedServer()"><i class="fas fa-plus"></i></a></label>
+                        <table>
+                            <thead>
+                                <th>Application Name</th>
+                                <th>Local Timeout</th>
+                                <th>Remote Timeout</th>
+                                <th>Mode</th>
+                                <th>Connection Protocol</th>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let server of app.appConfig.connectedServers;let i=index;">
+                                        <td>
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Application name"
+                                                        [(ngModel)]="server.appServerName"
+                                                        [name]="'appServerName' + i" required>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Local timeout"
+                                                        [(ngModel)]="server.timeoutLocal"
+                                                        [name]="'timeoutLocal' + i" required>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Remote timeout"
+                                                        [(ngModel)]="server.timeoutRemote"
+                                                        [name]="'timeoutRemote' + i" required>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Mode" [(ngModel)]="server.mode"
+                                                        [name]="'mode' + i" required>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group">
+                                                    <input type="text" placeholder="Connection protocol"
+                                                        [(ngModel)]="server.connProtocol"
+                                                        [name]="'connProtocol' + i"
+                                                        required>
+
+                                                        <i  class="fas fa-trash-alt ml-2" (click)="removeConnectedServer(server,i)"></i>
+                                                </div>
+                                            </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+        <!-- <div class="form-group" for="appPrototypeDBID">
+                <label for="appPrototypeDBID">App Prototype DBID</label>
+                <input placeholder="App Prototype DB ID" class="form-control" type="number" [(ngModel)]="app.appConfig.appPrototypeDBID"
+                                name="appPrototypeDBID">
+                
+        </div> -->
+        <!-- <div class="form-group" for="startupTimeout">
+                <label for="startupTimeout">Startup Timeout</label>
+                        <input placeholder="App startup timeout" class="form-control" type="number" [(ngModel)]="app.appConfig.startupTimeout" name="startupTimeout"
+                                required>
+        </div>
+        <div class="form-group" for="shutdownTimeout">
+                <label for="shutdownTimeout">Shutdown Timeout</label>
+                        <input placeholder="App shutdown timeout" class="form-control" [(ngModel)]="app.appConfig.shutdownTimeout" name="shutdownTimeout" required>
+        </div> -->
+        <div class="form-group" for="port">
+                <label for="port">Port</label>
+                        <input placeholder="App port" class="form-control" [(ngModel)]="app.appConfig.port" name="port" required>
+        </div>
+
+
+        <!-- <div class="form-group" for="startupFlag">
+                <label for="startupFlag">Startup Flag</label>
+                
+                        <input placeholder="App startup flag" class="form-control" [(ngModel)]="app.appConfig.startupFlag" name="startupFlag" required>
+        </div> -->
+        <!-- <div class="form-group" for="upgradeVersion">
+                <label for="upgradeVersion">Upgrade Version</label>
+                <mat-checkbox placeholder="App upgrade version" class="inline-block" [(ngModel)]="app.appConfig.upgradeVersion" 
+                name="upgradeVersion">
+                </mat-checkbox>
+                        
+        </div> -->
+        <div class="form-group text-right">
+                <button type="submit" mat-flat-button color="accent"
+                        [disabled]="!createAppForm.valid">Save</button>
+                <button type="button" mat-flat-button color="mrnone" (click)="cancelCreateApp()">
+                        Cancel</button>
+        </div>
+
+</form>

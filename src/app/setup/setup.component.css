@@ -1,0 +1,43 @@
+main.main-wrapper {
+    background: #fafafa;
+}
+
+.content-wrapper {
+    padding-top: 4rem;
+}
+
+.main-wrapper {
+    padding: 1rem;
+    min-height: 93vh;
+}
+
+a {
+    background-color: #686d77;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;
+    line-height: normal;
+    max-width: none;
+    font-size: 12px;
+    color: #fff;
+    min-height: 35px;
+}
+
+a:hover {
+    background-color: #53575f;
+    color: white;
+}
+
+.mat-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.form-group select.form-control {
+    border-radius: 100px!important;
+}
+
+.refresh-audit-objects {
+    max-height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden
+}

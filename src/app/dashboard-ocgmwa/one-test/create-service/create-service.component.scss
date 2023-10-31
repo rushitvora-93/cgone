@@ -1,0 +1,93 @@
+@import "../../../../styles/mixins.scss";
+
+.script-template_container {
+    @include container();
+    .wrapper {
+        @include wrapper();
+        .navigation {
+            background: #5367bd;
+            padding: 20px 30px;
+            color: #ffffff;
+            span {
+                font-weight: bold;
+            }
+        }
+
+        .template-body {
+            margin: 20px 0;
+
+            .section {
+                background: #fafafacc;
+                padding: 20px 30px;
+                margin-bottom: 20px;
+
+                &.basic {
+                    display: grid;
+                    grid-template-columns: 1.5fr 2fr 1.5fr;
+                    grid-gap: 30px;
+                }
+
+                .card-w {
+                    min-height: 148px;
+                }
+                h3 {
+                    @include h3();
+                    margin-bottom: 15px;
+                }
+
+                .channels {
+                    display: flex;
+                    flex-wrap: wrap;
+
+                    .item {
+                        width: 150px;
+                        margin-bottom: 15px;
+                    }
+                }
+                .config-voice {
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    grid-gap: 20px;
+                    .misc-label {
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        font-size: 10px;
+                        padding: 5px 0;
+                    }
+
+                    label {
+                        @include label();
+                    }
+                }
+                &.response-container {
+                    .response-wrapper {
+                        display: flex;
+                        align-items: flex-end;
+                        .add-response {
+                            .response-list {
+                                display: grid;
+                                grid-template-columns: 260px 260px;
+                                grid-gap: 10px;
+                                margin-bottom: 10px;
+                            }
+                        }
+                        button {
+                            @include btn-secondary();
+                            margin-bottom: 10px;
+                            margin-left: 20px;
+                        }
+                    }                    
+                }
+            }
+            .btn-save {
+                display: flex;
+                flex-direction: row-reverse;
+                button {
+                    @include btn-secondary();
+                    border-radius: 20px;
+                }
+            }
+        }
+    }
+}

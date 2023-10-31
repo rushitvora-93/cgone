@@ -1,0 +1,104 @@
+
+<h1 mat-dialog-title class="pl-2 pr-2">Add new host</h1>
+<!-- <button class="crossicon" [mat-dialog-close]="true">
+    <i class="fas fa-times crossic"></i>sfdf
+</button> -->
+<div mat-dialog-content [formGroup]="form">
+    <div class="example-container pl-2 pr-2">
+        <mat-form-field><input matInput placeholder="Hostname" formControlName="hostName" required>
+          <mat-error>Please Enter Host Name</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="IP" formControlName="ip" required>
+          <mat-error>Please Enter Ip</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput placeholder="Username" formControlName="username">
+            <mat-error>Please Enter Username</mat-error>
+          </mat-form-field>
+          <mat-form-field>
+              <input matInput placeholder="Password" formControlName="password">
+              <mat-error>Please Enter Password</mat-error>
+            </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="OS Type" formControlName="osType" required>
+                <mat-option *ngFor="let os of osTypes" [value]="os">
+                  {{os}}
+                </mat-option>
+              </mat-select>
+          <!-- <input matInput placeholder="OS Type" formControlName="osType" required> -->
+          <mat-error>Please Select OS Type</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Version" formControlName="version" required>
+          <mat-error>Please Enter Version</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="LCA Port" formControlName="lcaPort" required>
+          <mat-error>Please Enter LCA Port</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="Solution Control Center" formControlName="solutionControlCenter" required>
+                <mat-option *ngFor="let s of sc" [value]="s.appName">
+                  {{s.appName}}
+                </mat-option>
+              </mat-select>
+          <!-- <input matInput placeholder="Solution Control Center" formControlName="solutionControlCenter" required> -->
+          <mat-error>Please Enter Solution Control Center</mat-error>
+        </mat-form-field>
+        <div>
+          <mat-checkbox formControlName="startUpflag" style="width: 22%;display: inline-block;" >Startup</mat-checkbox>
+          <mat-checkbox formControlName="state" style="width: 42%;display: inline-block;">State</mat-checkbox>
+        </div>
+        <!-- <mat-form-field>
+          <mat-checkbox formControlName="startUpflag">Stratup</mat-checkbox>
+        </mat-form-field> -->
+        <!-- <p>
+          {{ form.value | json}}
+        </p> -->
+    </div>
+</div>
+<div mat-dialog-actions class="pl-2 pr-2">
+    <button mat-flat-button color="accent" (click)="close()">Cancel</button>
+    <button mat-flat-button class="mrnone"  (click)="save()" [disabled]="!form.valid" >Save Host</button>
+   <!-- <button class="mat-raised-button mat-primary" (click)="save()" style="padding: 10px 30px; background-color: green;">Save</button> 
+   <button class="mat-raised-button" (click)="close()" style="padding: 10px 30px;">Close</button> -->
+</div>
+
+
+<!-- 
+<h5>Add New Host</h5>
+<hr>
+<form action="" method="post" class="host-form" autocomplete="off">
+  <button class="crossicon" [mat-dialog-close]="true">
+    <i class="fas fa-times crossic"></i>
+  </button>
+  <div class="form-group">
+    <label for="hostName">Host Name</label>
+    <input type="text" id="hostName" class="form-control" placeholder="Host Name" cdkFocusInitial>
+  </div>
+  <div class="form-group">
+    <label for="ip">IP</label>
+    <input type="text" id="ip" class="form-control" placeholder="IP">
+  </div>
+  <div class="form-group">
+    <label for="ostype">OS Type</label>
+    <input type="text" id="ostype" class="form-control" placeholder="OS Type">
+  </div>
+  <div class="form-group">
+    <label for="version">Version</label>
+    <input type="text" class="form-control" placeholder="Version">
+  </div>
+  <div class="form-group">
+    <label for="lcaport">LCA Port</label>
+    <input type="text" id="lcaport" class="form-control" placeholder="LCA Port">
+  </div>
+  <div class="form-group">
+    <label for="solution">Solution Control Center</label>
+    <input type="text" id="solution" class="form-control" placeholder="Solution Control Center">
+  </div>
+  <div class="form-group text-right">
+      <button mat-flat-button color="accent" [mat-dialog-close]="true">Cancel</button>
+      <button mat-flat-button class="mrnone">Save Host</button>
+  </div>
+</form> -->

@@ -1,0 +1,32 @@
+<div class="titlebar-wrapper">
+	<div class="title-name">{{ pageLabel }} <span *ngIf="isDashboard && pageSubLabel">- {{ pageSubLabel }}</span></div>
+	<div ngbDropdown>
+		<a href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			<div class="user-details">
+				<img class="img-profile rounded-circle" src="assets/img/12.jpg" alt="" />
+				<div class="user-name">
+					{{authDetail.Username ? authDetail.Username : 'Admin'}}
+				</div>
+				<i-feather name="chevron-down"></i-feather>
+			</div>
+		</a>
+		<div class="user-popup" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+			<div class="item" (click)="newUserDialog()">
+				<img src="/assets/img/user-menu/3.svg" />
+				<span>New User</span>
+			</div>
+			<div class="item" (click)="addRoleDialog()">
+				<img src="/assets/img/user-menu/4.svg" />
+				Add Role
+			</div>
+			<div class="item" (click)="changePasswordDialog()">
+				<img src="/assets/img/user-menu/2.svg" />
+				Change Password
+			</div>
+			<div class="item" (click)="logOutApplication()">
+				<img src="/assets/img/user-menu/1.svg" />
+				Log Out
+			</div>
+		</div>
+	</div>
+</div>

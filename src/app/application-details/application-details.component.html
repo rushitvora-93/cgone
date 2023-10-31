@@ -1,0 +1,475 @@
+<!-- *ngIf="existingAppConfig.appId" -->
+<div *ngIf="existingAppConfig.appId || existingAppConfig.dbid || existingAppConfig.dbid == 0" class="right-dialog-con">
+  <div class="right-dialog">
+  <div class="right-dialog-header">
+    <div class="right-head-name txtovf" id="appDetailName">
+      {{existingAppConfig.appName}} {{existingAppConfig?.eventType }} <span *ngIf="existingAppConfig.name">(</span> {{existingAppConfig.name}} <span *ngIf="existingAppConfig.name">)</span>
+    </div>
+    <div class="right-head-hide-icon" (click) = "closeConfigDetails()">
+       x
+    </div>
+  </div>
+  <div class="right-dialog-body">
+     <mat-tab-group [(selectedIndex)]="selectedTabIndex">        
+     <mat-tab label="General">
+        <div class="tab-content">
+           <app-config-item [config]="existingAppConfigWotOption"
+             [SubmitEventName]="'Submit'"
+             [eventType] = "ApplicationTypeName"
+             (ApplicationDetailCallback) = "modifyData($event)"
+             (SelectConnectedServerApps)="getAllApps($event)"
+             (SubmitListEventItems) = "modifyData($event)"
+             (ListEventItemsConfig)="getListItems($event)"></app-config-item>
+        </div>
+     </mat-tab>
+     <mat-tab label="Options">
+        <div class="tab-content">
+          <input type="text" class="form-control filtersearch" [(ngModel)]="searchText" placeholder="Filter Option" style="padding-left:10px;">
+          <button class="btn btn-success addsecbtn" (click)="addSection()"><i class="fas fa-plus"></i></button>
+          <app-config-item [config]="existingAppConfigOptions | filter : searchText"
+          [eventType] = "ApplicationTypeName"
+          (ApplicationDetailCallback) = "optionsData($event)"
+          [SubmitEventName]="'Submit'"
+           [showDeleteIcon]=true></app-config-item>
+        </div>
+     </mat-tab>
+     </mat-tab-group>    
+  </div>
+</div>
+</div>
+
+<div *ngIf="droppedAppDetails.automatorApp" class="right-dialog-con">
+  <div class="right-dialog">
+      <div class="right-dialog-header">
+          <div class="right-head-name txtovf">
+              {{droppedAppDetails.automatorApp.label}}      <span style="color:#9da3a7;padding-left:30px;">Host: {{droppedAppDetails.host.hostName}}</span>
+          </div>
+          <div class="right-head-hide-icon" (click)="closeDetails()">
+            x
+            <!-- <img class="img-fluid" src="../../assets/images/cross-icon.png" alt=""/>   -->
+          </div>
+        </div>
+        
+        <div class="right-dialog-body">
+            <ul class="list-unstyled" *ngIf="droppedAppConfig">
+               <li class="name"> <b>Application Name: </b>
+                 <input type="text" [(ngModel)]="newAppCreateConfig.config.appName" class="form-control form-control-min"> 
+                </li>
+                
+               <li *ngIf="droppedAppConfig.versions" class="name">  <b>Version</b>
+                          <select [(ngModel)]="newAppCreateConfig.config.version" class="form-control form-control-min"> 
+                              <option *ngFor="let version of droppedAppConfig.versions" [value]="version">
+                                {{version}}
+                              </option>       
+                             </select>      
+                  </li>
+                  <li class="name">
+                    <span>Startup</span>
+                    <input type="checkbox" name="startUpflag" style="margin-left: 4px" [(ngModel)]="startUpflag" id="">
+                  </li>
+                  <li class="name">
+                    <b>Symbolic Link</b>
+                    <input type="text" name="symbolicLink" style="margin-left: 4px" [(ngModel)]="symbolicLink" id="" class="form-control form-control-min">
+                  </li>
+               <li *ngFor="let key of droppedAppConfig.keys" class="name"> <b> {{key.key}}</b>
+                  <!-- <b>{{key.key}}: <a *ngIf="key.type == 'ARRAY'" href="javascript:void(0)" (click)="addNewFor(key.key)">          Add Connections        </a></b>          -->
+                  <a *ngIf="key.type == 'ARRAY'" href="javascript:void(0)" (click)="getAllApps()" style="float:right; line-height:38px">Add Connections</a>
+                  <div *ngIf="key.type == 'STRING'"><input type="text" [(ngModel)]="newAppCreateConfig.config[key.key]" class="form-control form-control-min" [disabled]="key.readOnly"/>        </div>
+                  <div *ngIf="key.type == 'INTEGER'"><input type="number" [(ngModel)]="newAppCreateConfig.config[key.key]" class="form-control form-control-min" [disabled]="key.readOnly"/>        </div>
+                  <div *ngIf="isObjectOrArray(key.type) != 'connectedServers'" style="width:100%;">
+                     <table class="consertble">
+                        <thead>
+                           <tr *ngIf="key.type == 'ARRAY'" style="background-color: #d4d3d3;">
+                              <th *ngFor="let headings of AppHeadings" class="config-header">{{headings}}</th>
+                           </tr>
+                        </thead>
+                        <tbody *ngIf="showSelectedApps.length > 0 && key.type == 'ARRAY'">
+                            <tr *ngFor="let app of showSelectedApps">
+                                <td><input type="text" [(ngModel)]="app.appName" [value]="app.appId" class="form-control form-control-min"/></td>
+                                <td><input type="text" [(ngModel)]="app.timeoutLocal" [value]="app.timeoutLocal" class="form-control form-control-min"/></td>
+                                <td><input type="text" [(ngModel)]="app.timeoutRemote" [value]="app.timeoutRemote" class="form-control form-control-min"/></td>
+                                <td><input type="text" [(ngModel)]="app.mode" [value]="app.mode" class="form-control form-control-min"/></td>
+                                <td><input type="text" [(ngModel)]="app.id" [value]="app.id" class="form-control form-control-min"/></td>
+                                <td><input type="text" [(ngModel)]="app.connProtocol" [value]="app.connProtocol" class="form-control form-control-min"/></td>
+                             </tr>
+                         </tbody> 
+                        <tbody *ngIf="key.type == 'OBJECT'">
+                           <tr>
+                              <td *ngFor="let defaultValue of objectKeys(key.defaultValue)">                  
+                                <input [(ngModel)]="newAppCreateConfig.config[key.key][defaultValue]" 
+                                        type="text" class="form-control form-control-min" style="width:65%" /> </td>
+                           </tr>
+                        </tbody>
+                        <!-- <tbody *ngIf="key.type == 'ARRAY'">
+                           <tr *ngFor="let rec of newAppCreateConfig.config[key.key]; let i = index">
+                              <td *ngFor="let defaultValue of objectKeys(key.defaultValue)">           
+                               <input [(ngModel)]="newAppCreateConfig.config[key.key][i][defaultValue]"
+                                       type="text" class="form-control form-control-min"/></td>
+                           </tr>
+                        </tbody> -->
+                     </table>
+                  </div>
+               </li>
+            </ul>
+            <ul class="list-unstyled list-inline sidebar-links applicationSaveEdit">
+               <li class="list-inline-item">   
+                  <button mat-flat-button color="accent" disabled>Edit</button>
+               </li>
+               <li class="list-inline-item">     
+                  <button mat-flat-button class="mrnone"  (click)="saveAppConfig()">Save</button>     
+               </li>
+            </ul>
+         </div>
+  </div>
+  
+</div>
+
+<!--Connected Server Modal code-->
+
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg app-addcon-modal">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="display: block !important">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Select Your Apps</h4>
+      </div>
+      <div class="modal-body">
+       <ul class="list-group">
+         <li class="list-group-item" *ngFor="let app of ChooseDropApps;let i = index">
+            {{app.appName}}
+            <span>
+              <input type="checkbox" style="margin-left: 10px" (click)="chooseSelectedApps($event,ChooseDropApps,i)" [value]="app.appName">
+            </span>
+         </li>
+       </ul>
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click) = "showApps()">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="listEventsModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg app-addcon-modal">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="display: block !important">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Select Your Apps</h4>
+        </div>
+        <div class="modal-body">
+         
+         <span *ngIf="showArrayList">  <!--parsing single array items-->
+            <ul class="list-group">
+                <li  class="list-group-item" *ngFor="let app of arrayListItems">
+                   <span>
+                       <input type="radio" style="margin-left: 10px" [(ngModel)]="chooseItem" [name]="app.mappedName" [value]="app.mappedName">
+                     </span>  
+                      {{app.propertyName}}
+                </li>
+              </ul>
+         </span>
+         <span *ngIf="!showArrayList">  <!--parsing array of object items-->
+          <div *ngIf="ListItems && ListItems.length >0" class="table-responsive">
+              <table class="table table-bordered text-center">
+                  <thead>
+                    <tr>
+                      <th></th>
+                      <th *ngFor="let key of getKeys(ListItems[0],0)">{{key}}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let app of ListItems;let i = index">
+                          <td> <input type="radio" [(ngModel)]="chooseItem" name="app" [value]="app"></td>
+                          <td *ngFor="let values of getValues(app)">{{values}}</td>
+                    </tr>
+                  </tbody>
+                 </table>
+          </div>
+         </span>
+       
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click) = "showListSelectedItems()">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+ <!--Select Switch Type-->
+
+  <div id="selectSwitchType" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg app-addcon-modal">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="display: block !important">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Select Your Appropriate Switch for {{ListItemKey}}</h4>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group">
+            <li  class="list-group-item" *ngFor="let app of switchTypes">
+               <span>
+                   <input type="radio" style="margin-left: 10px" [(ngModel)]="chooseItem" name="{{app.dbid}}" [value]="app.dbid">
+                 </span>  
+                  {{app.name}}
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click) = "submitSwitchId()">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+ <!--Show 2lists in a model-->
+  <div id="duoListModel" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg app-addcon-modal">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="display: block !important">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Select Your Appropriate Combination</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-6 col-md-6">
+              <h6>Choose App Ranks</h6>
+                <ul class="list-group">
+                    <li  class="list-group-item" *ngFor="let app of appRankList">
+                       <span>
+                           <input type="radio" style="margin-left: 10px" [(ngModel)]="appRankListItem" [name]="app.propertyName" [value]="app.propertyName">
+                         </span>  
+                          {{app.mappedName}}
+                    </li>
+                  </ul>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <ul class="list-group">
+                    <h6>Choose Apptype Lists</h6>
+                    <li  class="list-group-item" *ngFor="let app of appTypeList">
+                       <span>
+                           <input type="radio" style="margin-left: 10px" [(ngModel)]="appTypeItem" [name]="'apppropertyName'" [value]="app.propertyName">
+                         </span>  
+                          {{app.mappedName}}
+                    </li>
+                  </ul>
+            </div>
+          </div>
+         
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click) = "combineAppRanks()">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+<!--Show 3lists in a model-->
+  <div id="trioListModel" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg app-addcon-modal">
+  
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header" style="display: block !important">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Select Your Appropriate Combination</h4>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-xs-4 col-md-4">
+              <h6>Choose Switch Access Code</h6>
+                <ul class="list-group">
+                    <li  class="list-group-item" *ngFor="let app of switchAccessCodeList">
+                       <span>
+                           <input type="radio" style="margin-left: 10px" [(ngModel)]="heirarchyObject.item1" name="{{app.name}}" [value]="app.dbid">
+                         </span>  
+                          {{app.name}}
+                    </li>
+                  </ul>
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <ul class="list-group">
+                    <h6>Choose Route Type </h6>
+                    <li  class="list-group-item" *ngFor="let app of routeTypeList">
+                       <span>
+                           <input type="radio" style="margin-left: 10px" [(ngModel)]="heirarchyObject.item2"  name="{{app.propertyName}}" [value]="app.propertyName">
+                         </span>  
+                          {{app.mappedName}}
+                    </li>
+                  </ul>
+            </div>
+            <div class="col-xs-4 col-md-4">
+              <ul class="list-group">
+                  <h6>Choose Target Type </h6>
+                  <li  class="list-group-item" *ngFor="let app of targetTypeList">
+                     <span>
+                         <input type="radio" style="margin-left: 10px" [(ngModel)]="heirarchyObject.item3" name="{{app.propertyName}}" [value]="app.propertyName">
+                       </span>  
+                        {{app.mappedName}}
+                  </li>
+                </ul>
+          </div>
+          </div>
+         
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click) = "setHeirarchyItems()">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+  
+    </div>
+  </div>
+
+ <!--Show ObjectiveRecord in a model-->
+ <div id="ObjectiveRecordListModel" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg app-addcon-modal">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header" style="display: block !important">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Select Your Appropriate Combination</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-xs-12 col-md-6" sytle="padding:2px;">
+              <div *ngIf="appMediaTypeList && appMediaTypeList.length >0" class="table-responsive" >
+                  <span>Choose Media Type</span> 
+                <table class="table table-bordered text-center">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th *ngFor="let key of getKeys(appMediaTypeList[0],0)">{{key}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let app of appMediaTypeList;let i = index">
+                              <td> <input type="radio" [(ngModel)]="appMediaTypeItem" name="mediaType" [value]="app.name"></td>
+                              <td *ngFor="let values of getValues(app)">{{values}}</td>
+                        </tr>
+                      </tbody>
+                     </table>
+              </div>
+      
+            <!-- <h6>Choose Media Type</h6>
+              <ul class="list-group">
+                  <li  class="list-group-item" *ngFor="let app of appMediaTypeList">
+                     <span>
+                         <input type="radio" style="margin-left: 10px" [(ngModel)]="appMediaTypeItem" name="{{app}}" [value]="app">
+                       </span>  
+                        {{app}}
+                  </li>
+                </ul> -->
+          </div>
+          <div class="col-xs-12 col-md-6" style="padding:2px;">
+              <div *ngIf="appServiceTypeList && appServiceTypeList.length >0" class="table-responsive">
+                  <span>Choose Service Type</span>
+                  <table class="table table-bordered text-center">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th *ngFor="let key of getKeys(appServiceTypeList[0],0)">{{key}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let app of appServiceTypeList;let i = index">
+                              <td> <input type="radio" [(ngModel)]="appServiceTypeItem" name="serviceType" [value]="app.name"></td>
+                              <td *ngFor="let values of getValues(app)">{{values}}</td>
+                        </tr>
+                      </tbody>
+                     </table>
+              </div>
+             
+              <!-- <ul class="list-group">
+                  <h6>Choose Service Type</h6>
+                  <li  class="list-group-item" *ngFor="let app of appServiceTypeList">
+                     <span>
+                         <input type="radio" style="margin-left: 10px" [(ngModel)]="appServiceTypeItem" name="{{app}}" [value]="app">
+                       </span>  
+                        {{app}}
+                  </li>
+                </ul> -->
+          </div>
+          <div class="col-xs-12 col-md-6" style="padding:2px;">
+              <div *ngIf="appCustomerSegmentList && appCustomerSegmentList.length >0" class="table-responsive">
+                  <span>Choose Customer Segment</span>  
+                <table class="table table-bordered text-center">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th *ngFor="let key of getKeys(appCustomerSegmentList[0],0)">{{key}}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let app of appCustomerSegmentList;let i = index">
+                              <td> <input type="radio" [(ngModel)]="appCustomerSegmentItem" name="customerSegment" [value]="app.name"></td>
+                              <td *ngFor="let values of getValues(app)">{{values}}</td>
+                        </tr>
+                      </tbody>
+                     </table>
+              </div>
+              
+            <!-- <ul class="list-group">
+                <h6>Choose Customer Segment</h6>
+                <li  class="list-group-item" *ngFor="let app of appCustomerSegmentList">
+                   <span>
+                       <input type="radio" style="margin-left: 10px" [(ngModel)]="appCustomerSegmentItem" name="{{app}}" [value]="app">
+                     </span>  
+                      {{app}}
+                </li>
+              </ul> -->
+        </div>
+        <div class="col-xs-12 col-md-6" style="padding:2px;">
+            <div *ngIf="appITContractList && appITContractList.length >0" class="table-responsive">
+                <span>Choose IT Contract</span>  
+              <table class="table table-bordered text-center">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th *ngFor="let key of getKeys(appITContractList[0],0)">{{key}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let app of appITContractList;let i = index">
+                            <td> <input type="radio" [(ngModel)]="appITContractItem" name="itContract" [value]="app.name"></td>
+                            <td *ngFor="let values of getValues(app)">{{values}}</td>
+                      </tr>
+                    </tbody>
+                   </table>
+            </div>
+          
+          <!-- <ul class="list-group">
+              <h6>Choose IT Conract</h6>
+              <li  class="list-group-item" *ngFor="let app of appITContractList">
+                 <span>
+                     <input type="radio" style="margin-left: 10px" [(ngModel)]="appITContractItem" name="{{app}}" [value]="app">
+                   </span>  
+                    {{app}}
+              </li>
+            </ul> -->
+      </div>
+        </div>
+       
+      </div>
+      <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click) = "combineObjectiveRecord()">Submit</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>

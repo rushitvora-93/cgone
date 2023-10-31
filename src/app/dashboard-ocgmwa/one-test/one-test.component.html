@@ -1,0 +1,48 @@
+<div class="one-test_container" *ngIf="!busy">
+
+  <div class="container_placeholder" *ngIf="allSprintList.length === 0">
+    <app-card>
+      <div class="placeholder_card">
+        <div class="card-text">THERE IS NOTHING IN YOUR ONE TEST,<br>LETS CREATE</div>
+        <button nz-button nzType="primary" nzShape="round" nzSize="large" nzDanger
+          routerLink="/dashboard/onetest/create">Create
+          Sprint</button>
+      </div>
+    </app-card>
+  </div>
+  <div class="sprint_container" *ngIf="allSprintList.length > 0">
+    <div class="action-bar">
+      <div class="act-sprint">
+        <div class="switch">
+          <app-mwa-switch (change)="showActive($event)"></app-mwa-switch>
+        </div> Active sprints
+      </div>
+      <button class="btn-edit">Modify Sprint</button>
+      <button class="btn-create" routerLink="/dashboard/onetest/create">Create Test Sprint</button>
+    </div>
+    <div class="search-sprint">
+      <input type="text" placeholder="Find Test Sprint" [formControl]="searchInput">
+      <div class="btn">
+        <i-feather name="search"></i-feather>
+      </div>
+    </div>
+    <div class="sprint_list">
+      <div class="item header">
+        <div>Sprint Name</div>
+        <div>Create Date</div>
+        <div>Channels</div>
+        <div>Testing Method</div>
+        <div>Completed Date</div>
+        <div>Status</div>
+      </div>
+      <div class="item" *ngFor="let item of filterResults" (click)="sprintClicked(item)" [routerLink]="'/dashboard/onetest/sprint/'+item.id">
+        <div>{{ item.sprintName}}</div>
+        <div>{{ item.createdOn }}</div>
+        <div>{{ item.channelName}}</div>
+        <div>{{ item.testType}}</div>
+        <div>{{ item.completedOn}}</div>
+        <div>{{ item.status }}</div>
+      </div>
+    </div>
+  </div>
+</div>

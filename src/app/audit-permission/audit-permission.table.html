@@ -1,0 +1,111 @@
+<div class="mat-elevation-z8" style="height: 200px; overflow: auto;">
+    <table mat-table [dataSource]="dataSource" style="width: 100%;">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name. </th>
+        <td mat-cell *matCellDef="let element"> {{element.permissionObjectName}} </td>
+      </ng-container>
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let element"> {{removeCFG(element.permissionObjectType)}} </td>
+      </ng-container>
+      <ng-container matColumnDef="change">
+        <th mat-header-cell *matHeaderCellDef> Change </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-checkbox
+              [(ngModel)]="element.permissions.change"
+              disabled="true"
+              >
+            </mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="changePermission">
+        <th mat-header-cell *matHeaderCellDef> Change Permission </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            [(ngModel)]="element.permissions.changePermission"
+            disabled="true"
+            >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="create">
+        <th mat-header-cell *matHeaderCellDef> Create </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            [(ngModel)]="element.permissions.create"
+            disabled="true"
+            >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="delete">
+        <th mat-header-cell *matHeaderCellDef> Delete </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            [(ngModel)]="element.permissions.delete"
+            disabled="true"
+            >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="execute">
+        <th mat-header-cell *matHeaderCellDef> Execute </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            [(ngModel)]="element.permissions.execute"
+            disabled="true"
+            >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="fullcontrol">
+        <th mat-header-cell *matHeaderCellDef> Full Control </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            [(ngModel)]="element.permissions.fullcontrol"
+            disabled="true"
+            >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="noAccess">
+        <th mat-header-cell *matHeaderCellDef> No Access </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            [(ngModel)]="element.permissions.noAccess"
+            disabled="true"
+            >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="read">
+        <th mat-header-cell *matHeaderCellDef> Read </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            [(ngModel)]="element.permissions.read"
+            disabled="true"
+            >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="readPermission">
+        <th mat-header-cell *matHeaderCellDef> Read Permission </th>
+        <td mat-cell *matCellDef="let element">
+          <mat-checkbox
+            [(ngModel)]="element.permissions.readPermission"
+            disabled="true"
+            >
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+  

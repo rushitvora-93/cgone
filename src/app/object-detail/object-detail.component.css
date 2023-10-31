@@ -1,0 +1,15 @@
+.vtrascation{
+    padding: 2rem;
+    background-color: #fff;
+    margin: 15px;
+    border: 1px solid #eee;
+}
+.vtran-header{
+    padding:10px;
+    background-color:#eee;
+    margin-bottom:10px;
+}
+.vtrascation .btn{
+    border-radius: 1px;
+    margin-bottom:0px;
+}

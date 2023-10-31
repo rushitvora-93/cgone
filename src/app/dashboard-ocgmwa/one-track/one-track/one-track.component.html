@@ -1,0 +1,180 @@
+<div class="one-track-track-container">
+  <div class="wrapper">
+    <div class="navigation">
+      OneTrack > <span>Track</span>
+    </div>
+    <div class="main-body">
+      <div class="search-container" [formGroup]="searchTrack">
+        <app-card>
+          <div class="form-wrapper">
+            <div class="wrap">
+              <mat-form-field>
+                <mat-label>From Date</mat-label>
+                <input matInput formControlName="fromDate" (click)="fromDateTrigger = true">
+              </mat-form-field>
+              <mwa-date [show]="fromDateTrigger" [allowTime]="true" [date]="searchTrack.value.fromDate"
+                (change)="setDate('fromDate',$event)">
+              </mwa-date>
+            </div>
+            <div class="wrap">
+              <mat-form-field>
+                <mat-label>To Date</mat-label>
+                <input matInput formControlName="toDate" (click)="toDateTrigger = true">
+              </mat-form-field>
+              <mwa-date [show]="toDateTrigger" [allowTime]="true" [date]="searchTrack.value.toDate"
+                (change)="setDate('toDate',$event)">
+              </mwa-date>
+            </div>
+            <div class="wrap">
+              <mat-form-field>
+                <mat-label>User</mat-label>
+                <input matInput formControlName="userName" type="text">
+              </mat-form-field>
+            </div>
+            <div class="wrap">
+              <mat-form-field>
+                <mat-label>Operation</mat-label>
+                <mat-select formControlName="operation" placeholder="Operation">
+                  <mat-option *ngFor="let val of operationList" [value]="val.id">{{ val.label }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="wrap">
+              <mat-form-field>
+                <mat-label>Environment</mat-label>
+                <mat-select formControlName="envName" placeholder="From Environment">
+                  <mat-option *ngFor="let val of envList" [value]="val.label">{{ val.label }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="wrap">
+              <mat-form-field [matMenuTriggerFor]="objectTypeMenu">
+                <mat-label>Object type</mat-label>
+                <input matInput [value]="selectedObjectListCount">
+              </mat-form-field>
+            </div>
+          </div>
+        </app-card>
+      </div>
+      <div class="form-btn">
+        <button nz-button nzShape="round" nzType="primary" nzLoading *ngIf="isBusy"><i nz-icon
+            nzType="poweroff"></i></button>
+        <button nz-button nzShape="round" nzType="primary" class="mwa-btn primary sm round"
+          [disabled]="searchTrack.invalid" (click)="getResults()" *ngIf="!isBusy">Submit</button>
+      </div>
+      <!-- search-containe ends -->
+      <div class="status-container" *ngIf="listOfChanges.length">
+        <div class="panel-trigger" (click)="togglePanel = !togglePanel">
+          <div>Status</div>
+          <i-feather name="arrow-down-circle" *ngIf="!togglePanel"></i-feather>
+          <i-feather name="arrow-up-circle" *ngIf="togglePanel"></i-feather>
+        </div>
+        <div class="panel-expand" [class.expand]="togglePanel">
+          <div class="gr-wrap">
+            <div class="ch-box" [class.show]="hasDataChart">
+              <app-card>
+                <div class="draw-chart section-small">
+                  <div class="card-label">Object Type</div>
+                  <div class="ch-wrap">
+                    <canvas id="chart-types"></canvas>
+                  </div>
+                </div>
+              </app-card>
+              <app-card>
+                <div class="draw-chart section-small">
+                  <div class="card-label">Operations</div>
+                  <div class="ch-wrap">
+                    <canvas id="chart-operations"></canvas>
+                  </div>
+                </div>
+              </app-card>
+              <app-card>
+                <div class="draw-chart section-wide">
+                  <div class="card-label">Rolled Back</div>
+                  <div class="ch-wrap">
+                    <canvas id="chart-promoted"></canvas>
+                  </div>
+                </div>
+              </app-card>
+              <app-card class="set-pos">
+                <div class="draw-chart section-large">
+                  <div class="card-label">Change by time</div>
+                  <div>
+                    <canvas id="chart-changes"></canvas>
+                  </div>
+                </div>
+              </app-card>
+              <app-card [fit]="true">
+                <div class="draw-chart section-wide">
+                  <div class="card-label">Users</div>
+                  <div class="ch-wrap">
+                    <canvas id="chart-users"></canvas>
+                  </div>
+                </div>
+              </app-card>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isLoaded && !listOfChanges.length">
+        No results found.
+      </div>
+      <div class="results-container" *ngIf="listOfChanges.length">
+        <div class="header">
+          <div class="item date">
+            <div class="chk"></div>
+            <span>Date</span>
+          </div>
+          <div class="item">Object Name</div>
+          <div class="item op">Operation</div>
+          <div class="item ot">Object Type</div>
+          <div class="item">Object ID</div>
+          <div class="item">User</div>
+          <div class="item">Environment</div>
+          <div class="item">Host</div>
+          <div class="item rb">Roll Back <i class="icon fas fa-history" (click)="rollbackSelected()"
+              *ngIf="selectedItems.length"></i></div>
+        </div>
+        <div class="res-row" *ngFor="let item of listOfChanges; let i = index">
+          <div class="item date" [class.backColorOfRow]="item.user === 'Rollback'">
+            <div class="chk">
+              <app-mwa-radio (change)="selectRollback(i,$event)"></app-mwa-radio>
+            </div>
+            <span class="">{{ item.date }}<br>{{ item.time }}</span>
+          </div>
+          <div class="item">{{ item.objectName }}</div>
+          <div class="item op">{{ item.operation }}</div>
+          <div class="item ot">{{ item.objectType }}</div>
+          <div class="item">{{ item.objectId }}</div>
+          <div class="item" id="double-click-user" (click)="clickCounter(item.user)">{{ item.user }}</div>
+          <div class="item">{{ item.envName }}</div>
+          <div class="item">{{ item.host }}</div>
+          <div class="item action">
+            <div (click)="showChanges(item)" class="dots">
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <i class="fas fa-history icon" (click)="rollBack(item.id, item.envName)"></i>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<mat-menu #objectTypeMenu="matMenu">
+  <div mat-menu-item [disabled]="true" class="one-track-object-list">
+    <div class="item select-all">
+      <mwa-check [check]="selectAllObject" (change)="setSelectAllObject($event)">
+        <div label>Select All</div>
+      </mwa-check>
+    </div>
+    <div class="item" *ngFor="let item of objectList">
+      <mwa-check [check]="item.checked" (change)="item.checked = $event">
+        <div label>{{ item.label }}</div>
+      </mwa-check>
+    </div>
+  </div>
+</mat-menu>

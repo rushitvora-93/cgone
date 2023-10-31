@@ -1,0 +1,62 @@
+@import "../../../styles/mixins.scss";
+
+.home-summary-container {
+    @include container();
+    .home-summary-wrapper {
+        @include wrapper();
+        display: flex;
+        flex-wrap: wrap;
+
+        .card-label {
+            @include h2();
+            margin-bottom: 15px;
+        }
+
+        .sub-label {
+            border-top: 1px solid $primary;
+            padding-top: 10px;
+            color: $primary;
+        }
+
+        .para {
+            color: #aca2a2;
+            font-size: 14px;
+        }
+
+        .ch-box {
+            display: grid;
+            grid-template-columns: 3fr 3fr 4fr;
+            grid-template-rows: auto auto;
+            grid-gap: 30px;
+        }
+
+        .draw-chart {
+            display: grid;
+            grid-template-rows: auto 1fr;
+        }
+        .ch-wrap {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-height: 250px;
+            &.pd {
+                padding: 0 30px;
+            }
+        }
+        .section-small {
+            min-height: 300px;
+        }
+
+        .section-wide {
+            min-height: 300px;
+        }
+
+        .section-large {
+            min-height: 300px;
+        }
+
+        .set-pos {
+            grid-area: 2 / 1 / 2 / 3;
+        }
+    }
+}

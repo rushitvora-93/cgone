@@ -1,0 +1,88 @@
+<div class="script-template_container">
+  <div class="wrapper">
+    <div class="navigation">
+      OneTest > Template> <span>Create Test Script</span>
+    </div>
+    <div class="template-body" [formGroup]="testScript">
+      <div class="section basic">
+        <app-card>
+          <div class="card-w">
+            <h3>Script Name</h3>
+            <input nz-input formControlName="scriptName" placeholder="" />
+            <div *ngIf="testScript.value.scriptName && !beginTemplate">
+              <button nz-button class="mwa-btn secondary mt-4" nzType="primary" nzShape="round"
+                (click)="beginTemplate = true">Next</button>
+            </div>
+          </div>
+        </app-card>
+        <app-card *ngIf="beginTemplate">
+          <div class="card-w">
+            <h3>Select Channels</h3>
+            <div class="channels">
+              <div class="item" *ngFor="let item of channelsList">
+                <app-mwa-radio [check]="item.id === testScript.value.channel" (click)="setChannel(item.id)">
+                  <div label>{{ item.channelName}}</div>
+                </app-mwa-radio>
+              </div>
+            </div>
+          </div>
+        </app-card>
+        <app-card *ngIf="testScript.value.channelId === 1">
+          <div class="card-w">
+            <h3>Voice</h3>
+            <div class="config-voice">
+              <div>
+                <label>NLU Support</label>
+                <app-mwa-switch [check]="testScript.value.voiceNLUSupport" (change)="setNLU($event)"></app-mwa-switch>
+                <div class="misc-label">
+                  <span>Yes</span>
+                  <span>No</span>
+                </div>
+              </div>
+              <div>
+                <label>DTMF Support</label>
+                <app-mwa-switch [check]="testScript.value.voiceDTMFSupport" (change)="setDTMF($event)"></app-mwa-switch>
+                <div class="misc-label">
+                  <span>Yes</span>
+                  <span>No</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </app-card>
+      </div>
+      <!-- basic ends -->
+      <div class="section response-container" *ngIf="testScript.value.channelId">
+        <app-card>
+          <div class="response-wrapper" formArrayName="messageDetails">
+            <div class="add-response">
+              <div class="response-list">
+                <h3>Expected Input</h3>
+                <h3 style="text-align:center">Expected Response</h3>
+              </div>
+              <div *ngFor="let arr of testScript?.controls.messageDetails.controls;let i = index">
+                <div class="response-list" formGroupName={{i}}>
+                  <div>
+                    <input nz-input formControlName="expectedInput" placeholder="" />
+                  </div>
+                  <div>
+                    <input nz-input formControlName="expectedResponse" placeholder="" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button nz-button nzType="primary" (click)="addResponse()">Add Message</button>
+          </div>
+          <div class="btn-save">
+            <nz-button-group nzSize="large">
+              <button nz-button nzType="primary" nzShape="round" [disabled]="testScript.invalid"
+                (click)="saveTemplate()" *ngIf="!isCreateBusy">Save Script</button>
+              <button nz-button class="mwa-btn secondary sh" nzShape="round" nzType="primary" nzLoading
+                *ngIf="isCreateBusy"><i nz-icon nzType="poweroff"></i>Loading</button>
+            </nz-button-group>
+          </div>
+        </app-card>
+      </div>
+    </div>
+  </div>
+</div>

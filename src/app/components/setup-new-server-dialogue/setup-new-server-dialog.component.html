@@ -1,0 +1,100 @@
+<div style="height: 700px;overflow:auto">
+       <h5>Add New ConfServUser</h5>
+       <form #addServerForm="ngForm" (ngSubmit)="saveEnv()" class="host-form" autocomplete="off">
+              <div class="form-group">
+                     <label for="confServAppName">Config Server App Name</label>
+                     <select placeholder="Config Server App Name" class="form-control" [(ngModel)]="confServApp"
+                            name="confServAppName" required (change)="setEnv()">
+                            <ng-container *ngIf="environments">
+                                   <option *ngFor="let env of environments" [ngValue]="env">
+                                          {{env.appName}}
+                                   </option>
+                            </ng-container>
+
+                     </select>
+              </div>
+              <div class="form-group">
+                     <label for="confServUser">Confing Server User</label>
+
+                     <input id="user" placeholder="Config Server User" class="form-control"
+                            [(ngModel)]="server.confServUser" name="confServUser" required>
+              </div>
+              <div class="form-group">
+                     <label for="confServPassword">Confing Server Password</label>
+
+                     <input type="password" id="confServPassword" placeholder="Config Server Password"
+                            class="form-control" [(ngModel)]="server.confServPassword" name="confServPassword" required>
+
+              </div>
+
+              <div class="form-group">
+                     <label for="confServHost">Confing Server Host</label>
+                     <input placeholder="Config Server Host" class="form-control" [(ngModel)]="server.confServHost"
+                            name="confServHost" required>
+              </div>
+              <div class="form-group" for="confServPort">
+                     <label for="confServPort">Confing Server Port</label>
+                     <input placeholder="Port" class="form-control" [(ngModel)]="server.confServPort"
+                            name="confServPort" pattern="\d+" #confServPort="ngModel" required>
+                     <div class="error text-center" *ngIf="confServPort.errors && confServPort.errors['pattern']">
+                            Invalid Port
+                     </div>
+              </div>
+              <div class="form-group">
+                     <label for="clientName">Config Server Client Name</label>
+                     <input placeholder="Config Server Client Name" class="form-control"
+                            [(ngModel)]="server.confServClientName" name="confServClientName" required>
+              </div>
+
+
+              <div class="form-group">
+                     <label for="msgServHost">Message Server Host</label>
+                     <input placeholder="Message Server Host" class="form-control" [(ngModel)]="server.msgServHost"
+                            name="msgServHost" required>
+              </div>
+              <div class="form-group">
+                     <label for="msgServName">Message Server Name</label>
+                     <input placeholder="Message Server Name" class="form-control" [(ngModel)]="server.msgServName"
+                            name="msgServName" required>
+              </div>
+              <div class="form-group">
+                     <label for="msgServPort">Message Server Port</label>
+                     <input placeholder="Message Server Port" class="form-control" [(ngModel)]="server.msgServPort"
+                            name="msgServPort" #msgServPort="ngModel" pattern="\d+" required>
+                     <div class="error text-center" *ngIf="msgServPort.errors && msgServPort.errors['pattern']">Invalid
+                            Port
+                     </div>
+              </div>
+              <div class="form-group">
+                     <label for="msgServId">Message Server Id</label>
+                     <input placeholder="Message Server Id" class="form-control" [(ngModel)]="server.msgServId"
+                            name="msgServId" required #msgServId="ngModel" pattern="\d+">
+                     <div class="error text-center" *ngIf="msgServId.errors && msgServId.errors['pattern']">
+                            Number is required
+                     </div>
+              </div>
+              <div class="form-group">
+                     <label for="backupMsgServHost">Backup Message Server Host</label>
+                     <input placeholder="Backup Message Server Host" class="form-control"
+                            [(ngModel)]="server.backupMsgServHost" name="backupMsgServHost" required>
+              </div>
+
+              <div class="form-group">
+                     <label for="backupMsgServPort">Backup Message Server Port</label>
+                     <input placeholder="Backup Message Server Port" class="form-control"
+                            [(ngModel)]="server.backupMsgServPort" #backupMsgServPort="ngModel" pattern="\d+"
+                            name="backupMsgServPort" required>
+                     <div class="error text-center"
+                            *ngIf="backupMsgServPort.errors && backupMsgServPort.errors['pattern']">
+                            Invalid Port
+                     </div>
+              </div>
+              <div class="form-group text-right">
+                     <button type="submit" mat-flat-button color="accent"
+                            [disabled]="!addServerForm.valid">Save</button>
+                     <button type="button" mat-flat-button class="mrnone" (click)="cancelIgnoreList()">Cancel</button>
+              </div>
+
+
+       </form>
+</div>

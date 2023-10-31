@@ -1,0 +1,13 @@
+<h5>Fields Of {{data.objType}} Type</h5>
+<form class="example-form" #fieldListForm="ngForm" (ngSubmit)="saveList(fieldListForm)" >
+    
+    <mat-list>
+        <mat-list-item *ngFor="let item of data.list;let i=index">
+            <mat-checkbox name="{{i}}" [(ngModel)]="item.selected">{{item.propertyName}}</mat-checkbox>
+        </mat-list-item>
+        
+       </mat-list>  
+       <button type="button" mat-flat-button color="accent" (click)="cancelIgnoreList()">Cancel</button>  
+       <button type="submit" mat-flat-button color="accent"  >Save</button>
+  </form>
+

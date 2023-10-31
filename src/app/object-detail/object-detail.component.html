@@ -1,0 +1,43 @@
+<div class="vtrascation">
+  <div class="vtran-header">
+    <div class="row">
+      <div class="col-6">
+        <h4>{{eventType}}</h4>
+      </div>
+      <div class="col-6" style="text-align:right">
+        <button class="btn btn-primary" style="margin-bottom:5px;" (click)="newObjectDialog()">Create New</button>
+      </div>
+    </div>
+  </div>
+<div class="">
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+       
+        <th>Name</th>
+        <th>State</th>
+        <th *ngIf="showType">Type</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr *ngFor="let val of objectValue">
+       
+        <td (click)="ShowDetails(val)">  {{val.name}}</td>
+        <td>{{ val.state == 'CFGEnabled' ? 'Enabled'  : 'Disabled'}}</td>
+        <td *ngIf="showType">{{ val.type.substring(3) }}</td>
+        <td><i class="far fa-trash-alt delicon"  (click)="deleteObject(val.dbid)"></i></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+<!-- <div *ngIf="selectedTransaction.length > 0">
+  <app-config-item [config]="selectedTransaction"
+            [SubmitEventName]="'Submit'"
+             [eventType] = "'Transaction'"></app-config-item>
+</div> -->
+
+
+

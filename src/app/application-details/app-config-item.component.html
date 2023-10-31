@@ -1,0 +1,357 @@
+<div class="app-config-item">
+  <ng-container *ngIf="comparisonCtrl.showComparison">
+      <div class="object-type-filter">
+          <mat-form-field>
+              <mat-select (selectionChange)="getConfigEnv()"  [(value)]="selectedObjectType" placeholder="Object Type" class="hide-label">
+                <mat-option
+                  *ngFor="let val of objectTypes"
+                  [value]="val"
+                  >{{ val.objectName }}</mat-option
+                >
+              </mat-select>
+            </mat-form-field>
+      </div>
+      <div *ngIf="loadingComparisonItems" class="text-center">
+          <i class="spin fa fa-refresh mr-2 mt-4"></i>
+      </div>
+        <div  class="example-container env_comp-block">
+            <div class="row">
+              <div class="col-md-12 env_rgt-block">
+                <div class="env_rgt-inner">
+                    <div class="text-center" *ngIf="loadingComparison">
+                        <i class="spin fa fa-refresh mr-2 mt-4"></i>
+                    </div>
+                  <div class="row" [ngClass]="{ hiddenme: !isresultNavVisible }">
+                    <div class="col-12">
+                      <div class="m-heading w-100 mb-3">
+                        <span class="title">Environment - Differences</span>
+                        <button type="button" class="toggle-diff" (click)="toggleShowOnlyDifference()">
+                          <i class="fas fa-sliders-h"></i>
+                          <!-- {{ showOnlyDifference ? 'Show all' : 'Show only difference' }} -->
+                        </button>
+                      </div>
+                    </div>
+                
+          
+                    <div class="col-md-12">
+                      <div class="responsive-table" >
+                      <table class="table environment-comparison">
+                        <thead>
+                          <th></th>
+                          <th><div>{{firstEnvName}}</div></th>
+                          <th><div>{{secondEnvName}}</div></th>
+                        </thead>
+                        <tbody>
+                          <tr 
+                            *ngFor="let configurationItem of environmentComparisson"
+                            [class.changed]="configurationItem.isChanged"
+                            [class.visible]="!shouldShowOnlyDifference || (!configurationItem.isObject && configurationItem.isChanged)"
+                            [class.isTitle]="configurationItem.isObject">
+                            <td class="key" [attr.colspan]="configurationItem.isObject ? 3 : 1">
+                            {{ configurationItem.configKey }}
+                            </td>
+                            <td *ngIf="!configurationItem.isObject" class="old">
+                            {{ configurationItem.oldConfig }}
+                            </td>
+                            <td *ngIf="!configurationItem.isObject" class="new">
+                            {{ configurationItem.newConfig }}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      
+                    </div>
+                    </div>
+          
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  </ng-container>
+  <ng-container *ngIf="!comparisonCtrl.showComparison">
+    <ul>
+      
+        <li *ngFor="let key of objectKeys(config); let i = index">
+          <div class="row">
+              <div class="col-xs-12" [class.col-md-12]="!showCheckBox" [class.col-md-11]="showCheckBox">
+                <span *ngIf="getKeyLabel(key) != 'mappedKeyName' && getKeyLabel(key) != 'propertyName'">
+                  <span class="name" *ngIf="isString(config[key]) || isNumber(config[key]) || isBoolean(config[key])">
+                
+                    <span *ngIf="showArrayOfListEvents(getKeyLabel(key));else modelItems;">
+                      <b *ngIf="!showDeleteIcon">{{getKeyLabel(key)}}: </b>
+                      <b *ngIf="showDeleteIcon"><input type="text" class="form-control" (change)="changeKeyText(key,$event)" value="{{key}}" name="{{key}}"> </b>
+                       <input *ngIf="key != 'state' && key !='upgradeVersion'" [style.width]="showDeleteIcon ? '55%' : '65%'" type="text" class="form-control" [disabled]="getKeyLabel(key) == 'appId' || getKeyLabel(key) == 'appServerId' || getKeyLabel(key) == 'dbid' || getKeyLabel(key) == 'tenantDBID'"
+                        [(ngModel)]="config[key]"
+                        name="{{config[key]}}"
+                        value="{{config[key]}}">
+                        <!-- eventType == 'ApplicationDetail' && key == 'state' -->
+                        
+                        <mat-checkbox (change)="statecheckbox($event)" name="{{config[key]}}"
+                        [value]="" *ngIf="key == 'state'" 
+                        [checked]="config[key] == 'CFGEnabled' ? true : false" name="{{'secondStepSelectedValue'}}">
+                        </mat-checkbox>
+                        <mat-checkbox (change)="upgradeVersion($event)" name="{{config[key]}}"
+                         [value]="" *ngIf="key == 'upgradeVersion'" 
+                        [checked]="config[key] == 'CFGEnabled' ? true : false" name="{{'secondStepSelectedValue'}}">
+                        </mat-checkbox>
+      
+                        <i class="far fa-trash-alt delicon" *ngIf="showDeleteIcon" (click)="openConfirmationDialog(key)"></i>
+                    </span> 
+          
+                    <ng-template #modelItems>
+                      <span class="input-group">
+                        <b>{{getKeyLabel(key)}}: </b>
+                        <span *ngIf="widgets(getKeyLabel(key));else calendarItems">
+                          <input type="text" style="width: 130%" 
+                             class="form-control" [disabled]="getKeyLabel(key)"
+                             [(ngModel)]="config[key]" name="{{config[key]}}"
+                                value="{{config[key]}}">
+                        <span class="input-group-append">
+                          <i class="fa fa-plus" (click)="openModel(getKeyLabel(key))"  style="margin:10px;cursor: pointer;"></i>
+                        </span>
+                        </span>
+                      
+                        <ng-template #calendarItems>
+                            <!-- <input type="text" style="width: 30%" class="form-control"
+                             [disabled]="getKeyLabel(key)" [(ngModel)]="config[key]" name="{{config[key]}}"
+                              value="{{config[key]}}">
+                          <span class="input-group-append">
+                              <i (click) = "openCalendar()" class="fa fa-calendar" style="margin:10px;cursor: pointer;"></i>
+                          </span> -->
+                          <span *ngIf="getKeyLabel(key) == 'contractStartTime'">
+                              <mat-form-field>
+                                  {{config[key]}}
+                                  <input matInput [matDatepicker]="picker" placeholder="Choose To date" [(ngModel)]="config[key]">
+                                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                  <mat-datepicker #picker></mat-datepicker>
+                                </mat-form-field>
+                          </span>
+                          <span *ngIf="getKeyLabel(key) == 'contractEndTime'">
+                              <mat-form-field>
+                                
+                                  <input matInput [matDatepicker]="pickerTo" placeholder="Choose To date">
+                                  <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+                                  <mat-datepicker #pickerTo></mat-datepicker>
+                                </mat-form-field>
+                          </span>
+                         
+                        </ng-template>
+                      </span>
+                    </ng-template>
+                  </span>
+                </span>
+                        <span *ngIf="isObject(config[key])">
+                               <mat-accordion class="right-accordian">
+                                  <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                      <mat-panel-title>
+                                     <span>{{getKeyLabel(key)}}</span> 
+                                      </mat-panel-title>
+                                    </mat-expansion-panel-header>
+                                    <app-config-item [config]="config[key]" [editMode]="editMode" [showDeleteIcon]="showDeleteIcon">
+                                    </app-config-item>
+                                  </mat-expansion-panel>
+                                </mat-accordion>
+                                <i class="far fa-plus-square secdelicon plusic" (click)="addSectionKeyValue(key)" *ngIf="showDeleteIcon"></i>
+                                <i class="far fa-trash-alt secdelicon" *ngIf="showDeleteIcon" (click)="openConfirmationDialog(key)"></i>
+                        </span>
+                      <span *ngIf="isArray(config[key])">
+                         <span *ngIf="showArrayOfListEvents(getKeyLabel(key)); else listEventArrrayObjects">
+                            <mat-accordion class="right-accordian">
+                                <mat-expansion-panel>
+                                   <mat-expansion-panel-header>
+                                      <mat-panel-title>
+                                        {{getKeyLabel(key)}}
+                                      </mat-panel-title>
+                                   </mat-expansion-panel-header>
+                                   <span *ngIf="getKeyLabel(key) != 'connectedServers' && getKeyLabel(key) != 'HostName' && getKeyLabel(key) != 'version'  ;else connectedServerViewAndHostView" class="table-responsive">
+                                     <table class="consertble" style="width:100%;margin-top:4px;">
+                                       <thead>
+                                        <tr style="background-color: #d4d3d3;">
+                                          <th *ngFor="let heading of objectKeysNew(config[key])">
+                                            {{heading}}
+                                          </th>
+                                       </tr>
+                                       </thead>
+                                       <tbody>
+                                            <tr *ngFor="let item of config[key]">
+                                              <td *ngFor="let data of objectValues(item);let i=index;"> <span>
+                                                <ng-container *ngIf="isAnObject(data)">
+                                                    <div *ngFor="let k of getKeys(data)" class="object-input pl-1">
+                                                        <span class="mr-1 mt-2">{{k}}</span>
+                                                        <input [disabled]="i!=2 || editMode" type="text" [(ngModel)]="data[k]">
+                                                      </div>
+                                                   
+                                                </ng-container>
+                                                <ng-container *ngIf="!isAnObject(data)">
+                                                    <input  [disabled]="i!=2 || editMode"  type="text" class="form-control" value={{data|json}}  
+                                                    (change) = "onChange($event,data,item)">
+                                                </ng-container>
+                                              
+                                            </span></td></tr>
+                                       </tbody>
+                                     </table>
+                                    </span>
+                                  <ng-template #connectedServerViewAndHostView>
+                                    <span *ngIf="getKeyLabel(key) == 'connectedServers'">
+                                        <span style="float: right;margin-left: 5px;border:1px dotted white;padding:2px;" (click)="AddNewRow(config[key])">
+                                            <i class="fa fa-plus"  style="cursor: pointer;"></i>
+                                           </span>
+                                      <table class="consertble">
+                                        <thead>
+                                          <tr style="background-color: #d4d3d3;">
+                                             <th *ngFor ="let headings of connectedServer">
+                                              {{headings}}
+                                             </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr *ngFor="let heading of config[key]">
+                                            <td *ngFor="let value of connectedServerName">
+                                                <span>
+                                                    <input type="text" class="form-control" [(ngModel)]="heading[value]" name="{{heading[value]}}" value="{{heading[value]}}">
+                                                  </span>
+                                            </td>
+          
+                                            <!--
+                                            <td>
+                                                <span>
+                                                    <input type="text" class="form-control" [(ngModel)]="heading.appServerId" name="{{heading.appServerId}}" value="{{heading.appServerId}}">
+                                                  </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    <input type="text" class="form-control" [(ngModel)]="heading.appServerId" name="{{heading.appServerId}}" value="{{heading.appServerId}}">
+                                                  </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    <input type="text" class="form-control" [(ngModel)]="heading.appServerId" name="{{heading.appServerId}}" value="{{heading.appServerId}}">
+                                                  </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    <input type="text" class="form-control" [(ngModel)]="heading.appServerId" name="{{heading.appServerId}}" value="{{heading.appServerId}}">
+                                                  </span>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    <input type="text" class="form-control" [(ngModel)]="heading.appServerId" name="{{heading.appServerId}}" value="{{heading.appServerId}}">
+                                                  </span>
+                                            </td> -->
+                                            <!-- <td *ngFor="let sub of objectKeys(heading)">
+                                              <span>
+                                                <input type="text" class="form-control" [(ngModel)]="heading[sub]" name="{{heading[sub]}}" value="{{heading[sub]}}">
+                                              </span>
+                                            </td> -->
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                    </span>
+                                    <span *ngIf="getKeyLabel(key) == 'HostName'">
+                                      <select class="form-control form-control-min" [(ngModel)]="config.selectedHostId"  (change)="getHostId($event,config[key])">
+                                        <option *ngFor="let rec of config[key]" [value]="rec.hostId">
+                                          {{rec.hostName}}
+                                        </option>
+                                      </select>
+                                    </span>
+                                    <span *ngIf="getKeyLabel(key) == 'version'">
+                                      <select class="form-control form-control-min" [(ngModel)]="config.selectedVersion">
+                                        <option *ngFor="let rec of config[key]" [value]="rec">
+                                          {{rec}}
+                                        </option>
+                                      </select>
+                                    </span>
+                                  </ng-template>
+          
+                                </mat-expansion-panel>
+                             </mat-accordion>
+                         </span>
+                         <!--separate template for array of objects of list event items-->
+                        <ng-template #listEventArrrayObjects>
+                          <mat-accordion class="right-accordian">
+                            <mat-expansion-panel>
+                              <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                  {{getKeyLabel(key)}}
+                                </mat-panel-title>
+                              </mat-expansion-panel-header>
+                              
+                              <span *ngIf="showArrayItems(getKeyLabel(key));else showArrayObjectItems">
+                                
+                                <div class="col-xs-3">   
+                                  <div class="pull-right plusrow">
+                                        <i (click)="openModel(getKeyLabel(key))" class="fa fa-plus"></i>
+                                  </div>
+                                  
+                                </div>
+                                <div class="col-xs-9">
+                                  <ul>
+                                    <li *ngFor="let item of config[key];let i = index">
+                                      <span style="margin-right: 5px"><i (click)="removeListItems(key,i)" class="fa fa-minus"></i></span>
+                                      <span style="text-align: center">{{item}}</span>
+                                    </li>
+                                  </ul>
+                                </div>
+                              </span>
+                              <ng-template #showArrayObjectItems>
+                                <div class="col-xs-3">
+                                  <div (click)="openModel(getKeyLabel(key))" class="pull-right plusrow">
+                                    <i class="fa fa-plus"></i>
+                                  </div>
+                                </div>
+                                <div class="col-xs-9" class="table-responsive">
+                                  <table *ngIf="ifNotNull(config[key])" class="consertble" style="width:100%;margin-top:4px;">
+                                    <thead>
+                                      <tr style="background-color: #d4d3d3;">
+                                        <th>Remove Items</th>
+                                        <th *ngFor="let heading of ListObjectHeadings">
+                                          {{heading}}
+                                        </th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr *ngFor="let item of config[key]; let i = index">
+                                        <td style="background:#fff;border:1px solid #ddd;text-align:center;">
+                                          <i (click)="removeListItems(key,i)" class="fa fa-minus"></i>
+                                        </td>
+                                        <td *ngFor="let data of objectValues(item)">
+                                          <span>
+                                            <input type="text" class="form-control" value={{data}} (change)="onChange($event,data,item)">
+                                          </span>
+                                        </td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </ng-template>
+                             
+                            </mat-expansion-panel>
+                          </mat-accordion>
+                        </ng-template>
+                      </span>
+              </div>
+              <div *ngIf="showCheckBox" class="col-xs-1 paddingTopLeft" [class.col-md-1]="showCheckBox" style="padding-top: 25px;padding-left: 14px;">
+                  <mat-checkbox (change)="getConfigList(config,i,$event)" [checked]="selectedIndexes.has(i)" name="checkConfig">
+                 </mat-checkbox>
+                 
+              </div>
+          </div>
+          </li>
+        </ul>
+      </ng-container>
+     
+        <div class="row" *ngIf="CancelEventName || SubmitEventName">
+          <div class="col-xs-12 col-md-12 btm-button">
+              <button type="button" *ngIf="selectedObjectType && selectedObjectType.objectType" class="btn btn-primary btn-md " (click)="onShowComparison()" >{{!comparisonCtrl.showComparison?'Show Comparison':'Hide Comparison'}}</button>
+              <button *ngIf="CancelEventName && !showComparison" type="button" class="btn btn-secondary btn-md " (click)="BackStep()" >{{CancelEventName}}</button>
+              <button *ngIf="SubmitEventName && !showComparison" type="button" class="btn btn-primary btn-md" [disabled]="showCheckBox && !selectedIndexes.size"  (click)="saveValue()">{{SubmitEventName}}</button>
+          </div>
+        </div>
+</div>
+
+
+
+

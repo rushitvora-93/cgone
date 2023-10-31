@@ -1,0 +1,19 @@
+<i class="far fa-times-circle closeDialog" (click)="close()" style="float:right; cursor:pointer"></i>
+<h5>Add New Section</h5>
+<hr>
+<div class="form-group">
+    <label for="section">Section:</label>
+    <input type="text" [(ngModel)]="configOptions.section" class="form-control" id="section">
+  </div>
+  <div class="form-group">
+    <label for="name">Name:</label>
+    <input type="text" [(ngModel)]="configOptions.name" class="form-control" id="name">
+  </div>
+  <div class="form-group">
+      <label for="value">Value:</label>
+      <input type="text" [(ngModel)]="configOptions.value" class="form-control" id="value">
+  </div>
+  <div class="mat-dialog-content">
+      <button type="submit" class="btn btn-dark" (click)="close()">Cancel</button>
+      <button type="submit" class="btn btn-primary" (click)="close()">Submit</button>
+  </div>

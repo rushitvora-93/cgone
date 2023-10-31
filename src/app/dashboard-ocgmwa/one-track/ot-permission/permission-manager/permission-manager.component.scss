@@ -1,0 +1,59 @@
+@import "../../../../../styles/mixins.scss";
+
+.ot-perm-manager-wrapper {
+    .md-header {
+        @include h2();
+        font-size: 18px;
+        padding-bottom: 25px;
+    }
+
+    .scroll-view {
+        max-width: 2000px;
+        overflow: auto;
+    }
+
+    .grid-header {
+        display: flex;
+        background: #b0c9db;
+        .block {
+            width: 200px;
+            border-right: 1px solid #658fa2;
+            padding: 15px 20px;
+            color: $primary;
+            font-weight: bold;
+            &:last-child {
+                border: 0;
+            }
+        }
+    }
+
+    .grid-body {
+        display: flex;
+        .block {
+            width: 200px;
+            border-right: 1px solid #658fa2;
+            &:last-child {
+                border: 0;
+            }
+
+            &.split {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .row-bg {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 40px;
+                color: $primary;
+                &:nth-child(odd) {
+                    background: #fff;
+                }
+                &:nth-child(even) {
+                    background-color: #d6e1e8;
+                }
+            }
+        }
+    }
+}

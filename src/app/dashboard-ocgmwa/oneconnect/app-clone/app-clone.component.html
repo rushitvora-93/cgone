@@ -1,0 +1,143 @@
+<div class="app-clone-container" *ngIf="!cloneSuccess">
+  <div class="wrapper">
+    <div class="bg-wrapper">
+      <div class="title">Clone Apps</div>
+      <mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <ng-template matStepperIcon="edit">
+          <mat-icon>done</mat-icon>
+        </ng-template>
+        <mat-step>
+          <div class="content-wrapper">
+            <form #selectSiteForm="ngForm">
+              <ng-template matStepLabel>Select</ng-template>
+              <div class="select-sites">
+                <mat-form-field>
+                  <input matInput placeholder="From Site" [(ngModel)]="fromSite" name="fromSite" required
+                    #from="ngModel">
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput placeholder="To Site" [(ngModel)]="toSite" name="toSite" required #to="ngModel">
+                </mat-form-field>
+              </div>
+            </form>
+            <div class="btn-set">
+              <button class="btn-primary  sm round" matStepperNext [disabled]="!selectSiteForm.valid">Next</button>
+            </div>
+          </div>
+        </mat-step>
+        <mat-step>
+          <ng-template matStepLabel>Arrange</ng-template>
+          <div class="text-center sub-title mb-4">Select Hosts</div>
+          <div class="text-center"
+            *ngIf="site1Hosts.length!=0 && site2Hosts.length!=0 && site1Hosts.length!=site2Hosts.length">
+            <small class="error">Selected hosts on both the sites should be equal</small>
+          </div>
+          <div class="content-wrapper">
+            <div class="select-sites">
+              <div>
+                <label class="w-100 d-block text-center font-weight-bold pt-2">{{fromSite}}</label>
+                <div class="search">
+                  <mat-form-field class="search-bar">
+                    <input class="hide-label" name="fromFilter" [(ngModel)]="fromFilter" type="text" matInput>
+                    <mat-icon matSuffix>search</mat-icon>
+                  </mat-form-field>
+                </div>
+                <div class="search-res">
+                  <div class="item" *ngFor="let site of hosts1 | appFilter : fromFilter:'hostName';let i=index;">
+                    <mat-checkbox matTooltip="{{site.hostName}}" (change)="filterHosts()" name="{{i}}"
+                      [(ngModel)]="site.selected">
+                      {{site.hostName}}</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+              <div class="host-container">
+                <label class="w-100 d-block text-center font-weight-bold pt-2">{{toSite}}</label>
+                <div class="search">
+                  <mat-form-field class="search-bar">
+                    <input class="hide-label" name="toFilter" [(ngModel)]="toFilter" type="text" matInput>
+                    <mat-icon matSuffix>search</mat-icon>
+                  </mat-form-field>
+                </div>
+                <div class="search-res">
+                  <div class="item" *ngFor="let site of hosts2 | appFilter : toFilter:'hostName';let i=index;">
+                    <mat-checkbox matTooltip="{{site.hostName}}" (change)="filterHosts()" name="{{i}}"
+                      [(ngModel)]="site.selected">
+                      {{site.hostName}}</mat-checkbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="btn-set"><button class="btn-primary  sm round" matStepperNext (click)="filterHosts()"
+                [disabled]="site1Hosts.length==0 || site1Hosts.length!=site2Hosts.length">Next</button>
+              <button class="btn-secondary sm round" matStepperPrevious>Back</button>
+            </div>
+          </div>
+        </mat-step>
+        <mat-step>
+          <form>
+            <ng-template matStepLabel>Arrange</ng-template>
+            <div class="text-center sub-title">Map Hosts</div>
+            <div class="content-wrapper">
+              <div class="select-sites">
+                <div class="map-hosts" cdkDropList (cdkDropListDropped)="moveSite1Items($event)">
+                  <div class="app-name"><label>{{fromSite}}</label></div>
+                  <div class="map-row" *ngFor="let site of site1Hosts;let i=index;" cdkDrag>
+                    {{site.hostName}}
+                  </div>
+                </div>
+                <div class="map-hosts" cdkDropList (cdkDropListDropped)="moveSite2Items($event)">
+                  <div class="app-name"><label>{{toSite}}</label></div>
+                  <div class="map-row" *ngFor="let site of site2Hosts;let i=index;" cdkDrag>
+                    {{site.hostName}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="btn-set"><button class="btn-primary  sm round" matStepperNext (click)="clone()">Clone</button>
+                <button class="btn-secondary sm round" matStepperPrevious>Back</button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+        <mat-step>
+          <form>
+            <ng-template matStepLabel>Hosts</ng-template>
+
+            <div class="text-center sub-title">Hosts and Applications</div>
+            <div class="content-wrapper">
+              <div class="mappings-container">
+                <div class="select-sites mappings map-host">
+                  <div (click)="selectedHost=h" class="map-row host cursor-pointer"
+                    [ngClass]="{'selected':selectedHost==h}" *ngFor="let h of mapping">
+                    {{h.hostName}}
+                  </div>
+                  <ng-container *ngIf="selectedHost">
+                    <div class="map-row app cursor-pointer" *ngFor="let app of selectedHost.appList">
+                      {{app.appName}}
+                    </div>
+                  </ng-container>
+
+                </div>
+              </div>
+              <div class="btn-set">
+                <button class="btn-primary  sm round" matStepperNext (click)="save()">Save</button>
+                <button class="btn-secondary  sm round" matStepperPrevious>Back</button>
+              </div>
+            </div>
+          </form>
+        </mat-step>
+      </mat-horizontal-stepper>
+    </div>
+    <!-- form ends -->
+  </div>
+</div>
+<div class="app-clone-success-container" *ngIf="cloneSuccess">
+  <div class="clone-success">
+    <div class="arc">
+      <div class="check">
+        <i-feather name="check" class="icon"></i-feather>
+      </div>
+    </div>
+    <div class="label">CLONED APP SAVED<br>SUCCESSFULLY!</div>
+  </div>
+</div>

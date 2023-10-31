@@ -1,0 +1,59 @@
+
+.envlist{
+    padding:10px 16px 4px;
+    display: block;
+    color:#fff;
+    font-size: 13px;
+    position: relative;
+    cursor: pointer;
+}
+.envlist::before{
+    position: absolute;
+    top: 1.1rem;
+    left: 0rem;
+    content: "";
+    height: 0.4375rem;
+    width: 0.4375rem;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    border-color: #717171;
+}
+.envdrp{
+    padding-left: 30px;
+    font-size: 11px;
+    list-style: none;
+}
+.envdrp li a{
+    color:#868e96;
+    padding:5px 4px;
+    display: block;
+    text-decoration: none;
+}
+.envdrp li a:hover{
+    color:#9d9ea0;
+}
+.envdrp li{
+    position: relative;
+}
+.envdrp li::before{
+    position: absolute;
+    top: 0.6875rem;
+    left: -.8rem;
+    content: "";
+    height: 0.4375rem;
+    width: 0.4375rem;
+    border: 2px solid #eee;
+    border-radius: 10px;
+    border-color: #717171;
+}
+.colapseic{
+    float: right;
+    font-size: 10px;
+    padding-top: 5px;
+}
+mat-accordion.mat-accordion .mat-expansion-panel-body ul a,
+mat-accordion.mat-accordion .mat-expansion-panel-body ul a:hover {
+    font-size: 11px;
+    padding: 2px 0 !important;
+    color: #9d9ea0;    
+}

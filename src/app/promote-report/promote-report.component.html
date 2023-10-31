@@ -1,0 +1,91 @@
+<div class="example-container audform">
+  <form #promoteReportFilters="ngForm" (ngSubmit)="submit('submitted')">
+    
+      <div class="table-card">
+          <div class="header">
+            <label>From:</label>
+            <div class="fromdate">
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="From date" [(ngModel)]="fromDate" name="from-date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <label>To:</label>
+          <div class="todate">
+            <mat-form-field>
+              <input matInput [matDatepicker]="pickerTo" placeholder="To date" [(ngModel)]="toDate" name="to-date">
+              <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+              <mat-datepicker #pickerTo></mat-datepicker>
+            </mat-form-field>
+          </div>
+        
+        
+          <div style="margin-top: -1px; text-align: right;flex-grow: 1">
+            <button mat-button class="btn btn-primary mat-filter-btn">Submit</button>
+          </div>
+       
+      </div>
+  </div>
+</form>
+</div>
+
+<div [ngStyle]="{ display: isLoaded ? 'block' : 'none'}" class="container">
+  <div class="row">
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Object Type</h5>
+          <canvas id="objectType"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Operations</h5>
+          <canvas id="operation"></canvas>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Promoted</h5>
+          <canvas id="promoted"></canvas>
+        </div>
+      </div>
+      
+      <!-- <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Users</h5>
+          <canvas id="user"></canvas>
+        </div>
+      </div> -->
+    </div>
+    <div class="col-lg-8 col-md-8 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Changes by time</h5>
+          <canvas id="barChart"></canvas>
+        </div>
+      </div>
+    </div>
+  <div class="col-lg-4 col-md-4 col-sm-12">
+    
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Users</h5>
+        <canvas id="user"></canvas>
+      </div>
+    </div>
+    
+    <!-- <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Promoted</h5>
+        <canvas id="promoted"></canvas>
+      </div>
+    </div> -->
+  </div>
+</div>

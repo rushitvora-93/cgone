@@ -1,0 +1,133 @@
+<div class="clone-app-dialog">
+        <mat-horizontal-stepper [linear]="isLinear" #stepper>
+                <mat-step >
+                    <form #selectSiteForm="ngForm">
+                        <ng-template matStepLabel>Select Sites</ng-template>
+                        <mat-grid-list cols="2" rowHeight="100px">
+                                <mat-grid-tile
+                                [colspan]="1"
+                                [rowspan]="1">
+                                <mat-form-field>
+                                                <input matInput placeholder="From Site" [(ngModel)]="fromSite" name="fromSite" required #from="ngModel">
+                                              
+                                    </mat-form-field>
+                                </mat-grid-tile>
+                                <mat-grid-tile
+                                [colspan]="1"
+                                [rowspan]="1">
+                                <mat-form-field>
+                                        <input matInput placeholder="To Site" [(ngModel)]="toSite" name="toSite" required #to="ngModel">
+                                      
+                            </mat-form-field>
+                                </mat-grid-tile>
+                        </mat-grid-list>
+                        <div>
+                            <button mat-button matStepperNext  [disabled]="!selectSiteForm.valid">Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step >
+                    <form>
+                        <ng-template matStepLabel>Arrange Host Mapping</ng-template>
+                        <div class="text-center"><label class="mb-4">Select Hosts</label></div>
+                        <div class="text-center" *ngIf="site1Hosts.length!=0 && site2Hosts.length!=0 && site1Hosts.length!=site2Hosts.length">
+                            <small class="error">Selected hosts on both the sites should be equal</small>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-6 host-container">
+                                                <div class="row host justify-center">
+                                                    <label class="w-100 d-block text-center font-weight-bold pt-2">{{fromSite}}</label>
+                                                    <form class="example-form d-block">
+
+                                                            <mat-form-field class="example-full-width">
+                                                              <input class="hide-label" name="fromFilter" [(ngModel)]="fromFilter" type="text" matInput>
+                                                              <mat-icon matSuffix>search</mat-icon>
+                                                            </mat-form-field>
+                                                            
+                                                          </form>
+                                                
+                                                </div>
+                                 <div class="row host" *ngFor="let site of hosts1 | appFilter : fromFilter:'hostName';let i=index;">
+                                                <mat-checkbox matTooltip="{{site.hostName}}"  (change)="filterHosts()" name="{{i}}" [(ngModel)]="site.selected">{{site.hostName}}</mat-checkbox>
+                                 </div>
+                                </div>
+                                <div class="col-md-6 host-container">
+                                                <div class="row host justify-center">
+                                                    <label class="w-100 d-block text-center font-weight-bold pt-2">{{toSite}}</label>
+                                                    <form class="example-form d-block">
+
+                                                            <mat-form-field class="example-full-width">
+                                                              <input class="hide-label" name="toFilter" [(ngModel)]="toFilter" type="text" matInput>
+                                                              <mat-icon matSuffix>search</mat-icon>
+                                                            </mat-form-field>
+                                                            
+                                                          </form>
+                                                </div>
+                                        <div class="row host" *ngFor="let site of hosts2 | appFilter : toFilter:'hostName';let i=index;">
+                                                        <mat-checkbox matTooltip="{{site.hostName}}" (change)="filterHosts()" name="{{i}}" [(ngModel)]="site.selected">{{site.hostName}}</mat-checkbox>
+                                        </div>
+                                </div>
+                        </div>
+                       
+                        <div>
+                            <button mat-button matStepperPrevious>Back</button>
+                            <button mat-button matStepperNext (click)="filterHosts()" [disabled]="site1Hosts.length==0 || site1Hosts.length!=site2Hosts.length">Next</button>
+                        </div>
+                    </form>
+                </mat-step>
+                <mat-step >
+                        <form>
+                            <ng-template matStepLabel>Arrange Host Mapping</ng-template>
+                            <div class="text-center"><label class="mb-4">Map Hosts</label></div>
+                            <div class="row">
+                                        <div class="col-md-5 host-container example-list" cdkDropList (cdkDropListDropped)="moveSite1Items($event)">
+                                                        <div class="row host justify-center"><label>{{fromSite}}</label></div>
+                                         <div class="row host justify-center example-box" *ngFor="let site of site1Hosts;let i=index;" cdkDrag>
+                                                        {{site.hostName}}
+                                         </div>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-5 host-container example-list" cdkDropList (cdkDropListDropped)="moveSite2Items($event)">
+                                                        <div class="row host justify-center "><label>{{toSite}}</label></div>
+                                                <div class="row host justify-center example-box" *ngFor="let site of site2Hosts;let i=index;" cdkDrag>
+                                                                {{site.hostName}}
+                                                </div>
+                                        </div>
+                                </div>
+                            
+                                 
+                            <div>
+                                <button mat-button matStepperPrevious>Back</button>
+                                <button mat-button matStepperNext (click)="clone()">Clone</button>
+                            </div>
+                        </form>
+                    </mat-step>
+                    <mat-step >
+                                <form>
+                                    <ng-template matStepLabel>Hosts and Applications</ng-template>
+                                    
+                                    <div class="text-center"><label class="mb-4">Hosts and Applications</label></div>
+                                    <div class="mappings-container">
+                                     <div class="row mappings">
+                                             <div class="col-md-6">
+                                                <div (click)="selectedHost=h" class="row host cursor-pointer" [ngClass]="{'selected':selectedHost==h}" *ngFor="let h of mapping">
+                                                       {{h.hostName}} 
+                                                </div>
+                                             </div>
+                                             <div class="col-md-6">
+                                                     <ng-container *ngIf="selectedHost">
+                                                <div class="row app cursor-pointer" *ngFor="let app of selectedHost.appList">
+                                                        {{app.appName}}
+                                                </div>
+                                        </ng-container>
+                                             </div>
+                                     </div>
+                                </div>
+                                    <div>
+                                        <button mat-button matStepperPrevious>Back</button>
+                                        <button mat-button matStepperNext (click)="save()">Save</button>
+                                    </div>
+                                </form>
+                            </mat-step>
+            </mat-horizontal-stepper>
+</div>

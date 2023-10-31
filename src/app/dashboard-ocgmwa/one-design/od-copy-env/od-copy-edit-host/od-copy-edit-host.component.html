@@ -1,0 +1,53 @@
+<div class="add-host-dialog">
+  <div class="mdr">
+    <div class="modal-title">{{ isEdit? 'Edit Host' : 'Add New Host' }}</div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeDialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body form" [formGroup]="addHostForm">
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Host Name</mat-label>
+        <input matInput placeholder="Host name" formControlName="hostName">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>IP</mat-label>
+        <input matInput placeholder="IP" formControlName="ip">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-select formControlName="osType">
+          <mat-option *ngFor="let item of osList" [value]="item">{{ item }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="check-set">
+      <div class="item" *ngFor="let item of hostConfig">
+        <mwa-check [check]="addHostForm.value[item.id]" (change)="setHostConfig($event,item.id)">
+          <div label>{{ item.label }}</div>
+        </mwa-check>
+      </div>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>SCS</mat-label>
+        <input matInput placeholder="SCS" formControlName="scsDBID">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Version</mat-label>
+        <input matInput placeholder="Version" formControlName="osVersion">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-footer pt-4" mat-dialog-actions>
+    <button class="btn-cancel" (click)="closeDialog()">Cancel</button>
+    <button class="btn-save" (click)="isEdit? editHost() : saveNewHost()" [disabled]="!addHostForm.valid">Save</button>
+  </div>
+
+</div>

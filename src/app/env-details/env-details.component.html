@@ -1,0 +1,17 @@
+<li (click)="isCollapsed = !isCollapsed" [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample"
+  class="envlist">
+  {{env.host}}
+  <i class="fas colapseic" [class.fa-chevron-up]="!isCollapsed" [class.fa-chevron-down]="isCollapsed"></i>
+</li>
+<ul id="collapseExample" [ngbCollapse]="isCollapsed" class="envdrp">
+  <li>
+    <a href="javascript:void(0)" (click)="loadEnvironment(env)">Load Environment</a>
+  </li>
+  <!-- <li>
+        <a href="javascript:void(0)" data-toggle="modal" data-target="#addenv-popup">Update Config</a>
+      </li> -->
+  <li><a href="javascript:void(0)" (click)="removeEnvironment(env)">Remove Environment</a>
+  </li>
+  <li><a href="javascript:void(0)" (click)="logOut(env)">UnLoad Environment</a>
+  </li>
+</ul>

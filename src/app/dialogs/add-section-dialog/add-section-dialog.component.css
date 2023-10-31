@@ -1,0 +1,8 @@
+.dialog-content .btn-footer{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.dialog-content button{
+    margin-left: 20px;
+}

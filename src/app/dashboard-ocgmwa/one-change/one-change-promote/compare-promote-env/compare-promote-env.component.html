@@ -1,0 +1,37 @@
+<div>
+  <div class="object-type-filter">
+    <mat-form-field>
+      <mat-select placeholder="Object Type">
+        <mat-option *ngFor="let val of compare" (click)="getCompareConfigEnv(val)">{{ val.objectName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="toggle-changes" (click)="displayChanges = !displayChanges">
+      <i class="fas fa-sliders-h"></i>
+    </div>
+  </div>
+  <div>
+    <div class="compare-table">
+      <div class="head">
+        <div class="name"></div>
+        <div class="name">{{firstEnvName}}</div>
+        <div class="name">{{secondEnvName}}</div>
+      </div>
+      <div class="body">
+        <div class="tb-row" *ngFor="let configurationItem of environmentComparisson">
+          <ng-container *ngIf="!displayChanges || configurationItem.isChanged">
+            <div class="key">
+              {{ configurationItem.configKey }}
+            </div>
+            <div [class.old]="configurationItem.isChanged">
+              <span *ngIf="!configurationItem.isObject">{{ configurationItem.oldConfig }}</span>
+            </div>
+            <div [class.new]="configurationItem.isChanged">
+              <span *ngIf="!configurationItem.isObject">{{ configurationItem.newConfig }}</span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

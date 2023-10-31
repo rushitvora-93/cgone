@@ -1,0 +1,121 @@
+<div class="page-container">
+    <div class="wrapper">
+        <app-setup-header></app-setup-header>
+        <div class="content-wrapper">
+            <main class="main-wrapper clearfix px-4">
+                <h4 class="mt-3">Setup</h4>
+                <h6 class="mt-3">Add Object</h6>
+                <div class="row mt-3 ml-3">
+                    <div class="col-md-2">
+                        <a class="btn btn-block ripple" mat-raised-button (click)="showNewEnvDialog()" href="javascript:void(0)">
+                            <img src="assets/img/one-connect-white.png" class="mat-icon mr-2"> Add Environment
+                        </a>
+                    </div>
+                    <div class="col-md-2">
+                        <a class="btn btn-block ripple" mat-raised-button (click)="showNewServerDialog()" href="javascript:void(0)">
+                            <img src="assets/img/one-connect-white.png" class="mat-icon mr-2"> Add Server
+                        </a>
+                    </div>
+                </div>
+                <hr>
+                <h6 class="mt-3">Refresh Template</h6>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form #addServerForm="ngForm" class="host-form" autocomplete="off">
+                            <div class="form-row">
+                                <div class="form-group col-md-2 mr-3">
+                                    <label for="confServAppName" class="text-muted">Envrironments</label>
+                                    <select placeholder="Config Server App Name" class="form-control" [(ngModel)]="refreshEnv" name="confServAppName" required>
+                    <ng-container *ngIf="environments">
+                      <option *ngFor="let env of environments" [ngValue]="env">
+                        {{env.appName}}
+                      </option>
+                    </ng-container>
+
+                  </select>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>&nbsp;</label>
+                                    <a class="btn btn-block ripple" mat-raised-button href="javascript:void(0)" (click)="refreshTemplate()">
+                                        <i class="fa fa-refresh mr-2"></i> Refresh Template
+                                    </a>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+                <hr>
+                <h6 class="mt-3">Refresh Audit History</h6>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form #addServerForm="ngForm" class="host-form" autocomplete="off">
+                            <div class="form-row">
+                                <div class="form-group col-md-2 mr-3">
+                                    <label for="auditEnv" class="text-muted">Envrironments</label>
+                                    <select placeholder="Config Server App Name" class="form-control" [(ngModel)]="auditEnv" name="auditEnv" required>
+                    <ng-container *ngIf="environments">
+                      <option *ngFor="let env of environments" [ngValue]="env">
+                        {{env.appName}}
+                      </option>
+                    </ng-container>
+
+                  </select>
+                                </div>
+                            </div>
+                            <ng-container *ngIf="objectTypes">
+                                <div class="form-row">
+                                    <div class="form-group col-md-2 mr-3">
+                                        <label class="text-muted">Object Type</label>
+                                    </div>
+                                    <div class="form-group col-md-2 mr-3">
+                                        <label class="text-muted">Status</label>
+                                    </div>
+
+                                    <div class="form-group col-md-2 text-center">
+                                        <label class="text-muted">Action</label>
+                                    </div>
+                                </div>
+                                <div class="refresh-audit-objects">
+                                    <div class="form-row" *ngFor="let objectType of objectTypes; let i=index;">
+                                        <ng-container *ngIf="objectType.mappedName!='CFGNoObject'">
+
+                                            <div class="form-group col-md-2 mr-3">
+                                                <span>{{objectType.propertyName}}</span>
+
+                                            </div>
+                                            <div class="form-group col-md-2 mr-3">
+                                                <span [ngClass]="{'text-success':objectType.status && objectType.status=='success','text-danger':
+                                          objectType.status && objectType.status=='failed',
+                                          'text-warn':objectType.status && objectType.status=='in progress'}">
+                                          {{objectType.status || '-'}}</span>
+                                            </div>
+
+                                            <div class="form-group col-md-2">
+                                                <a class="btn btn-block ripple" mat-raised-button href="javascript:void(0)" (click)="refreshAuditHistory(i)">
+                                                    <i class="fa fa-refresh mr-2" [ngClass]="{'spin':objectType.status && objectType.status=='in progress'}"></i> Refresh
+                                                </a>
+                                            </div>
+                                        </ng-container>
+
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </form>
+                    </div>
+                </div>
+                <hr>
+                <h6 class="mt-3">Restart Server</h6>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-2 ml-3 mt-2">
+                            <a class="btn btn-block ripple" mat-raised-button (click)="restartServer()" href="javascript:void(0)">
+                                <i class="fa fa-power-off mr-2"></i> Restart Server
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </main>
+        </div>
+    </div>

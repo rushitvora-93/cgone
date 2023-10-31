@@ -1,0 +1,76 @@
+<div class="copy-env-dialog">
+  <div class="mdr">
+    <div class="modal-title">Add New Environment</div>
+    <button type="button" class="btn-close" aria-label="Close" (click)="closeDialog()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body form" [formGroup]="copyEnvForm">
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>From Environment</mat-label>
+        <mat-select placeholder="From Environment" formControlName="fromEnvId">
+          <mat-option *ngFor="let item of envList" [value]="item.id">{{item.appName }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Environment Name</mat-label>
+        <input matInput placeholder="Environment Name" formControlName="newEnvName">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>DB Username</mat-label>
+        <input matInput placeholder="DB Username" formControlName="cfgUsername">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>DB Password</mat-label>
+        <input matInput placeholder="DB Password" formControlName="cfgPassword">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>DB Host</mat-label>
+        <input matInput placeholder="DB Host" formControlName="dbHost">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>DB Port</mat-label>
+        <input matInput placeholder="DB Port" formControlName="dbPort">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Log DB Username</mat-label>
+        <input matInput placeholder="Log DB Username" formControlName="logdbUsername">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Log DB Password</mat-label>
+        <input matInput placeholder="Log DB Password" formControlName="logdbPassword">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>DB Service</mat-label>
+        <input matInput placeholder="DB Service" formControlName="serviceName">
+      </mat-form-field>
+    </div>
+    <div class="form-row">
+      <mat-form-field>
+        <mat-label>Database Type</mat-label>
+        <input matInput placeholder="Database Type" formControlName="database">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="btn-footer pt-4" mat-dialog-actions>
+    <button class="btn-cancel" (click)="closeDialog()">Cancel</button>
+    <button class="btn-save" (click)="create()" [disabled]="!copyEnvForm.valid">Save</button>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+h5{
+    text-align: center;
+}
+.canbtn{
+    margin-left:10px;
+} 
+.canbtncon{
+    float:right;
+    padding-top:20px;
+}
+button.mat-accent{
+    background-color: #343a40;
+}
+button.primary{
+    color: #fff;
+    background-color: #EF820D;
+}

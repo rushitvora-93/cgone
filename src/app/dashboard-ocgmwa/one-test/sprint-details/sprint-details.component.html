@@ -1,0 +1,96 @@
+<div class="sprint-data_container">
+  <div class="sprint-data_wrapper" *ngIf="!busy">
+    <div class="navigation">
+      OneTest > <span>Sprint</span>
+    </div>
+    <div class="ivr-sprint" *ngIf="sprintType === 'IVR Testing' else nonIVR">
+      <div class="progress-panel ivr-panel">
+        <div class="section">
+
+          <div class="sec-title ivr-title">IVR Testing Auto Pilot</div>
+          <div class="sprint_list">
+            <div class="item header">
+              <div>Expected Text</div>
+              <div>Auto Pilot Recognition</div>
+              <div>Auto Pilot Response</div>
+              <div>Difference</div>
+              <div>Confidence</div>
+            </div>
+            <div class="item" *ngFor="let item of sprintIVRData[0]">
+              <div>{{ item.expected}}</div>
+              <div>{{ item.ivr_message }}</div>
+              <div>{{ item.ai_message}}</div>
+              <div [innerHTML]="compareText(item)"></div>
+              <div>{{ item.confidence }} </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-set">
+        <button nz-button nzType="primary" nzShape="round" nzSize="large" class="stop" (click)="stopIVRSprint()"
+          *ngIf="!stopInterval">Stop</button>
+        <button nz-button nzType="primary" nzShape="round" nzSize="large" (click)="startIVRSprint()"
+          *ngIf="stopInterval && !isStartBusy">Start</button>
+        <button nz-button nzShape="round" nzType="primary" nzSize="large" nzLoading
+          *ngIf="stopInterval && isStartBusy"><i nz-icon nzType="poweroff"></i></button>
+        <div class="media-player" *ngIf="sprintIVRData[0]">
+          <mat-basic-audio-player [audioUrl]="msbapAudioUrl" [displayVolumeControls]="false" muted="muted"
+            (trackEnded)="onEnded($event)"></mat-basic-audio-player>
+          <a class="col-md-1" title="Download" class="downloadAudio" href="javascript:void(0)"
+            (click)="downloadAudioFile(item)"><i class="fas fa-arrow-alt-circle-down"></i></a>
+        </div>
+      </div>
+      <div class="chart-type-ivr">
+        <canvas id="ivr-testing"></canvas>
+      </div>
+    </div>
+
+    <ng-template #nonIVR>
+      <div class="progress-panel">
+        <div class="section">
+          <div class="sec-title">Sprint Progress</div>
+          <div class="section-body">
+            <div class="list">
+              <div>Total Interactions Planned</div><span>{{sprintMetaData?.TotalPlanned}}</span>
+            </div>
+            <div class="list">
+              <div>In Progress</div><span>{{sprintMetaData?.Active}}</span>
+            </div>
+            <div class="list">
+              <div>Failed Error</div><span>{{sprintMetaData?.Error}}</span>
+            </div>
+            <div class="list">
+              <div>Total Completed</div><span>{{sprintMetaData?.Finished}}</span>
+            </div>
+            <div class="list">
+              <div>Overall Progress</div><span>{{sprintMetaData?.Finished*100/sprintMetaData?.TotalPlanned}}%</span>
+            </div>
+            <div class="chart-container">
+
+            </div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="sec-title">Sprint Progress</div>
+          <div class="section-body agents">
+            <div class="tile" *ngFor="let agent of sprintData" [class.active]="agent.val != 0">
+              <span>{{ agent.val}}</span>
+              <div class="label">{{ agent.label }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="btn-set">
+        <button nz-button nzType="primary" nzShape="round" nzSize="large" class="stop" (click)="stopSprint()"
+          *ngIf="!stopInterval">Stop</button>
+        <button nz-button nzType="primary" nzShape="round" nzSize="large" (click)="startSprint()"
+          *ngIf="stopInterval && !isStartBusy">Start</button>
+        <button nz-button nzShape="round" nzType="primary" nzSize="large" nzLoading
+          *ngIf="stopInterval && isStartBusy"><i nz-icon nzType="poweroff"></i></button>
+      </div>
+    </ng-template>
+
+
+
+  </div>
+</div>

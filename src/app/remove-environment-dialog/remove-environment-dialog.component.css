@@ -1,0 +1,25 @@
+.caninfoicon{
+    text-align: center;
+    font-size: 70px;
+    color: #f44336;
+}
+h5{
+    text-align: center !important;
+    font-weight: 300;
+}
+h5 strong{
+    font-weight:800 !important;
+}
+ .canbtn{
+    margin-left:10px;
+} 
+.canbtncon{
+    text-align: center;
+}
+button.mat-accent{
+    background-color: #343a40;
+}
+button.primary{
+    color: #fff;
+    background-color: #EF820D;
+}

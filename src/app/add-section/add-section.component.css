@@ -1,0 +1,8 @@
+.btn{
+    border-radius: 1px;
+    margin-right: 5px;
+}
+
+.mat-dialog-content{
+    max-height: 68vh!important;
+ }

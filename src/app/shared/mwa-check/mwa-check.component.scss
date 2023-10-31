@@ -1,0 +1,51 @@
+@import "../../../styles/mixins.scss";
+
+.mwa-check {
+    display: flex;
+    align-items: center;
+
+    &:not(.disable) {
+        cursor: pointer;
+    }
+    .item-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 22px;
+        width: 22px;
+        background: #cddfed;
+        border: 1px solid $primary;
+        color: #fff;
+        &.secondary {
+            border-color: $secondary !important;
+            &.active {
+                background: $secondary !important;
+            }
+        }
+        &.active {
+            background: $primary;
+            .state {
+                display: block;
+            }
+        }
+
+        &.round {
+            border-radius: 15px;
+            overflow: hidden;
+        }
+        .state {
+            font-size: 10px;
+            display: none;
+
+            .ico {
+                width: 15px;
+                height: 15px;
+            }
+        }
+    }
+
+    .item-name {
+        @include label();
+        margin-left: 10px;
+    }
+}

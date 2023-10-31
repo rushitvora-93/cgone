@@ -1,0 +1,48 @@
+
+<h1 mat-dialog-title class="pl-2 pr-2">Update host</h1>
+<div mat-dialog-content [formGroup]="form">
+    <div class="example-container pl-2 pr-2">
+        <mat-form-field><input matInput placeholder="Hostname" formControlName="hostName" required>
+          <mat-error>Please Enter Host Name</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="IP" formControlName="ip" required>
+          <mat-error>Please Enter Ip</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="OS Type" formControlName="osType" required>
+                <mat-option *ngFor="let os of osTypes" [value]="os">
+                  {{os}}
+                </mat-option>
+              </mat-select>
+          <mat-error>Please Select OS Type</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="Version" formControlName="version" required>
+          <mat-error>Please Enter Version</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input matInput placeholder="LCA Port" formControlName="lcaPort" required>
+          <mat-error>Please Enter LCA Port</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="Solution Control Center" formControlName="solutionControlCenter" required>
+                <mat-option *ngFor="let s of sc" [value]="s.appName">
+                  {{s.appName}}
+                </mat-option>
+              </mat-select>
+         <mat-error>Please Enter Solution Control Center</mat-error>
+        </mat-form-field>
+        <div>
+          <mat-checkbox formControlName="startUpflag" style="width: 22%;display: inline-block;" >Startup</mat-checkbox>
+          <mat-checkbox formControlName="state" style="width: 42%;display: inline-block;">State</mat-checkbox>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions class="pl-2 pr-2">
+    <button mat-flat-button color="accent" (click)="close()">Cancel</button>
+    <button mat-flat-button class="mrnone"  (click)="update()" [disabled]="!form.valid" >Update Host</button>
+</div>
+
+
+

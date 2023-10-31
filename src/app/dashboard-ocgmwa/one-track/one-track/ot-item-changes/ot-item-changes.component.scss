@@ -1,0 +1,78 @@
+@import "../../../../../styles/mixins.scss";
+
+.ot-item-changes-wrapper {
+    .md-header {
+        background-color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 20px;
+        .show-diff {
+            padding: 0 9px;
+            color: $primary;
+        }
+
+        .modal-title {
+            @include h2();
+            font-weight: bold;
+            font-size: 18px;
+        }
+    }
+
+    .configuration {
+        .visible {
+            display: block;
+        }
+    }
+
+    .table-header {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        background: #fff;
+        border-top: 1px solid $primary;
+        border-left: 1px solid $primary;
+        .item-col {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80px;
+            color: $primary;
+            border-right: 1px solid $primary;
+        }
+    }
+
+    .table-body {
+        border-left: 1px solid $primary;
+        border-bottom: 1px solid $primary;
+        .item-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            color: $primary;
+            font-size: 13px;
+            &:nth-child(even) {
+                background: #fff;
+            }
+            &:nth-child(odd) {
+                background-color: #d6e1e8;
+            }
+
+            .item-col {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 40px;
+                border-right: 1px solid $primary;
+                padding: 0 20px;
+                word-break: break-all;
+
+                &.old {
+                    color: #c83600;
+                }
+
+                &.new {
+                    color: $secondary;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,276 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+  <mat-step [stepControl]="firstFormGroup" >
+    <form [formGroup]="firstFormGroup">
+      <ng-template matStepLabel>Promote</ng-template>
+        <div class="form-middle">
+          <mat-radio-group formControlName="firstCtrl" >
+            <mat-radio-button *ngFor="let env of environments" style="margin: 15px; display: block;"
+              [value]="env.id">{{env.appName}}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <div class="btm-button">
+          <button mat-button  (click)="next2(stepper)" class="btn btn-primary">Next</button>
+        </div>
+    </form>
+    
+  </mat-step>
+  <mat-step [stepControl]="selectPromoteType" >
+    <form [formGroup]="selectPromoteType">
+      <ng-template matStepLabel>Select Promote Type</ng-template>
+        <div class="form-middle">
+
+          <fieldset>
+            <legend>Promote Type:</legend>
+            <div>
+              <div class="col-xs-12 col-md-12 checkbox"
+                *ngFor="let app of selectPromoteTypeList">
+                <label>
+                    <mat-checkbox (change)="SelectPromoteType($event,app.id)" formControlName="selectPromote" [value]="app.id" 
+                    name="secondStepSelectedValue">
+                    {{app.value}}</mat-checkbox>
+                </label>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset style="margin-top: 15px;">
+              <legend>Change Duration:</legend>
+              <div class="fromdate" style="margin-left: 15px;">
+                <mat-form-field>
+                  <input
+                    matInput
+                    [matDatepicker]="picker"
+                    placeholder="Choose From date"
+                    [(ngModel)]="fromDate"
+                    formControlName="selectDuration"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="tohour">
+                  <mat-select [(value)]="fromHour" placeholder="Hour">
+                    <mat-option *ngFor="let hour of hourList" [value]="hour">{{hour}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="tohour">
+                  <mat-select [(value)]="fromMinute" placeholder="Minute">
+                    <mat-option *ngFor="let minute of minuteList" [value]="minute">{{minute}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+    
+              <div class="todate" style="margin-left: 15px;">
+                  <mat-form-field>
+                    <input
+                      matInput
+                      [matDatepicker]="pickerTo"
+                      placeholder="Choose To date"
+                      [(ngModel)]="toDate"
+                      formControlName="selectDuration"
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+                    <mat-datepicker #pickerTo></mat-datepicker>
+                  </mat-form-field>
+                  <mat-form-field class="tohour">
+                    <mat-select [(value)]="toHour" placeholder="Hour">
+                      <mat-option *ngFor="let hour of hourList" [value]="hour">{{hour}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <mat-form-field class="tohour">
+                    <mat-select [(value)]="toMinute" placeholder="Minute">
+                      <mat-option *ngFor="let minute of minuteList" [value]="minute">{{minute}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+              </div>
+          </fieldset>
+        </div>
+        <div class="btm-button">
+          <button mat-button matStepperPrevious class="btn btn-secondary">Back</button>
+          <button mat-button   (click)="next3(stepper)" class="btn btn-primary">Next</button>
+        </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="secondFormGroup" >
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Select Application</ng-template>
+      <div class="form-middle">
+        <div class="">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th></th>
+                <th>
+                  <mat-form-field class="example-full-width">
+                    <input
+                      matInput
+                      placeholder= "Object Name"
+                      formControlName= "secondCtrl"
+                      [(ngModel)]= "searchObjectName"
+                      (keyup)= "filterApplicationList()"
+                    />
+                    <mat-icon matSuffix>search</mat-icon>
+                  </mat-form-field>
+                </th>
+                <th>
+                    <mat-form-field class="example-full-width">
+                      <input
+                        matInput
+                        placeholder= "Object Type"
+                        formControlName= "secondCtrl"
+                        [(ngModel)]= "searchObjectType"
+                        (keyup)= "filterApplicationList()"
+                      />
+                      <mat-icon matSuffix>search</mat-icon>
+                    </mat-form-field>
+                  </th>
+                <th>
+                  <mat-form-field class="example-full-width">
+                    <input
+                      matInput
+                      placeholder= "User Name"
+                      formControlName= "secondCtrl"
+                      [(ngModel)]= "searchUserName"
+                      (keyup)= "filterApplicationList()"
+                    />
+                    <mat-icon matSuffix>search</mat-icon>
+                  </mat-form-field>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let app of visiblePromoteAppList;let i=index">
+                <td>
+                    <mat-checkbox (change)="SelectApplication(i,app.appId,'promotelist')" formControlName="{{'secondCtrl'}}" [value]="app.id" 
+                    name="{{'secondStepSelectedValue'}}">
+                    {{app.value}}</mat-checkbox>
+                  
+                </td>
+                <td>
+                    {{app.config?.appName}}
+                </td>
+                <td>Application</td>
+                <td>{{app.user}}</td>
+              </tr>
+              <tr *ngFor="let confapp of visibleConfigureAppList">
+                <td>
+                    <mat-checkbox (change)="SelectApplicationNew($event, confapp.objectId ,confapp.objectType, 'configurationList')" 
+                    formControlName="{{'secondCtrl'}}" [value]="confapp.objectId" 
+                    name="{{'secondStepSelectedValue'}}">
+                    </mat-checkbox>
+                
+                </td>
+                <td>{{confapp.objectName}}</td>
+                <td>{{removeCFG(confapp.objectType)}}</td>
+                <td>{{confapp.user}}</td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+    </div>
+      
+      <div class="btm-button">
+        <button mat-button matStepperPrevious class="btn btn-secondary">Back</button>
+        <button mat-button  (click)="next4(stepper)" class="btn btn-primary">Next</button>
+      </div>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="thirdFormGroup" >
+    <form> <!--[formGroup]="thirdFormGroup"-->
+      <ng-template matStepLabel>Edit Choice</ng-template>
+                  <div class="form-middle">
+              <div *ngIf="promoteAppConfigList.length > 0">
+                 <h4>APP Promote List </h4>
+                  <app-config-item [config]="promoteAppConfigList"
+                   [SubmitEventName]="'Next'" [CancelEventName]="'Back'"
+                    [eventType] = "'PromoteType'"
+                    [editMode] = "false"
+                    [showCheckBox] = "false"
+                    [comparisonCtrl]="comparisonCtrl"
+                    [selectedEnv]="firstFormGroup.value.firstCtrl"
+                    (callbackSelectedEvents) = "next5($event)"
+                    [stepper] = "stepper"
+                    (BackStepper) = "backStep($event)"></app-config-item>
+               </div>
+               <div *ngIf="configurationAppConfigList.length > 0 && promoteAppConfigList.length == 0">
+                  <h4>{{!comparisonCtrl.showComparison?'Config Promote List':'Compare Environment'}}</h4>
+                  
+                      <app-config-item [config]="configurationAppConfigList" [SubmitEventName]="'Next'" 
+                      [CancelEventName]="'Back'"
+                      [editMode] = "false"
+                      [showCheckBox] = "true"
+                      [eventType] = "'ConfigurationType'"
+                      (callbackSelectedEvents) = "next5($event)"
+                      [comparisonCtrl]="comparisonCtrl"
+                      [selectedEnv]="firstFormGroup.value.firstCtrl"
+                      [stepper] = "stepper"
+                      (BackStepper) = "backStep($event)"></app-config-item>
+                 
+                  
+                 
+               </div>
+                <!--Set a new Promote Config for both the items-->
+               <div *ngIf="configurationAppConfigList.length > 0 && promoteAppConfigList.length > 0">
+                  <h4>Promote App List & Config Promote List </h4>
+                  <app-promote-config [config]="step4CombinedList" [SubmitEventName]="'Next'" 
+                  [CancelEventName]="'Back'"
+                  (callbackSelectedEvents) = "Next5CombineItems($event)"
+                  [stepper] = "stepper"
+                  (BackStepper) = "backStep($event)"></app-promote-config>
+             </div>
+              </div>
+             <!-- </div> -->
+
+     
+      <!-- <mat-form-field>
+        <input matInput placeholder="Address" formControlName="thirdCtrl" required>
+      </mat-form-field> -->
+
+      <!-- <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext (click) = "finalSubmission()">Next</button>
+      </div> -->
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="fourthFormGroup">
+    <form> 
+        <ng-template matStepLabel>Final Submission</ng-template>
+        <!-- <div *ngIf="step5PromoteList.length > 0 && setp5ConfigurationList.length > 0">
+            <h2>(Final APP Promote List & APP Configuration List) </h2>
+             <app-config-item [config]="setp5ConfigurationList" 
+               [eventType] = "'BothEventsStep5'"
+               [editMode] = "editMode"
+               [stepper] = "stepper"
+               (callbackSelectedEvents) = "next5($event)"></app-config-item>
+          </div> -->
+        <div class="form-middle">
+        <div *ngIf="step5PromoteList.length > 0 ">
+            <h3>Final APP Promote List </h3>
+             <app-config-item [config]="step5PromoteList" 
+               [eventType] = "'BothList'"
+               [editMode] = "true"
+               [stepper] = "stepper"
+               (callbackSelectedEvents) = "next5($event)"></app-config-item>
+          </div>
+          <div *ngIf="setp5ConfigurationList.length > 0">
+             <h3>Final APP Configuration List </h3>
+             <app-config-item [config]="setp5ConfigurationList" 
+             [eventType] = "'ConfigurationTypeFinal'"
+             [editMode] = "true"
+             [stepper] = "stepper"
+             (callbackSelectedEvents) = "next5($event)"></app-config-item>
+          </div>
+        </div>
+          <div class="row">
+              <div class="col-xs-12 col-md-12 btm-button">
+                  <button  type="button" class="btn btn-primary btn-md" *ngIf="step5PromoteList.length > 0 && setp5ConfigurationList.length == 0" (click)="downloadPromote()">Export PromoteData</button>
+                  <button  type="button" class="btn btn-primary btn-md" *ngIf="setp5ConfigurationList.length > 0 && step5PromoteList.length == 0" (click)="downloadConguration()">Export Configure Data</button>
+                  <button  type="button" class="btn btn-primary btn-md" *ngIf="step5PromoteList.length > 0 && setp5ConfigurationList.length > 0" (click)="downloadPromoteAsWellAsConfiguration()">Export  Data</button>
+                  <!-- <button  type="button" class="btn btn-primary btn-md" *ngIf="configurationAppConfigList.length > 0 && promoteAppConfigList.length > 0" (click)="downLoadPromoteAsWellAsConfig()">Export  Data</button> -->
+                  <button  type="button" class="btn btn-secondary btn-md"  (click)="backStep(stepper)" >Back</button>
+                  <button  type="button" class="btn btn-primary btn-md" (click)="finalSubmission(stepper)">Submit</button>
+              </div>
+            </div>
+    </form>
+  </mat-step>
+</mat-horizontal-stepper>
